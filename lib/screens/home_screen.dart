@@ -205,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.transparent, // Important transparency
             body: SafeArea(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(20, 33, 20, 40),
                 child: Stack(
                   children: [

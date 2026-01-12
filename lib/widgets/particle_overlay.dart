@@ -23,9 +23,10 @@ class _ParticleOverlayState extends State<ParticleOverlay> with SingleTickerProv
   @override
   void initState() {
     super.initState();
+    // Very long duration to minimize visible reset
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 60),
     )..repeat();
     
     _particles = List.generate(widget.particleCount, (index) => _createParticle());
@@ -35,9 +36,10 @@ class _ParticleOverlayState extends State<ParticleOverlay> with SingleTickerProv
     return Particle(
       x: _random.nextDouble(),
       y: _random.nextDouble(),
-      speed: 0.1 + _random.nextDouble() * 0.2,
+      speed: 0.3 + _random.nextDouble() * 0.7, // Normalized speed (0.3-1.0 range for 60s cycle)
       opacity: 0.1 + _random.nextDouble() * 0.4,
       size: 1.0 + _random.nextDouble() * 2.0,
+      offset: _random.nextDouble(), // Random phase offset for each particle
     );
   }
 
@@ -71,8 +73,16 @@ class Particle {
   double speed;
   double opacity;
   double size;
+  double offset; // Phase offset for staggered animation
 
-  Particle({required this.x, required this.y, required this.speed, required this.opacity, required this.size});
+  Particle({
+    required this.x, 
+    required this.y, 
+    required this.speed, 
+    required this.opacity, 
+    required this.size,
+    required this.offset,
+  });
 }
 
 class ParticlePainter extends CustomPainter {
@@ -87,14 +97,27 @@ class ParticlePainter extends CustomPainter {
     final paint = Paint()..style = PaintingStyle.fill;
 
     for (var particle in particles) {
-      // Move particle upwards slowly
-      double currentY = (particle.y - (progress * particle.speed)) % 1.0;
+      // Add particle's individual offset to create staggered movement
+      // This desynchronizes particles so they don't all reset at once
+      double particleProgress = (progress + particle.offset) % 1.0;
+      
+      // Move particle upwards - each particle has its own rhythm
+      double currentY = (particle.y - (particleProgress * particle.speed)) % 1.0;
       if (currentY < 0) currentY += 1.0;
 
       // Slight horizontal wobble
-      double currentX = (particle.x + sin(progress * 2 * pi + particle.y * 10) * 0.05) % 1.0;
+      double currentX = (particle.x + sin(particleProgress * 2 * pi + particle.y * 10) * 0.03) % 1.0;
+      if (currentX < 0) currentX += 1.0;
 
-      paint.color = color.withOpacity(particle.opacity);
+      // Fade-in at bottom and fade-out at top for seamless visual loop
+      double fadeOpacity = 1.0;
+      if (currentY > 0.90) {
+        fadeOpacity = (1.0 - currentY) / 0.10; // Fade in from bottom
+      } else if (currentY < 0.10) {
+        fadeOpacity = currentY / 0.10; // Fade out at top
+      }
+      
+      paint.color = color.withOpacity(particle.opacity * fadeOpacity.clamp(0.0, 1.0));
       canvas.drawCircle(
         Offset(currentX * size.width, currentY * size.height), 
         particle.size, 

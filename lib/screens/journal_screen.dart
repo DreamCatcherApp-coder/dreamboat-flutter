@@ -771,7 +771,7 @@ class _FilterTab extends StatelessWidget {
             color: isSelected ? const Color(0xFF2E2B52) : const Color(0xFF0F0F23).withOpacity(0.3),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: isSelected ? const Color(0xFFA78BFA) : Colors.transparent,
+              color: isSelected ? const Color(0xFF60A5FA) : Colors.transparent, // Bluish (Moon Sync)
               width: 1.5
             )
           ),

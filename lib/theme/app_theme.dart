@@ -8,7 +8,7 @@ class AppTheme {
 
   // Nebula Accents
   static const Color nebulaCyan = Color(0xFF06B6D4);
-  static const Color nebulaMagenta = Color(0xFFDB2777);
+  static const Color nebulaMagenta = Color(0xFF8B5CF6); // Soft Purple (Dream theme)
   static const Color goldDust = Color(0xFFFBBF24);
 
   // Brand Colors
