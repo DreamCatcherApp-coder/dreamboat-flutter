@@ -290,5 +290,22 @@
         }
     },
     "shareCardHeader": "MEINE TÄGLICHE TRAUMDEUTUNG",
-    "shareCardWatermark": "Interpretiert mit DreamBoat App"
+    "shareCardWatermark": "Interpretiert mit DreamBoat App",
+    "subscriptionComingSoon": "Das Abonnement-System kommt sehr bald!",
+    "subscribeMonthly": "Monatlich abonnieren",
+    "subscribeYearly": "Jährlich abonnieren",
+    
+    "planMonthly": "MONATLICH",
+    "planAnnual": "JÄHRLICH",
+    "mostPopular": "BELIEBTESTE",
+    "subscribeNow": "Jetzt abonnieren",
+    "billingMonthly": "Monatlich wiederkehrende Zahlung. Jederzeit kündbar.",
+    "billingAnnual": "Als Einmalzahlung abgerechnet. Jährlich wiederkehrend.",
+    "proFeatureAds": "Werbefreie Erfahrung",
+    "proFeatureAnalysis": "Wöchentliche Muster-Analyse",
+    "proFeatureGuide": "Klartraum-Leitfaden",
+    "proFeatureMoonSync": "Mond- und Planetensynchronisation",
+    
+    "freeTrialDays": "Tage Kostenlos Testen",
+    "then": "Danach"
 }

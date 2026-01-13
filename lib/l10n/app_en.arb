@@ -291,5 +291,22 @@
         }
     },
     "shareCardHeader": "MY DAILY DREAM INTERPRETATION",
-    "shareCardWatermark": "Interpreted with DreamBoat App"
+    "shareCardWatermark": "Interpreted with DreamBoat App",
+    "subscriptionComingSoon": "Subscription system coming very soon!",
+    "subscribeMonthly": "Subscribe Monthly",
+    "subscribeYearly": "Subscribe Yearly",
+    
+    "planMonthly": "MONTHLY",
+    "planAnnual": "ANNUAL",
+    "mostPopular": "MOST POPULAR",
+    "subscribeNow": "Subscribe Now",
+    "billingMonthly": "Recurring monthly payment. Cancel anytime.",
+    "billingAnnual": "Billed as one payment. Recurring annual payment.",
+    "proFeatureAds": "Ad-Free Experience",
+    "proFeatureAnalysis": "Weekly Pattern Analysis",
+    "proFeatureGuide": "Lucid Dream Guide",
+    "proFeatureMoonSync": "Moon & Planet Synchronization",
+    
+    "freeTrialDays": "Days Free Trial",
+    "then": "Then"
 }

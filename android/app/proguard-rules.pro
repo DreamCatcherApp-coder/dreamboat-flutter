@@ -7,7 +7,7 @@
 # Keep Gson classes (often used internally and affected by R8)
 -keep class com.google.gson.** { *; }
 
-# General Flutter rules (usually handled automatically but good to have)
+# General Flutter rules
 -keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.**  { *; }
 -keep class io.flutter.util.**  { *; }
@@ -15,10 +15,15 @@
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
 
-# Suppress warnings for missing classes (common with R8)
+# RevenueCat / Purchases rules
+-keep class com.revenuecat.purchases.** { *; }
+-keep class com.revenuecat.purchases.common.** { *; }
+
+# Suppress warnings for missing classes
 -dontwarn com.google.android.play.core.**
 -dontwarn com.dexterous.flutterlocalnotifications.**
 -dontwarn javax.annotation.**
 -dontwarn org.checkerframework.**
 -dontwarn androidx.media3.**
 -dontwarn com.google.errorprone.annotations.**
+-dontwarn com.revenuecat.**

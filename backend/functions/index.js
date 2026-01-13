@@ -214,28 +214,28 @@ WRITING STYLE:
 - Each section should read like a mini-essay speaking directly to "sen/you".
 
 OUTPUT STRUCTURE (STRICT MARKDOWN):
-Use ### for headers. NO **bold** text. NO bullet points in output.
+Use ### for headers with numbering format "1)" not "1." - example: "### 1) HEADER". NO **bold** text. NO bullet points in output.
 
-### 1. ${lang === 'tr' ? 'TEKRARLAYAN TEMALAR' : 'RECURRING THEMES'}
+### 1) ${lang === 'tr' ? 'TEKRARLAYAN TEMALAR' : 'RECURRING THEMES'}
 Write a flowing paragraph about recurring themes. Speak directly using "sen/senin". Never say "kullanıcı".
 
-### 2. ${lang === 'tr' ? 'DUYGUSAL DÖNGÜLER' : 'EMOTIONAL CYCLES'}
+### 2) ${lang === 'tr' ? 'DUYGUSAL DÖNGÜLER' : 'EMOTIONAL CYCLES'}
 Write a narrative paragraph about emotional progression. Speak directly using "sen/senin". Never say "kullanıcı".
 
-### 3. ${lang === 'tr' ? 'BİLİNÇALTI EĞİLİMLERİ' : 'SUBCONSCIOUS TENDENCIES'}
+### 3) ${lang === 'tr' ? 'BİLİNÇALTI EĞİLİMLERİ' : 'SUBCONSCIOUS TENDENCIES'}
 Write a cohesive paragraph about subconscious patterns. Speak directly using "sen/senin". Never say "kullanıcı".
 
-### 4. ${lang === 'tr' ? 'SEMBOL AĞI' : 'SYMBOL NETWORK'}
+### 4) ${lang === 'tr' ? 'SEMBOL AĞI' : 'SYMBOL NETWORK'}
 Write a flowing paragraph connecting key symbols. Speak directly using "sen/senin". Never say "kullanıcı".
 
-### 5. ${lang === 'tr' ? 'HAFTALIK ÖZET' : 'WEEKLY SUMMARY'}
+### 5) ${lang === 'tr' ? 'HAFTALIK ÖZET' : 'WEEKLY SUMMARY'}
 Write a deeply personal summary paragraph. Speak directly using "sen/senin". Make it feel like a personal letter about where you are in your life journey.
 
-### 6. ${lang === 'tr' ? 'FARKINDALIK İPUCU' : 'AWARENESS TIP'}
+### 6) ${lang === 'tr' ? 'FARKINDALIK İPUCU' : 'AWARENESS TIP'}
 Provide a highly personalized and impactful tip speaking directly to "sen/you". Suggest specific actions like music, art, sports, walking, nature, work-life balance, relationships, creative outlets, or mindfulness. Make it actionable and genuinely helpful.
 
 Your response must be in ${lang === 'tr' ? 'Turkish' : 'English'}.
-REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (you/your).
+REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (you/your). Use "1)" numbering format NOT "1." format.
 `;
 
             const completion = await openai.chat.completions.create({
@@ -306,22 +306,22 @@ RULES:
 - Write everything in flowing prose paragraphs, NOT bullet points
 
 OUTPUT STRUCTURE (STRICT MARKDOWN):
-Use ### for headers. Write all content as flowing paragraphs. NO bullet points. NO **bold** text.
+Use ### for headers with numbering format "1)" not "1." - example: "### 1) HEADER". Write all content as flowing paragraphs. NO bullet points. NO **bold** text.
 
-### 1. ${lang === 'tr' ? 'AY EVRESİ ETKİSİ' : 'MOON PHASE IMPACT'}
+### 1) ${lang === 'tr' ? 'AY EVRESİ ETKİSİ' : 'MOON PHASE IMPACT'}
 Write a flowing paragraph explaining moon phase tendencies and how they connect to the dreams and moods. Speak directly using "sen/senin".
 
-### 2. ${lang === 'tr' ? 'RÜYA YOĞUNLUĞU' : 'DREAM INTENSITY'}
+### 2) ${lang === 'tr' ? 'RÜYA YOĞUNLUĞU' : 'DREAM INTENSITY'}
 Write a flowing paragraph about dream intensity. End with a practical sleep tip. Speak directly using "sen/senin".
 
-### 3. ${lang === 'tr' ? 'KOZMİK İÇGÖRÜLER' : 'COSMIC INSIGHTS'}
+### 3) ${lang === 'tr' ? 'KOZMİK İÇGÖRÜLER' : 'COSMIC INSIGHTS'}
 Write a flowing paragraph about unique patterns discovered. Speak directly using "sen/senin".
 
-### 4. ${lang === 'tr' ? 'AY TAVSİYESİ' : 'LUNAR GUIDANCE'}
+### 4) ${lang === 'tr' ? 'AY TAVSİYESİ' : 'LUNAR GUIDANCE'}
 Write a flowing paragraph with personalized guidance for each moon phase. Include sleep advice. Speak directly using "sen/senin".
 
 Respond in ${targetLanguage}.
-REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (you/your).
+REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (you/your). Use "1)" numbering format NOT "1." format.
 `;
 
             // Format dream data for the prompt

@@ -914,4 +914,52 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'DreamBoat App ile yorumlandı';
+
+  @override
+  String get subscriptionComingSoon =>
+      'Abonelik sistemi çok yakında aktif olacak!';
+
+  @override
+  String get subscribeMonthly => 'Aylık Abone Ol';
+
+  @override
+  String get subscribeYearly => 'Yıllık Abone Ol';
+
+  @override
+  String get planMonthly => 'AYLIK';
+
+  @override
+  String get planAnnual => 'YILLIK';
+
+  @override
+  String get mostPopular => 'EN POPÜLER';
+
+  @override
+  String get subscribeNow => 'Abone Ol';
+
+  @override
+  String get billingMonthly =>
+      'Aylık yinelenen ödeme. İstediğin zaman iptal et.';
+
+  @override
+  String get billingAnnual =>
+      'Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.';
+
+  @override
+  String get proFeatureAds => 'Reklamsız Deneyim';
+
+  @override
+  String get proFeatureAnalysis => 'Haftalık Desen Analizi';
+
+  @override
+  String get proFeatureGuide => 'Lucid Rüya Rehberi';
+
+  @override
+  String get proFeatureMoonSync => 'Ay ve Gezegen Senkronizasyonu';
+
+  @override
+  String get freeTrialDays => 'Gün Ücretsiz Dene';
+
+  @override
+  String get then => 'Sonra';
 }

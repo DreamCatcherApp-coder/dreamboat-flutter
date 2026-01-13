@@ -25,14 +25,13 @@ class _NightSkyBackgroundState extends State<NightSkyBackground> with TickerProv
     
     // Nebula Drifting Animation (Slow Breathing)
     _nebulaController = AnimationController(
-        vsync: this, duration: const Duration(seconds: 20))
-      ..repeat(reverse: true);
+        vsync: this, duration: const Duration(seconds: 20));
 
     // Star Twinkle
     _starController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 4),
-    )..repeat(reverse: true);
+    );
     
     // Shooting Stars
     _shootingStarController = AnimationController(
@@ -48,16 +47,21 @@ class _NightSkyBackgroundState extends State<NightSkyBackground> with TickerProv
       }
     });
 
-    _randomizeShootingStar();
-    _shootingStarController.forward();
+    // Delay animation start to let the app render first
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        _nebulaController.repeat(reverse: true);
+        _starController.repeat(reverse: true);
+        _randomizeShootingStar();
+        _shootingStarController.forward();
+      }
+    });
   }
 
   void _randomizeShootingStar() {
-      // Random start position
-      setState(() {
-         _startX = 0.4 + (_random.nextDouble() * 0.5); 
-         _startY = 0.05 + (_random.nextDouble() * 0.3); 
-      });
+      // Random start position - no setState needed, just update values
+      _startX = 0.4 + (_random.nextDouble() * 0.5); 
+      _startY = 0.05 + (_random.nextDouble() * 0.3); 
   }
 
   @override
@@ -163,9 +167,38 @@ class _NightSkyBackgroundState extends State<NightSkyBackground> with TickerProv
 class MysticStarPainter extends CustomPainter {
   final double opacity;
   final bool isPro;
-  final Random random = Random(42); // Fixed seed
-
+  
+  // Static cached star data to prevent regeneration on rebuild
+  static List<_MysticStarData>? _cachedWhiteStars;
+  static List<_MysticStarData>? _cachedGoldStars;
+  static List<_MysticStarData>? _cachedGoldStarsPro;
+  
   MysticStarPainter(this.opacity, {this.isPro = false});
+  
+  static List<_MysticStarData> _generateWhiteStars() {
+    if (_cachedWhiteStars != null) return _cachedWhiteStars!;
+    final random = Random(42);
+    _cachedWhiteStars = List.generate(40, (i) {
+      double r = random.nextDouble();
+      return _MysticStarData(
+        xPercent: random.nextDouble(),
+        yPercent: random.nextDouble(),
+        radius: r < 0.8 ? 1.0 : 2.0,
+      );
+    });
+    return _cachedWhiteStars!;
+  }
+  
+  static List<_MysticStarData> _generateGoldStars(int count, int seed) {
+    final random = Random(seed);
+    return List.generate(count, (i) {
+      return _MysticStarData(
+        xPercent: random.nextDouble(),
+        yPercent: random.nextDouble(),
+        radius: 0.8,
+      );
+    });
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -179,28 +212,40 @@ class MysticStarPainter extends CustomPainter {
       ..color = AppTheme.goldDust.withOpacity(0.4 + (0.2 * opacity)) // Variable opacity
       ..style = PaintingStyle.fill;
 
-    // Draw White Stars (~40)
-    for (int i = 0; i < 40; i++) {
-        double x = random.nextDouble() * size.width;
-        double y = random.nextDouble() * size.height;
-        // Varied sizes: Some tiny (distance), some brighter
-        double r = random.nextDouble();
-        double radius = r < 0.8 ? 1.0 : 2.0; // 80% small, 20% large
-        
-        canvas.drawCircle(Offset(x, y), radius, paintWhite);
+    // Draw White Stars (cached)
+    final whiteStars = _generateWhiteStars();
+    for (final star in whiteStars) {
+      double x = star.xPercent * size.width;
+      double y = star.yPercent * size.height;
+      canvas.drawCircle(Offset(x, y), star.radius, paintWhite);
     }
 
-    // Draw Gold Dust (30 for standard, 60 for PRO)
-    final goldStarCount = isPro ? 60 : 30;
-    for (int i = 0; i < goldStarCount; i++) {
-        double x = random.nextDouble() * size.width;
-        double y = random.nextDouble() * size.height;
-        canvas.drawCircle(Offset(x, y), 0.8, paintGold); // Tiny gold specs
+    // Draw Gold Dust (cached based on isPro)
+    final goldStars = isPro 
+      ? (_cachedGoldStarsPro ??= _generateGoldStars(60, 100))
+      : (_cachedGoldStars ??= _generateGoldStars(30, 200));
+    
+    for (final star in goldStars) {
+      double x = star.xPercent * size.width;
+      double y = star.yPercent * size.height;
+      canvas.drawCircle(Offset(x, y), star.radius, paintGold);
     }
   }
 
   @override
-  bool shouldRepaint(MysticStarPainter oldDelegate) => true;
+  bool shouldRepaint(MysticStarPainter oldDelegate) => oldDelegate.opacity != opacity || oldDelegate.isPro != isPro;
+}
+
+class _MysticStarData {
+  final double xPercent;
+  final double yPercent;
+  final double radius;
+  
+  const _MysticStarData({
+    required this.xPercent,
+    required this.yPercent,
+    required this.radius,
+  });
 }
 
 class ShootingStarPainter extends CustomPainter {

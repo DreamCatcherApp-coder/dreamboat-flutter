@@ -16,9 +16,21 @@ class NotificationService {
     debugPrint('NotificationService: Initializing...');
     try {
       tz.initializeTimeZones();
+      debugPrint('NotificationService: Timezone database initialized');
       
-      // Get Device Timezone
-      final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+      // Get Device Timezone with timeout to prevent blocking on emulator
+      String timeZoneName = 'Europe/Istanbul'; // Fallback
+      try {
+        timeZoneName = await FlutterTimezone.getLocalTimezone()
+            .timeout(const Duration(seconds: 3), onTimeout: () {
+          debugPrint('NotificationService: Timezone lookup timed out, using fallback');
+          return 'Europe/Istanbul';
+        });
+        debugPrint('NotificationService: Got timezone: $timeZoneName');
+      } catch (e) {
+        debugPrint('NotificationService: Timezone error: $e, using fallback');
+      }
+      
       tz.setLocalLocation(tz.getLocation(timeZoneName));
 
       // Android Settings
@@ -62,21 +74,25 @@ class NotificationService {
 
   Future<bool?> requestPermissions() async {
     try {
-      // Android 13+
-      final androidImplementation = _notificationsPlugin.resolvePlatformSpecificImplementation<fln.AndroidFlutterLocalNotificationsPlugin>();
-      if (androidImplementation != null) {
-        final granted = await androidImplementation.requestNotificationsPermission();
-        debugPrint('NotificationService: Android Permission Granted: $granted');
-        return granted;
+      // Use permission_handler for Android 13+ (more reliable on physical devices)
+      final status = await Permission.notification.status;
+      debugPrint('NotificationService: Current permission status: $status');
+      
+      if (status.isGranted) {
+        debugPrint('NotificationService: Permission already granted');
+        return true;
       }
       
-      // iOS
-      final iosImplementation = _notificationsPlugin.resolvePlatformSpecificImplementation<fln.IOSFlutterLocalNotificationsPlugin>();
-      if (iosImplementation != null) {
-        return await iosImplementation.requestPermissions(alert: true, badge: true, sound: true);
+      if (status.isPermanentlyDenied) {
+        debugPrint('NotificationService: Permission permanently denied');
+        return false;
       }
       
-      return false;
+      // Request permission - this triggers the Android system dialog
+      final result = await Permission.notification.request();
+      debugPrint('NotificationService: Permission request result: $result');
+      
+      return result.isGranted;
     } catch (e) {
       debugPrint('NotificationService: Permission request error: $e');
       return false;

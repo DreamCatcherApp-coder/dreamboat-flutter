@@ -920,4 +920,52 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'Interpretado com DreamBoat App';
+
+  @override
+  String get subscriptionComingSoon =>
+      'O sistema de assinatura chegará em breve!';
+
+  @override
+  String get subscribeMonthly => 'Assinar Mensal';
+
+  @override
+  String get subscribeYearly => 'Assinar Anual';
+
+  @override
+  String get planMonthly => 'MENSAL';
+
+  @override
+  String get planAnnual => 'ANUAL';
+
+  @override
+  String get mostPopular => 'MAIS POPULAR';
+
+  @override
+  String get subscribeNow => 'Assinar Agora';
+
+  @override
+  String get billingMonthly =>
+      'Pagamento mensal recorrente. Cancele quando quiser.';
+
+  @override
+  String get billingAnnual =>
+      'Cobrado como um único pagamento. Pagamento anual recorrente.';
+
+  @override
+  String get proFeatureAds => 'Experiência Sem Anúncios';
+
+  @override
+  String get proFeatureAnalysis => 'Análise Semanal de Padrões';
+
+  @override
+  String get proFeatureGuide => 'Guia de Sonhos Lúcidos';
+
+  @override
+  String get proFeatureMoonSync => 'Sincronização Lunar e Planetária';
+
+  @override
+  String get freeTrialDays => 'Dias de Teste Grátis';
+
+  @override
+  String get then => 'Depois';
 }

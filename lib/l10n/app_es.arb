@@ -291,5 +291,22 @@
         }
     },
     "shareCardHeader": "MI INTERPRETACIÓN DE SUEÑOS DIARIA",
-    "shareCardWatermark": "Interpretado con DreamBoat App"
+    "shareCardWatermark": "Interpretado con DreamBoat App",
+    "subscriptionComingSoon": "¡El sistema de suscripción llegará muy pronto!",
+    "subscribeMonthly": "Suscribirse Mensual",
+    "subscribeYearly": "Suscribirse Anual",
+    
+    "planMonthly": "MENSUAL",
+    "planAnnual": "ANUAL",
+    "mostPopular": "MÁS POPULAR",
+    "subscribeNow": "Suscribirse",
+    "billingMonthly": "Pago mensual recurrente. Cancela cuando quieras.",
+    "billingAnnual": "Facturado como un solo pago. Pago anual recurrente.",
+    "proFeatureAds": "Experiencia Sin Anuncios",
+    "proFeatureAnalysis": "Análisis Semanal de Patrones",
+    "proFeatureGuide": "Guía de Sueños Lúcidos",
+    "proFeatureMoonSync": "Sincronización Lunar y Planetaria",
+    
+    "freeTrialDays": "Días de Prueba Gratis",
+    "then": "Luego"
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:dream_boat_mobile/widgets/glass_card.dart';
 import 'package:dream_boat_mobile/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/services/connectivity_service.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
+import 'dart:math';
 
 class ProUpgradeDialog extends StatefulWidget {
   const ProUpgradeDialog({super.key});
@@ -16,6 +17,7 @@ class ProUpgradeDialog extends StatefulWidget {
 
 class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerProviderStateMixin {
   bool _isLoading = false;
+  bool _isYearlySelected = true; // Default to yearly (better value)
   late AnimationController _shimmerController;
 
   @override
@@ -33,7 +35,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     super.dispose();
   }
 
-  Future<void> _handlePurchase() async {
+  Future<void> _handlePurchase(bool isYearly) async {
     final isConnected = await ConnectivityService.isConnected;
     if (!isConnected) {
       if (mounted) {
@@ -49,20 +51,43 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
       return;
     }
 
+    final provider = context.read<SubscriptionProvider>();
+    final package = isYearly ? provider.yearlyPackage : provider.monthlyPackage;
+    
+    if (package == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Subscription packages not available'),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+          )
+        );
+      }
+      return;
+    }
+
     setState(() => _isLoading = true);
     
-    await Future.delayed(const Duration(seconds: 2));
-    
-    if (mounted) {
-      await context.read<SubscriptionProvider>().purchasePro();
+    try {
+      final success = await provider.purchasePackage(package);
+      
       if (mounted) {
-         Navigator.pop(context);
-         // Show celebratory success dialog
-         showDialog(
-           context: context,
-           barrierDismissible: false,
-           builder: (ctx) => _ProSuccessDialog(),
-         );
+        if (success) {
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (ctx) => _ProSuccessDialog(),
+          );
+        } else {
+          setState(() => _isLoading = false);
+        }
+      }
+    } catch (e) {
+      debugPrint('Purchase error: $e');
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
   }
@@ -70,152 +95,261 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
+    final provider = context.watch<SubscriptionProvider>();
+    
+    // Get prices and trial info from RevenueCat offerings
+    final monthlyPrice = provider.monthlyPackage?.storeProduct.priceString ?? '---';
+    final yearlyPrice = provider.yearlyPackage?.storeProduct.priceString ?? '---';
+    
+    // Check for free trial (introductory offer)
+    final yearlyIntro = provider.yearlyPackage?.storeProduct.introductoryPrice;
+    final monthlyIntro = provider.monthlyPackage?.storeProduct.introductoryPrice;
+    
+    // DEBUG: Log what RevenueCat returns
+    debugPrint('=== REVENUECAT TRIAL DEBUG ===');
+    debugPrint('Yearly Package: ${provider.yearlyPackage?.storeProduct.identifier}');
+    debugPrint('Yearly Intro: $yearlyIntro');
+    debugPrint('Yearly Intro Price: ${yearlyIntro?.price}');
+    debugPrint('Yearly Intro Cycles: ${yearlyIntro?.cycles}');
+    debugPrint('Yearly Intro Period: ${yearlyIntro?.periodNumberOfUnits} ${yearlyIntro?.periodUnit}');
+    debugPrint('Monthly Intro: $monthlyIntro');
+    debugPrint('==============================');
+    
+    // Trial period in days
+    final yearlyTrialDays = yearlyIntro?.cycles != null && yearlyIntro!.price == 0 
+        ? (yearlyIntro.periodNumberOfUnits ?? 0) * (yearlyIntro.periodUnit == 'DAY' ? 1 : yearlyIntro.periodUnit == 'WEEK' ? 7 : 30)
+        : 0;
+    final monthlyTrialDays = monthlyIntro?.cycles != null && monthlyIntro!.price == 0 
+        ? (monthlyIntro.periodNumberOfUnits ?? 0) * (monthlyIntro.periodUnit == 'DAY' ? 1 : monthlyIntro.periodUnit == 'WEEK' ? 7 : 30)
+        : 0;
+    
+    debugPrint('Calculated Trial Days - Yearly: $yearlyTrialDays, Monthly: $monthlyTrialDays');
 
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(28),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [
-                  const Color(0xFF1a1a2e),
-                  const Color(0xFF0f0f1a),
+                  Color(0xFF0F0F23), // Deep void
+                  Color(0xFF16163F), // Dark navy
+                  Color(0xFF1a1a2e), // Lighter indigo
                 ],
+                stops: [0.0, 0.5, 1.0],
               ),
               border: Border.all(
-                color: const Color(0xFFFBBF24).withOpacity(0.2),
+                color: Colors.white.withOpacity(0.1),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFBBF24).withOpacity(0.1),
+                  color: const Color(0xFF4C1D95).withOpacity(0.2),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
               ],
             ),
-            child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(28),
-            child: Column(
-               mainAxisSize: MainAxisSize.min,
-               children: [
-                  // Mystical Header with shimmer
-                  AnimatedBuilder(
-                    animation: _shimmerController,
-                    builder: (context, child) {
-                      return ShaderMask(
-                        shaderCallback: (bounds) {
-                          return LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: const [
-                              Color(0xFFFBBF24),
-                              Color(0xFFFFE082),
-                              Color(0xFFFBBF24),
-                            ],
-                            stops: [
-                              (_shimmerController.value - 0.3).clamp(0.0, 1.0),
-                              _shimmerController.value,
-                              (_shimmerController.value + 0.3).clamp(0.0, 1.0),
-                            ],
-                          ).createShader(bounds);
-                        },
-                        blendMode: BlendMode.srcIn,
-                        child: const Text(
-                          "DreamBoat PRO",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(28),
+              child: Stack(
+                children: [
+                  // Star field background
+                  CustomPaint(
+                    size: const Size(double.infinity, 600),
+                    painter: _StarFieldPainter(),
+                  ),
+                  
+                  // Content
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Header with boat icon inline
+                          AnimatedBuilder(
+                            animation: _shimmerController,
+                            builder: (context, child) {
+                              return ShaderMask(
+                                shaderCallback: (bounds) {
+                                  return LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: const [
+                                      Color(0xFFFBBF24),
+                                      Color(0xFFFFE082),
+                                      Color(0xFFFBBF24),
+                                    ],
+                                    stops: [
+                                      (_shimmerController.value - 0.3).clamp(0.0, 1.0),
+                                      _shimmerController.value,
+                                      (_shimmerController.value + 0.3).clamp(0.0, 1.0),
+                                    ],
+                                  ).createShader(bounds);
+                                },
+                                blendMode: BlendMode.srcIn,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Text(
+                                      "DreamBoat PRO ",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 26,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1.5,
+                                      ),
+                                    ),
+                                    Icon(
+                                      LucideIcons.sailboat,
+                                      color: Color(0xFFFBBF24),
+                                      size: 24,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    t.proUpgradeSubtitle,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.7), 
-                      fontSize: 14,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
+                          
+                          const SizedBox(height: 24),
 
-                  // Benefits with mystical design
-                  _buildMysticalBenefit(
-                    icon: LucideIcons.ban,
-                    title: t.proFeatureAdsTitle,
-                    subtitle: t.proFeatureAdsSubtitle,
-                  ),
-                  _buildMysticalBenefit(
-                    icon: LucideIcons.brainCircuit,
-                    title: t.proFeatureAnalysisTitle,
-                    subtitle: t.proFeatureAnalysisSubtitle,
-                  ),
-                  _buildMysticalBenefit(
-                    icon: LucideIcons.bookOpen,
-                    title: t.proFeatureGuideTitle,
-                    subtitle: t.proFeatureGuideSubtitle,
-                  ),
+                          // Side-by-side pricing cards
+                          Row(
+                            children: [
+                              // Monthly Card
+                              Expanded(
+                                child: _buildPricingCard(
+                                  title: t.planMonthly,
+                                  price: monthlyPrice,
+                                  billingInfo: t.billingMonthly,
+                                  isPopular: false,
+                                  isSelected: !_isYearlySelected,
+                                  onTap: () => setState(() => _isYearlySelected = false),
+                                  onSubscribe: () => _handlePurchase(false),
+                                  subscribeText: t.subscribeNow,
+                                ),
+                              ),
+                              
+                              const SizedBox(width: 12),
+                              
+                              // Annual Card
+                              Expanded(
+                                child: _buildPricingCard(
+                                  title: t.planAnnual,
+                                  price: yearlyPrice,
+                                  billingInfo: t.billingAnnual,
+                                  isPopular: true,
+                                  popularLabel: t.mostPopular,
+                                  isSelected: _isYearlySelected,
+                                  onTap: () => setState(() => _isYearlySelected = true),
+                                  onSubscribe: () => _handlePurchase(true),
+                                  subscribeText: t.subscribeNow,
+                                ),
+                              ),
+                            ],
+                          ),
+                          
+                          const SizedBox(height: 24),
+                          
+                          // Divider
+                          Container(
+                            width: 100,
+                            height: 1,
+                            color: Colors.white.withOpacity(0.1),
+                          ),
+                          
+                          const SizedBox(height: 20),
 
-                  const SizedBox(height: 28),
+                          // PRO Features with descriptions (no icons)
+                          _buildFeatureWithSubtitle(
+                            title: t.proFeatureAdsTitle,
+                            subtitle: t.proFeatureAdsSubtitle,
+                          ),
+                          _buildFeatureWithSubtitle(
+                            title: t.proFeatureAnalysisTitle,
+                            subtitle: t.proFeatureAnalysisSubtitle,
+                          ),
+                          _buildFeatureWithSubtitle(
+                            title: t.moonSyncTitle,
+                            subtitle: t.moonSyncDescription,
+                          ),
+                          _buildFeatureWithSubtitle(
+                            title: t.proFeatureGuideTitle,
+                            subtitle: t.proFeatureGuideSubtitle,
+                          ),
 
-                  // Premium unlock button
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFFBBF24).withOpacity(0.3),
-                          blurRadius: 20,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: CustomButton(
-                      text: t.upgradeBtn,
-                      isLoading: _isLoading,
-                      loadingText: t.proProcessing,
-                      gradient: const LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFFFBBF24), Color(0xFFD97706), Color(0xFFB45309)]
+                          const SizedBox(height: 20),
+                          
+                          // Main Subscribe Button
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFFFBBF24).withOpacity(0.3),
+                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () => _handlePurchase(_isYearlySelected),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFFBBF24),
+                                foregroundColor: Colors.black,
+                                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                elevation: 0,
+                              ),
+                              child: _buildSubscribeButtonContent(
+                                isYearly: _isYearlySelected,
+                                yearlyTrialDays: yearlyTrialDays,
+                                monthlyTrialDays: monthlyTrialDays,
+                                yearlyPrice: yearlyPrice,
+                                monthlyPrice: monthlyPrice,
+                                t: t,
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 12),
+                          
+                          // Maybe later button
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size(48, 48),
+                              tapTargetSize: MaterialTapTargetSize.padded,
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              t.upgradeCancel, 
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.4), 
+                                fontSize: 14,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: _handlePurchase,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      minimumSize: const Size(48, 48),
-                      tapTargetSize: MaterialTapTargetSize.padded,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      t.upgradeCancel, 
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.4), 
-                        fontSize: 14,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  )
-               ],
+                ],
+              ),
             ),
           ),
-        ),
-            ),
-          // X Close Button at top right (inside bounds)
+          
+          // X Close Button at top right
           Positioned(
             top: 8,
             right: 8,
@@ -227,8 +361,8 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                 splashColor: Colors.white.withOpacity(0.15),
                 highlightColor: Colors.white.withOpacity(0.08),
                 child: Container(
-                  width: 40,
-                  height: 40,
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.1),
                     shape: BoxShape.circle,
@@ -245,108 +379,343 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
               ),
             ),
           ),
+          
+          // Loading overlay
+          if (_isLoading)
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xFFFBBF24),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
-  Widget _buildMysticalBenefit({
-    required IconData icon,
+  Widget _buildPricingCard({
     required String title,
-    required String subtitle,
-    String? badge,
+    required String price,
+    required String billingInfo,
+    required bool isPopular,
+    String? popularLabel,
+    required bool isSelected,
+    required VoidCallback onTap,
+    required VoidCallback onSubscribe,
+    required String subscribeText,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFFFBBF24).withOpacity(0.08),
-            const Color(0xFFFBBF24).withOpacity(0.02),
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: isSelected 
+            ? Colors.white.withOpacity(0.1) 
+            : Colors.white.withOpacity(0.03),
+          border: Border.all(
+            color: isSelected 
+              ? const Color(0xFFFBBF24).withOpacity(0.5) 
+              : Colors.white.withOpacity(0.1),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Column(
+              children: [
+                // Title
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    letterSpacing: 1,
+                  ),
+                ),
+                
+                const SizedBox(height: 8),
+                
+                // Price
+                Text(
+                  price,
+                  style: TextStyle(
+                    color: isSelected ? const Color(0xFFFBBF24) : Colors.white.withOpacity(0.5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Subscribe button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onSubscribe,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isSelected 
+                        ? const Color(0xFFFBBF24) 
+                        : Colors.white.withOpacity(0.1),
+                      foregroundColor: isSelected ? Colors.black : Colors.white70,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 0,
+                    ),
+                    child: Text(
+                      subscribeText,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 10),
+                
+                // Billing info
+                Text(
+                  billingInfo,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.4),
+                    fontSize: 9,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+            
+            // Popular badge
+            if (isPopular && popularLabel != null)
+              Positioned(
+                top: -20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF10B981), Color(0xFF059669)],
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF10B981).withOpacity(0.4),
+                          blurRadius: 8,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      popularLabel,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
-        border: Border.all(
-          color: const Color(0xFFFBBF24).withOpacity(0.15),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           Container(
-             padding: const EdgeInsets.all(12),
-             decoration: BoxDecoration(
-               shape: BoxShape.circle,
-               gradient: RadialGradient(
-                 colors: [
-                   const Color(0xFFFBBF24).withOpacity(0.2),
-                   const Color(0xFFFBBF24).withOpacity(0.05),
-                 ],
-               ),
-             ),
-             child: Icon(icon, color: const Color(0xFFFBBF24), size: 22),
-           ),
-           const SizedBox(width: 14),
-           Expanded(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Row(
-                   children: [
-                     Flexible(
-                       child: Text(
-                         title, 
-                         style: const TextStyle(
-                           color: Colors.white, 
-                           fontWeight: FontWeight.w600, 
-                           fontSize: 16,
-                           letterSpacing: 0.3,
-                         ),
-                       ),
-                     ),
-                     if (badge != null) ...[
-                       const SizedBox(width: 8),
-                       Container(
-                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                         decoration: BoxDecoration(
-                           gradient: const LinearGradient(
-                             colors: [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
-                           ),
-                           borderRadius: BorderRadius.circular(6),
-                         ),
-                         child: Text(
-                           badge,
-                           style: const TextStyle(
-                             color: Colors.white,
-                             fontSize: 10,
-                             fontWeight: FontWeight.bold,
-                             letterSpacing: 0.5,
-                           ),
-                         ),
-                       ),
-                     ],
-                   ],
-                 ),
-                 const SizedBox(height: 6),
-                 Text(
-                   subtitle, 
-                   style: TextStyle(
-                     color: Colors.white.withOpacity(0.6), 
-                     fontSize: 13,
-                     height: 1.4,
-                   ),
-                 ),
-               ],
-             ),
-           )
-        ],
       ),
     );
   }
+
+  Widget _buildSubscribeButtonContent({
+    required bool isYearly,
+    required int yearlyTrialDays,
+    required int monthlyTrialDays,
+    required String yearlyPrice,
+    required String monthlyPrice,
+    required AppLocalizations t,
+  }) {
+    final trialDays = isYearly ? yearlyTrialDays : monthlyTrialDays;
+    final price = isYearly ? yearlyPrice : monthlyPrice;
+    final subscribeText = isYearly ? t.subscribeYearly : t.subscribeMonthly;
+    
+    if (trialDays > 0) {
+      // Show trial info with strikethrough price
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$trialDays ${t.freeTrialDays}',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '${t.then} ',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black.withOpacity(0.7),
+                ),
+              ),
+              Text(
+                price,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black.withOpacity(0.5),
+                  decoration: TextDecoration.lineThrough,
+                  decorationColor: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    } else {
+      // No trial - show regular text
+      return Text(
+        '$subscribeText $price',
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+  }
+
+  Widget _buildFeatureWithSubtitle({
+    required String title,
+    required String subtitle,
+  }) {
+    // Use SizedBox for guaranteed fixed height
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: SizedBox(
+        height: 115, // Fixed height for ALL cards
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: Colors.white.withOpacity(0.05),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.08),
+              width: 1,
+            ),
+          ),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title, 
+                  style: const TextStyle(
+                    color: Color(0xFFFBBF24), 
+                    fontWeight: FontWeight.w600, 
+                    fontSize: 15,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  subtitle, 
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6), 
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Star field painter with cached positions
+class _StarFieldPainter extends CustomPainter {
+  // Static cached star data to prevent regeneration on rebuild
+  static List<_StarData>? _cachedStars;
+  
+  static List<_StarData> _generateStars() {
+    if (_cachedStars != null) return _cachedStars!;
+    
+    final random = Random(42);
+    _cachedStars = List.generate(40, (i) {
+      return _StarData(
+        xPercent: random.nextDouble(),
+        yPercent: random.nextDouble(),
+        radius: random.nextDouble() * 1.2 + 0.5,
+        opacity: random.nextDouble() * 0.4 + 0.1,
+        hasGlow: random.nextDouble() > 0.8,
+      );
+    });
+    return _cachedStars!;
+  }
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stars = _generateStars();
+    
+    for (final star in stars) {
+      final x = star.xPercent * size.width;
+      final y = star.yPercent * size.height;
+      
+      final starPaint = Paint()
+        ..color = Colors.white.withOpacity(star.opacity)
+        ..style = PaintingStyle.fill;
+
+      if (star.hasGlow) {
+         canvas.drawCircle(
+           Offset(x, y), 
+           star.radius * 2.5, 
+           Paint()..color = Colors.white.withOpacity(0.05)
+         );
+      }
+      
+      canvas.drawCircle(Offset(x, y), star.radius, starPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _StarData {
+  final double xPercent;
+  final double yPercent;
+  final double radius;
+  final double opacity;
+  final bool hasGlow;
+  
+  const _StarData({
+    required this.xPercent,
+    required this.yPercent,
+    required this.radius,
+    required this.opacity,
+    required this.hasGlow,
+  });
 }
 
 // Celebratory Success Dialog after PRO purchase
@@ -401,12 +770,12 @@ class _ProSuccessDialogState extends State<_ProSuccessDialog>
             child: Container(
               padding: const EdgeInsets.all(32),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    const Color(0xFF1a1a2e),
-                    const Color(0xFF16213e),
+                    Color(0xFF1a1a2e),
+                    Color(0xFF16213e),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(28),
@@ -425,7 +794,6 @@ class _ProSuccessDialogState extends State<_ProSuccessDialog>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  
                   // Welcome Message
                   Text(
                     t.upgradeSuccess,

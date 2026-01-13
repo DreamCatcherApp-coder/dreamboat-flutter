@@ -158,14 +158,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           centerTitle: true,
           title: Text(t.settingsTitle, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-          actions: [
-            // Debug Reset for PRO (Only shown if PRO)
-            if (isPro)
-              IconButton(
-                icon: const Icon(LucideIcons.rotateCcw, color: Colors.white38),
-                onPressed: () => _confirmReset(context),
-              )
-          ],
+          actions: const [],
         ),
         body: Column(
           children: [
@@ -249,37 +242,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _confirmReset(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-      title: Text(t.debugResetTitle),
-      content: Text(t.debugResetContent),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx), child: Text(t.cancel)),
-        TextButton(
-          onPressed: () async {
-             Navigator.pop(ctx);
-             context.read<SubscriptionProvider>().restoreStandard();
-             
-             // Reset Progress as requested
-             final prefs = await SharedPreferences.getInstance();
-             await prefs.remove('last_analysis_date');
-             await prefs.remove('last_analysis_result');
-             await prefs.remove('guide_progress');
-             // Reset Moon Sync
-             await prefs.remove('last_moon_sync_date');
-             await prefs.remove('last_moon_sync_result');
-          }, 
-          child: Text(t.reset)
-        ),
-      ],
-    ));
-  }
+  // Note: Debug reset removed for RevenueCat integration (Milestone 0)
 
   Future<void> _handleRestorePurchases(BuildContext context) async {
     final t = AppLocalizations.of(context)!;

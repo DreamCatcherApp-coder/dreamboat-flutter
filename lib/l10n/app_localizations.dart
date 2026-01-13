@@ -1735,6 +1735,96 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'DreamBoat App ile yorumlandı'**
   String get shareCardWatermark;
+
+  /// No description provided for @subscriptionComingSoon.
+  ///
+  /// In tr, this message translates to:
+  /// **'Abonelik sistemi çok yakında aktif olacak!'**
+  String get subscriptionComingSoon;
+
+  /// No description provided for @subscribeMonthly.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aylık Abone Ol'**
+  String get subscribeMonthly;
+
+  /// No description provided for @subscribeYearly.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yıllık Abone Ol'**
+  String get subscribeYearly;
+
+  /// No description provided for @planMonthly.
+  ///
+  /// In tr, this message translates to:
+  /// **'AYLIK'**
+  String get planMonthly;
+
+  /// No description provided for @planAnnual.
+  ///
+  /// In tr, this message translates to:
+  /// **'YILLIK'**
+  String get planAnnual;
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In tr, this message translates to:
+  /// **'EN POPÜLER'**
+  String get mostPopular;
+
+  /// No description provided for @subscribeNow.
+  ///
+  /// In tr, this message translates to:
+  /// **'Abone Ol'**
+  String get subscribeNow;
+
+  /// No description provided for @billingMonthly.
+  ///
+  /// In tr, this message translates to:
+  /// **'Aylık yinelenen ödeme. İstediğin zaman iptal et.'**
+  String get billingMonthly;
+
+  /// No description provided for @billingAnnual.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.'**
+  String get billingAnnual;
+
+  /// No description provided for @proFeatureAds.
+  ///
+  /// In tr, this message translates to:
+  /// **'Reklamsız Deneyim'**
+  String get proFeatureAds;
+
+  /// No description provided for @proFeatureAnalysis.
+  ///
+  /// In tr, this message translates to:
+  /// **'Haftalık Desen Analizi'**
+  String get proFeatureAnalysis;
+
+  /// No description provided for @proFeatureGuide.
+  ///
+  /// In tr, this message translates to:
+  /// **'Lucid Rüya Rehberi'**
+  String get proFeatureGuide;
+
+  /// No description provided for @proFeatureMoonSync.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ay ve Gezegen Senkronizasyonu'**
+  String get proFeatureMoonSync;
+
+  /// No description provided for @freeTrialDays.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gün Ücretsiz Dene'**
+  String get freeTrialDays;
+
+  /// No description provided for @then.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sonra'**
+  String get then;
 }
 
 class _AppLocalizationsDelegate

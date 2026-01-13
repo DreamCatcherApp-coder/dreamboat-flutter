@@ -564,18 +564,44 @@ class _StatsScreenState extends State<StatsScreen> {
               const SizedBox(height: 20),
 
               // 3. Analysis Section
-              if (_analysisResult == null) 
-                _buildIntroState(t, context.watch<SubscriptionProvider>().isPro)
-              else 
-                _buildResultState(t, context.watch<SubscriptionProvider>().isPro),
+              Builder(
+                builder: (context) {
+                  final isPro = context.watch<SubscriptionProvider>().isPro;
+                  final widget = _analysisResult == null 
+                    ? _buildIntroState(t, isPro)
+                    : _buildResultState(t, isPro);
+                  
+                  // Wrap with GestureDetector for non-PRO users
+                  if (!isPro) {
+                    return GestureDetector(
+                      onTap: () => showDialog(context: context, builder: (ctx) => const ProUpgradeDialog()),
+                      child: widget,
+                    );
+                  }
+                  return widget;
+                },
+              ),
 
               const SizedBox(height: 20),
 
               // 4. Moon Sync Section
-              if (_moonSyncResult == null)
-                _buildMoonSyncIntroState(t, context.watch<SubscriptionProvider>().isPro)
-              else
-                _buildMoonSyncResultState(t, context.watch<SubscriptionProvider>().isPro),
+              Builder(
+                builder: (context) {
+                  final isPro = context.watch<SubscriptionProvider>().isPro;
+                  final widget = _moonSyncResult == null
+                    ? _buildMoonSyncIntroState(t, isPro)
+                    : _buildMoonSyncResultState(t, isPro);
+                  
+                  // Wrap with GestureDetector for non-PRO users
+                  if (!isPro) {
+                    return GestureDetector(
+                      onTap: () => showDialog(context: context, builder: (ctx) => const ProUpgradeDialog()),
+                      child: widget,
+                    );
+                  }
+                  return widget;
+                },
+              ),
 
               const SizedBox(height: 30),
             ],

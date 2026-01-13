@@ -308,5 +308,22 @@
         }
     },
     "shareCardHeader": "GÜNLÜK RÜYA YORUMUM",
-    "shareCardWatermark": "DreamBoat App ile yorumlandı"
+    "shareCardWatermark": "DreamBoat App ile yorumlandı",
+    "subscriptionComingSoon": "Abonelik sistemi çok yakında aktif olacak!",
+    "subscribeMonthly": "Aylık Abone Ol",
+    "subscribeYearly": "Yıllık Abone Ol",
+    
+    "planMonthly": "AYLIK",
+    "planAnnual": "YILLIK",
+    "mostPopular": "EN POPÜLER",
+    "subscribeNow": "Abone Ol",
+    "billingMonthly": "Aylık yinelenen ödeme. İstediğin zaman iptal et.",
+    "billingAnnual": "Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.",
+    "proFeatureAds": "Reklamsız Deneyim",
+    "proFeatureAnalysis": "Haftalık Desen Analizi",
+    "proFeatureGuide": "Lucid Rüya Rehberi",
+    "proFeatureMoonSync": "Ay ve Gezegen Senkronizasyonu",
+    
+    "freeTrialDays": "Gün Ücretsiz Dene",
+    "then": "Sonra"
 }
