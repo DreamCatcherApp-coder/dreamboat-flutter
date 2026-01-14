@@ -6,6 +6,7 @@ import 'package:dream_boat_mobile/widgets/background_sky.dart';
 import 'package:dream_boat_mobile/services/connectivity_service.dart'; 
 import 'package:dream_boat_mobile/widgets/glass_card.dart';
 import 'package:dream_boat_mobile/widgets/custom_button.dart';
+import 'package:dream_boat_mobile/widgets/mood_selection_sheet.dart';
 import 'package:dream_boat_mobile/widgets/ad_consent_dialog.dart'; // [NEW]
 
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
@@ -53,24 +54,24 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   }
 
   void _showMoodModal() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      barrierColor: Colors.black87,
-      builder: (context) => _MoodModal(
-        onSelect: (mood) {
-          Navigator.pop(context); // Close modal
-          _checkAdAndProcess(mood);
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => MoodSelectionSheet(
+        onSave: (mood, secondaryMoods, intensity, vividness) {
+           _checkAdAndProcess(mood, secondaryMoods, intensity, vividness);
         }
       ),
     );
   }
   
-  Future<void> _checkAdAndProcess(String mood) async {
+  Future<void> _checkAdAndProcess(String mood, List<String> secondaryMoods, int intensity, int vividness) async {
     // 1. Check PRO Status
     final isPro = context.read<SubscriptionProvider>().isPro;
     if (isPro) {
       // PRO: Directly process without ads
-      await _processDream(mood);
+      await _processDream(mood, secondaryMoods, intensity, vividness);
       return;
     }
 
@@ -79,7 +80,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
     final isFirstDream = await dreamService.isFirstDream();
     if (isFirstDream) {
       // First Dream: Free, no ad
-      await _processDream(mood, isFirstDream: true);
+      await _processDream(mood, secondaryMoods, intensity, vividness, isFirstDream: true);
       return;
     }
 
@@ -93,7 +94,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
         onWatchAd: () async {
             // 0. Check if user became PRO inside the dialog flow
             if (context.read<SubscriptionProvider>().isPro) {
-               if (mounted) _processDream(mood);
+               if (mounted) _processDream(mood, secondaryMoods, intensity, vividness);
                return;
             }
 
@@ -101,7 +102,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
             final shown = await AdManager.instance.showInterstitial(context);
             if (shown) {
                 // Ad shown. Proceed to process dream.
-                if (mounted) _processDream(mood);
+                if (mounted) _processDream(mood, secondaryMoods, intensity, vividness);
             } else {
               // Failed to show? 
               if (mounted) {
@@ -109,7 +110,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                    const SnackBar(content: Text('Failed to load ad. Please try again or go PRO.'))
                  );
                  // Re-open dialog to let them try again or go PRO
-                 _checkAdAndProcess(mood); 
+                 _checkAdAndProcess(mood, secondaryMoods, intensity, vividness); 
               }
             }
         },
@@ -119,14 +120,14 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
            // Reload logic is simpler: AdManager auto-reloads.
            // Just re-triggering the check will re-open dialog with updated state
            Future.delayed(const Duration(seconds: 1), () {
-              if (mounted) _checkAdAndProcess(mood);
+              if (mounted) _checkAdAndProcess(mood, secondaryMoods, intensity, vividness);
            });
         },
       )
     );
   }
 
-  Future<void> _processDream(String mood, {bool isFirstDream = false}) async {
+  Future<void> _processDream(String mood, List<String> secondaryMoods, int intensity, int vividness, {bool isFirstDream = false}) async {
     setState(() => _isSaving = true);
     final t = AppLocalizations.of(context)!;
     
@@ -154,11 +155,15 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       }
       
       // Save Dream
+      // Save Dream
       final dreamEntry = DreamEntry(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         text: _controller.text,
         date: DateTime.now(),
         mood: mood,
+        secondaryMoods: secondaryMoods,
+        moodIntensity: intensity,
+        vividness: vividness,
         interpretation: interpretation,
         title: title,
       );
@@ -355,109 +360,4 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   }
 }
 
-class _MoodModal extends StatelessWidget {
-  final Function(String) onSelect;
-
-  const _MoodModal({required this.onSelect});
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
-    
-    // Specific order and colors from screenshot
-    final moods = [
-      {'key': 'love', 'label': t.moodLove, 'icon': LucideIcons.heart, 'color': const Color(0xFFEC4899)}, // Pink
-      {'key': 'happy', 'label': t.moodHappy, 'icon': LucideIcons.smile, 'color': const Color(0xFFFBBF24)}, // Yellow
-      {'key': 'sad', 'label': t.moodSad, 'icon': LucideIcons.cloudRain, 'color': const Color(0xFF60A5FA)}, // Blue
-      {'key': 'scared', 'label': t.moodScared, 'icon': LucideIcons.ghost, 'color': const Color(0xFF8B5CF6)}, // Purple
-      {'key': 'anger', 'label': t.moodAnger, 'icon': LucideIcons.flame, 'color': const Color(0xFFEF4444)}, // Red
-      {'key': 'neutral', 'label': t.moodNeutral, 'icon': LucideIcons.meh, 'color': const Color(0xFF9CA3AF)}, // Grey
-    ];
-
-    return Dialog(
-       backgroundColor: Colors.transparent,
-       elevation: 0,
-       child: ClipRRect(
-         borderRadius: BorderRadius.circular(28),
-         child: BackdropFilter(
-           filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // Strong Glass Blur
-           child: Container(
-             width: double.infinity,
-             padding: const EdgeInsets.all(24),
-             decoration: BoxDecoration(
-               color: const Color(0xFF0F0F23).withOpacity(0.6), // Consistent dark tint, clearer
-               borderRadius: BorderRadius.circular(28),
-               border: Border.all(color: Colors.white.withOpacity(0.15)), // Subtle border
-               boxShadow: [
-                 BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, spreadRadius: 5),
-               ]
-             ),
-         child: Column(
-           mainAxisSize: MainAxisSize.min,
-           children: [
-             GradientText(
-               t.newDreamModalTitle, 
-               textAlign: TextAlign.center,
-               style: const TextStyle(
-                 fontSize: 20, 
-                 fontWeight: FontWeight.bold,
-                 height: 1.3
-               ),
-               gradient: const LinearGradient(
-                 colors: [Colors.white, Color(0xFFF3E8FF)],
-                 begin: Alignment.centerLeft,
-                 end: Alignment.centerRight,
-               ),
-             ),
-             const SizedBox(height: 24),
-             GridView.builder(
-               shrinkWrap: true,
-               physics: const NeverScrollableScrollPhysics(),
-               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                 crossAxisCount: 3, 
-                 mainAxisSpacing: 12, 
-                 crossAxisSpacing: 12,
-                 childAspectRatio: 1.0, // Square items
-               ),
-               itemCount: moods.length,
-               itemBuilder: (context, index) {
-                 final m = moods[index];
-                 return Material(
-                   type: MaterialType.transparency,
-                   child: InkWell(
-                     borderRadius: BorderRadius.circular(16),
-                     splashColor: Colors.white.withOpacity(0.1),
-                     highlightColor: Colors.white.withOpacity(0.05),
-                     onTap: () => onSelect(m['key'] as String),
-                     child: Container(
-                       decoration: BoxDecoration(
-                         border: Border.all(color: (m['color'] as Color).withOpacity(0.5), width: 1.5),
-                         borderRadius: BorderRadius.circular(16),
-                         color: Colors.transparent,
-                       ),
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Icon(m['icon'] as IconData, color: m['color'] as Color, size: 28),
-                           const SizedBox(height: 8),
-                           Text(m['label'] as String, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
-                         ],
-                       ),
-                     ),
-                   ),
-                 );
-               },
-             ),
-             const SizedBox(height: 24),
-             TextButton(
-               onPressed: () => Navigator.pop(context),
-               child: Text(t.close, style: const TextStyle(color: Colors.white54, fontSize: 16)),
-             )
-           ],
-         ),
-       ),
-         ),
-       ),
-    );
-  }
-}
+// _MoodModal Removed

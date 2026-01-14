@@ -108,6 +108,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get moodNeutral => 'Neutral';
 
   @override
+  String get moodAwe => 'Awe';
+
+  @override
+  String get moodAnxiety => 'Anxiety';
+
+  @override
+  String get moodConfusion => 'Confusion';
+
+  @override
+  String get moodEmpowered => 'Empowered';
+
+  @override
+  String get moodLonging => 'Longing';
+
+  @override
+  String get moodSelectPrompt =>
+      'What is the first feeling when you think of this dream?';
+
+  @override
+  String get moodIntensityLabel => 'Intensity';
+
+  @override
+  String get moodIntensityLow => 'Low';
+
+  @override
+  String get moodIntensityMedium => 'Medium';
+
+  @override
+  String get moodIntensityHigh => 'High';
+
+  @override
+  String get moodVividnessLabel => 'Vividness';
+
+  @override
+  String get moodVividnessQuestion => 'How clearly do you remember the dream?';
+
+  @override
+  String get moodVividnessLow => 'Vague';
+
+  @override
+  String get moodVividnessMedium => 'Partially Clear';
+
+  @override
+  String get moodVividnessHigh => 'Very Clear';
+
+  @override
+  String get moodNotSure => 'Not Sure';
+
+  @override
+  String get moodSaving => 'Saving your dream...';
+
+  @override
   String get newDreamModalTitle => 'Which Emotion Dominated\nThis Dream?';
 
   @override

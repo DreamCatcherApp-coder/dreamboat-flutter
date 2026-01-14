@@ -30,7 +30,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homeSettings => 'Einstellungen';
 
   @override
-  String get statsTitle => 'Meine Traumwelt';
+  String get statsTitle => 'Statistiken';
 
   @override
   String get statsTipTitle => 'Täglicher Traumtipp';
@@ -107,6 +107,57 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moodNeutral => 'Neutral';
+
+  @override
+  String get moodAwe => 'Ehrfurcht';
+
+  @override
+  String get moodAnxiety => 'Angst';
+
+  @override
+  String get moodConfusion => 'Verwirrung';
+
+  @override
+  String get moodEmpowered => 'Stark';
+
+  @override
+  String get moodLonging => 'Sehnsucht';
+
+  @override
+  String get moodSelectPrompt => 'Welches Gefühl kommt als erstes auf?';
+
+  @override
+  String get moodIntensityLabel => 'Intensität';
+
+  @override
+  String get moodIntensityLow => 'Niedrig';
+
+  @override
+  String get moodIntensityMedium => 'Mittel';
+
+  @override
+  String get moodIntensityHigh => 'Hoch';
+
+  @override
+  String get moodVividnessLabel => 'Klarheit';
+
+  @override
+  String get moodVividnessQuestion => 'Wie klar erinnerst du dich?';
+
+  @override
+  String get moodVividnessLow => 'Vage';
+
+  @override
+  String get moodVividnessMedium => 'Teilweise';
+
+  @override
+  String get moodVividnessHigh => 'Sehr Klar';
+
+  @override
+  String get moodNotSure => 'Nicht Sicher';
+
+  @override
+  String get moodSaving => 'Dein Traum wird gespeichert...';
 
   @override
   String get newDreamModalTitle => 'Welche Emotion Dominierte\nDiesen Traum?';

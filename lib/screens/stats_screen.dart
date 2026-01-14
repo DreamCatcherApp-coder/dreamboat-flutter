@@ -418,6 +418,12 @@ class _StatsScreenState extends State<StatsScreen> {
               case 'scared': label = t.moodScared; color = const Color(0xFF8B5CF6); break;
               case 'anger': label = t.moodAnger; color = const Color(0xFFEF4444); break;
               case 'neutral': label = t.moodNeutral; color = const Color(0xFF9CA3AF); break;
+              // New moods
+              case 'awe': label = t.moodAwe; color = const Color(0xFFC084FC); break; // Purple
+              case 'anxiety': label = t.moodAnxiety; color = const Color(0xFFFB923C); break; // Orange
+              case 'confusion': label = t.moodConfusion; color = const Color(0xFF2DD4BF); break; // Teal
+              case 'empowered': label = t.moodEmpowered; color = const Color(0xFFF43F5E); break; // Rose
+              case 'longing': label = t.moodLonging; color = const Color(0xFF38BDF8); break; // Sky Blue
             }
             
             final percent = (count / total * 100).round();

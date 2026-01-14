@@ -108,6 +108,57 @@ class AppLocalizationsTr extends AppLocalizations {
   String get moodNeutral => 'Nötr';
 
   @override
+  String get moodAwe => 'Şaşkınlık';
+
+  @override
+  String get moodAnxiety => 'Kaygı';
+
+  @override
+  String get moodConfusion => 'Kafa Karışıklığı';
+
+  @override
+  String get moodEmpowered => 'Güçlü';
+
+  @override
+  String get moodLonging => 'Özlem';
+
+  @override
+  String get moodSelectPrompt => 'Bu rüyayı düşündüğünde içindeki ilk his ne?';
+
+  @override
+  String get moodIntensityLabel => 'Duygu Yoğunluğu';
+
+  @override
+  String get moodIntensityLow => 'Hafif';
+
+  @override
+  String get moodIntensityMedium => 'Orta';
+
+  @override
+  String get moodIntensityHigh => 'Yoğun';
+
+  @override
+  String get moodVividnessLabel => 'Berraklık';
+
+  @override
+  String get moodVividnessQuestion => 'Rüyayı ne kadar net hatırlıyorsun?';
+
+  @override
+  String get moodVividnessLow => 'Bulanık';
+
+  @override
+  String get moodVividnessMedium => 'Kısmen Net';
+
+  @override
+  String get moodVividnessHigh => 'Çok Net';
+
+  @override
+  String get moodNotSure => 'Emin Değilim';
+
+  @override
+  String get moodSaving => 'Rüyan kaydediliyor...';
+
+  @override
   String get newDreamModalTitle => 'Bu Rüyada Hangi Duygu\nHakimdi?';
 
   @override

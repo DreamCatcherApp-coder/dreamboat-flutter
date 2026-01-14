@@ -290,6 +290,108 @@ abstract class AppLocalizations {
   /// **'Nötr'**
   String get moodNeutral;
 
+  /// No description provided for @moodAwe.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şaşkınlık'**
+  String get moodAwe;
+
+  /// No description provided for @moodAnxiety.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kaygı'**
+  String get moodAnxiety;
+
+  /// No description provided for @moodConfusion.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kafa Karışıklığı'**
+  String get moodConfusion;
+
+  /// No description provided for @moodEmpowered.
+  ///
+  /// In tr, this message translates to:
+  /// **'Güçlü'**
+  String get moodEmpowered;
+
+  /// No description provided for @moodLonging.
+  ///
+  /// In tr, this message translates to:
+  /// **'Özlem'**
+  String get moodLonging;
+
+  /// No description provided for @moodSelectPrompt.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu rüyayı düşündüğünde içindeki ilk his ne?'**
+  String get moodSelectPrompt;
+
+  /// No description provided for @moodIntensityLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Duygu Yoğunluğu'**
+  String get moodIntensityLabel;
+
+  /// No description provided for @moodIntensityLow.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hafif'**
+  String get moodIntensityLow;
+
+  /// No description provided for @moodIntensityMedium.
+  ///
+  /// In tr, this message translates to:
+  /// **'Orta'**
+  String get moodIntensityMedium;
+
+  /// No description provided for @moodIntensityHigh.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yoğun'**
+  String get moodIntensityHigh;
+
+  /// No description provided for @moodVividnessLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Berraklık'**
+  String get moodVividnessLabel;
+
+  /// No description provided for @moodVividnessQuestion.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyayı ne kadar net hatırlıyorsun?'**
+  String get moodVividnessQuestion;
+
+  /// No description provided for @moodVividnessLow.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bulanık'**
+  String get moodVividnessLow;
+
+  /// No description provided for @moodVividnessMedium.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kısmen Net'**
+  String get moodVividnessMedium;
+
+  /// No description provided for @moodVividnessHigh.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çok Net'**
+  String get moodVividnessHigh;
+
+  /// No description provided for @moodNotSure.
+  ///
+  /// In tr, this message translates to:
+  /// **'Emin Değilim'**
+  String get moodNotSure;
+
+  /// No description provided for @moodSaving.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyan kaydediliyor...'**
+  String get moodSaving;
+
   /// No description provided for @newDreamModalTitle.
   ///
   /// In tr, this message translates to:
