@@ -24,6 +24,7 @@ import 'package:flutter/services.dart'; // For SystemNavigator
 import 'package:dream_boat_mobile/services/notification_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dream_boat_mobile/services/review_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,6 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
        _checkNotificationPermission();
+    });
+
+    // Track daily login and check for 3-day streak to trigger review
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ReviewService.recordLoginAndCheckStreak(context);
     });
   }
 

@@ -308,5 +308,15 @@
     "proFeatureMoonSync": "Sincronización Lunar y Planetaria",
     
     "freeTrialDays": "Días de Prueba Gratis",
-    "then": "Luego"
+    "then": "Luego",
+
+    "reviewSatisfactionTitle": "¿Te gusta DreamBoat?",
+    "reviewSatisfactionContent": "¡Comparte tu experiencia con nosotros!",
+    "reviewOptionYes": "¡Sí, me encanta!",
+    "reviewOptionNeutral": "Más o menos",
+    "reviewOptionNo": "No, no mucho",
+    "reviewFeedbackTitle": "Tu opinión importa",
+    "reviewFeedbackContent": "¿Cómo podemos mejorar? No dudes en escribirnos.",
+    "reviewFeedbackButton": "Escríbenos",
+    "reviewCancel": "Cancelar"
 }

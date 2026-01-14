@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
 import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart';
+import 'package:dream_boat_mobile/services/review_service.dart';
 
 class GuideScreen extends StatefulWidget {
   const GuideScreen({super.key});
@@ -84,6 +85,11 @@ class _GuideScreenState extends State<GuideScreen> {
        });
        if (_scrollController.hasClients) {
           _scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+       }
+       
+       // Trigger review flow on level up
+       if (context.mounted) {
+         ReviewService.triggerReviewFlow(context);
        }
      } else {
        // Completed all

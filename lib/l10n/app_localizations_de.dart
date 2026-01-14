@@ -973,4 +973,32 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get then => 'Danach';
+
+  @override
+  String get reviewSatisfactionTitle => 'Gefällt dir DreamBoat?';
+
+  @override
+  String get reviewSatisfactionContent => 'Teile deine Erfahrung mit uns!';
+
+  @override
+  String get reviewOptionYes => 'Ja, sehr!';
+
+  @override
+  String get reviewOptionNeutral => 'Es geht';
+
+  @override
+  String get reviewOptionNo => 'Nein, nicht wirklich';
+
+  @override
+  String get reviewFeedbackTitle => 'Deine Meinung zählt';
+
+  @override
+  String get reviewFeedbackContent =>
+      'Was können wir verbessern? Schreib uns gerne.';
+
+  @override
+  String get reviewFeedbackButton => 'Kontaktieren';
+
+  @override
+  String get reviewCancel => 'Abbrechen';
 }

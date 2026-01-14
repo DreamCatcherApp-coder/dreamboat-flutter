@@ -962,4 +962,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get then => 'Sonra';
+
+  @override
+  String get reviewSatisfactionTitle => 'DreamBoat\'u sevdin mi?';
+
+  @override
+  String get reviewSatisfactionContent => 'Deneyimini bizimle paylaş!';
+
+  @override
+  String get reviewOptionYes => 'Evet, bayıldım!';
+
+  @override
+  String get reviewOptionNeutral => 'Eh işte';
+
+  @override
+  String get reviewOptionNo => 'Hayır, sevmedim';
+
+  @override
+  String get reviewFeedbackTitle => 'Görüşlerin önemli';
+
+  @override
+  String get reviewFeedbackContent =>
+      'Daha iyi bir deneyim için ne yapabiliriz? Bize yazmaktan çekinme.';
+
+  @override
+  String get reviewFeedbackButton => 'Bize Yaz';
+
+  @override
+  String get reviewCancel => 'Vazgeç';
 }

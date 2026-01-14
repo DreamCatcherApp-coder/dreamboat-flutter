@@ -963,4 +963,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get then => 'Then';
+
+  @override
+  String get reviewSatisfactionTitle => 'Enjoying DreamBoat?';
+
+  @override
+  String get reviewSatisfactionContent => 'Share your experience with us!';
+
+  @override
+  String get reviewOptionYes => 'Yes, loved it!';
+
+  @override
+  String get reviewOptionNeutral => 'It\'s okay';
+
+  @override
+  String get reviewOptionNo => 'No, not really';
+
+  @override
+  String get reviewFeedbackTitle => 'Your feedback matters';
+
+  @override
+  String get reviewFeedbackContent =>
+      'How can we improve? Feel free to write to us.';
+
+  @override
+  String get reviewFeedbackButton => 'Contact Us';
+
+  @override
+  String get reviewCancel => 'Cancel';
 }

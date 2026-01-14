@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:dream_boat_mobile/widgets/dream_share_card.dart';
+import 'package:dream_boat_mobile/services/review_service.dart';
 
 /// Service for creating and sharing dream interpretation cards.
 /// 
@@ -67,6 +68,11 @@ class ShareService {
         [XFile(filePath)],
         subject: 'Dream Interpretation',
       );
+      
+      // Trigger review flow after successful share (user is happy/engaged)
+      if (context.mounted) {
+        ReviewService.triggerReviewFlow(context);
+      }
       
       debugPrint('ShareService: Share result: ${result.status}');
       

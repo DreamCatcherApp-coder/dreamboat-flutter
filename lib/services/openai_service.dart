@@ -27,6 +27,13 @@ class OpenAIService {
         try {
           // Try to parse as JSON (New Backend)
           final data = jsonDecode(decodedBody);
+          
+          // Log Token Usage if present
+          if (data is Map<String, dynamic> && data.containsKey('usage')) {
+             final usage = data['usage'];
+             print("GPT Usage (interpretDream): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+          }
+
           // Check if it's the old JSON format {result: '...'} or new {title: '...', interpretation: '...'}
           if (data is Map<String, dynamic>) {
             if (data.containsKey('result')) {
@@ -80,6 +87,13 @@ class OpenAIService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
+        
+        // Log Token Usage if present
+        if (data.containsKey('usage')) {
+             final usage = data['usage'];
+             print("GPT Usage (generateDailyTip): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+        }
+        
         return data['result'] ?? _mockTip;
       } else {
         throw Exception('Failed to generate tip: ${response.body}');
@@ -104,6 +118,13 @@ class OpenAIService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
+        
+        // Log Token Usage if present
+        if (data.containsKey('usage')) {
+             final usage = data['usage'];
+             print("GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+        }
+
         return data['result'] ?? "Analiz tamamlanamadı.";
       } else {
         print('Analysis Error: ${response.statusCode} ${response.body}');
@@ -129,6 +150,13 @@ class OpenAIService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(utf8.decode(response.bodyBytes));
+        
+        // Log Token Usage if present
+        if (data.containsKey('usage')) {
+             final usage = data['usage'];
+             print("GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+        }
+
         return data['result'] ?? "Kozmik analiz tamamlanamadı.";
       } else {
         print('Moon Sync Error: ${response.statusCode} ${response.body}');

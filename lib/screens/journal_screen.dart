@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
 import 'package:dream_boat_mobile/services/moon_phase_service.dart';
 import 'package:dream_boat_mobile/services/share_service.dart';
+import 'package:dream_boat_mobile/services/review_service.dart';
 
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
@@ -501,8 +502,14 @@ class _JournalScreenState extends State<JournalScreen> {
                                   });
 
                                   // 3. Backend Update
+                                  // 3. Backend Update
                                   await DreamService().updateDream(updated);
                                   _loadDreams(); // Notify parent list
+                                  
+                                  // Trigger review flow if added to favorites
+                                  if (newStatus && context.mounted) {
+                                    ReviewService.triggerReviewFlow(context);
+                                  }
                                 },
                               ),
                               

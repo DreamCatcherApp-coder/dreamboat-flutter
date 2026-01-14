@@ -1825,6 +1825,60 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Sonra'**
   String get then;
+
+  /// No description provided for @reviewSatisfactionTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'DreamBoat\'u sevdin mi?'**
+  String get reviewSatisfactionTitle;
+
+  /// No description provided for @reviewSatisfactionContent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deneyimini bizimle paylaş!'**
+  String get reviewSatisfactionContent;
+
+  /// No description provided for @reviewOptionYes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evet, bayıldım!'**
+  String get reviewOptionYes;
+
+  /// No description provided for @reviewOptionNeutral.
+  ///
+  /// In tr, this message translates to:
+  /// **'Eh işte'**
+  String get reviewOptionNeutral;
+
+  /// No description provided for @reviewOptionNo.
+  ///
+  /// In tr, this message translates to:
+  /// **'Hayır, sevmedim'**
+  String get reviewOptionNo;
+
+  /// No description provided for @reviewFeedbackTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görüşlerin önemli'**
+  String get reviewFeedbackTitle;
+
+  /// No description provided for @reviewFeedbackContent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Daha iyi bir deneyim için ne yapabiliriz? Bize yazmaktan çekinme.'**
+  String get reviewFeedbackContent;
+
+  /// No description provided for @reviewFeedbackButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bize Yaz'**
+  String get reviewFeedbackButton;
+
+  /// No description provided for @reviewCancel.
+  ///
+  /// In tr, this message translates to:
+  /// **'Vazgeç'**
+  String get reviewCancel;
 }
 
 class _AppLocalizationsDelegate

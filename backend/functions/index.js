@@ -87,7 +87,8 @@ User Mood Context: ${mood}
 
             res.json({
                 title: parsed.title || null,
-                interpretation: parsed.interpretation || responseText
+                interpretation: parsed.interpretation || responseText,
+                usage: completion.usage // Added token usage
             });
         } catch (error) {
             console.error("Error interpretation:", error);
@@ -147,7 +148,10 @@ Reply in ${targetLanguage} language.
                 max_tokens: 150,
             });
 
-            res.json({ result: completion.choices[0].message.content });
+            res.json({
+                result: completion.choices[0].message.content,
+                usage: completion.usage // Added token usage
+            });
         } catch (error) {
             console.error("Error tip:", error);
             res.status(500).json({ error: error.message });
@@ -247,7 +251,10 @@ REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (y
                 temperature: 0.7,
             });
 
-            res.json({ result: completion.choices[0].message.content });
+            res.json({
+                result: completion.choices[0].message.content,
+                usage: completion.usage // Added token usage
+            });
         } catch (error) {
             console.error("Error analysis:", error);
             res.status(500).json({ error: error.message });
@@ -341,7 +348,10 @@ Content: ${d.text.substring(0, 200)}...`
                 temperature: 0.7,
             });
 
-            res.json({ result: completion.choices[0].message.content });
+            res.json({
+                result: completion.choices[0].message.content,
+                usage: completion.usage // Added token usage
+            });
         } catch (error) {
             console.error("Error moon sync:", error);
             res.status(500).json({ error: error.message });

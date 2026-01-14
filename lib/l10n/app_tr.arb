@@ -325,5 +325,15 @@
     "proFeatureMoonSync": "Ay ve Gezegen Senkronizasyonu",
     
     "freeTrialDays": "Gün Ücretsiz Dene",
-    "then": "Sonra"
+    "then": "Sonra",
+
+    "reviewSatisfactionTitle": "DreamBoat'u sevdin mi?",
+    "reviewSatisfactionContent": "Deneyimini bizimle paylaş!",
+    "reviewOptionYes": "Evet, bayıldım!",
+    "reviewOptionNeutral": "Eh işte",
+    "reviewOptionNo": "Hayır, sevmedim",
+    "reviewFeedbackTitle": "Görüşlerin önemli",
+    "reviewFeedbackContent": "Daha iyi bir deneyim için ne yapabiliriz? Bize yazmaktan çekinme.",
+    "reviewFeedbackButton": "Bize Yaz",
+    "reviewCancel": "Vazgeç"
 }
