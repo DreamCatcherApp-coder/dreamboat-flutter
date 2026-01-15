@@ -992,8 +992,9 @@ class _DreamCard extends StatelessWidget {
                               // Header Row (Separate Time & Mood)
                               Row(
                                 children: [
-                                  // Mood Icon
-                                  Icon(moodData['icon'] as IconData, size: 16, color: moodColor),
+                                  // Mood Icon (only when mood is selected)
+                                  if (dream.mood != null)
+                                    Icon(moodData['icon'] as IconData, size: 16, color: moodColor),
                                   
                                   const Spacer(),
                                   

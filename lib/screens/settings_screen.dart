@@ -607,32 +607,86 @@ class _SettingItem extends StatelessWidget {
 }
 
 class _LanguageModal extends StatelessWidget {
+  // Premium bluish color palette (same as LanguageSelectorModal)
+  static const _primaryBlue = Color(0xFF60A5FA);
+  static const _accentBlue = Color(0xFF3B82F6);
+  static const _deepBlue = Color(0xFF1E3A5F);
+  static const _darkBlue = Color(0xFF0A1628);
+
   @override
   Widget build(BuildContext context) {
      final t = AppLocalizations.of(context)!;
+     
+     final languages = [
+       {'code': 'tr', 'name': 'Türkçe', 'flag': '🇹🇷'},
+       {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
+       {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
+       {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
+       {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
+     ];
+
      return Dialog(
        backgroundColor: Colors.transparent,
-       child: GlassCard(
+       child: Container(
+         padding: const EdgeInsets.all(24),
+         decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                _deepBlue.withOpacity(0.95),
+                _darkBlue.withOpacity(0.98),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: _primaryBlue.withOpacity(0.15),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: _accentBlue.withOpacity(0.1),
+                blurRadius: 30,
+                spreadRadius: -5,
+                offset: const Offset(0, 10),
+              ),
+            ],
+         ),
          child: Column(
            mainAxisSize: MainAxisSize.min,
            children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Text(t.settingsLanguage, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-                   IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(LucideIcons.x, color: Colors.grey))
+                   ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(
+                        colors: [_primaryBlue, const Color(0xFF93C5FD)],
+                      ).createShader(bounds),
+                      child: Text(
+                        t.settingsLanguage, 
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)
+                      ),
+                   ),
+                   IconButton(
+                     onPressed: () => Navigator.pop(context), 
+                     icon: const Icon(LucideIcons.x, color: Colors.white54),
+                     padding: EdgeInsets.zero,
+                     constraints: const BoxConstraints(),
+                   )
                 ],
               ),
-              const SizedBox(height: 16),
-              _LangOption(label: "Türkçe", flag: "🇹🇷", code: "tr", context: context),
-              const SizedBox(height: 12),
-              _LangOption(label: "English", flag: "🇬🇧", code: "en", context: context),
-              const SizedBox(height: 12),
-              _LangOption(label: "Español", flag: "🇪🇸", code: "es", context: context),
-              const SizedBox(height: 12),
-              _LangOption(label: "Português", flag: "🇵🇹", code: "pt", context: context),
-              const SizedBox(height: 12),
-              _LangOption(label: "Deutsch", flag: "🇩🇪", code: "de", context: context),
+              const SizedBox(height: 20),
+              ...languages.map((lang) => 
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _LangOption(
+                    label: lang['name']!, 
+                    flag: lang['flag']!, 
+                    code: lang['code']!, 
+                    context: context
+                  ),
+                )
+              ),
            ],
          )
        ),
@@ -642,28 +696,88 @@ class _LanguageModal extends StatelessWidget {
   Widget _LangOption({required String label, required String flag, required String code, required BuildContext context}) {
     final isSelected = Localizations.localeOf(context).languageCode == code;
     return Material(
-      type: MaterialType.transparency,
+      color: Colors.transparent,
       child: InkWell(
         onTap: () {
            MyApp.setLocale(context, Locale(code));
            Navigator.pop(context);
         },
-        borderRadius: BorderRadius.circular(12),
-        splashColor: AppTheme.primary.withOpacity(0.15),
-        highlightColor: AppTheme.primary.withOpacity(0.08),
-        child: Container(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(16),
+        splashColor: _LanguageModal._primaryBlue.withOpacity(0.15),
+        highlightColor: _LanguageModal._primaryBlue.withOpacity(0.05),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.primary.withValues(alpha: 0.1) : Colors.white10,
-            border: Border.all(color: isSelected ? AppTheme.primary : Colors.transparent),
-            borderRadius: BorderRadius.circular(12)
+            gradient: isSelected
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      _LanguageModal._accentBlue.withOpacity(0.25),
+                      _LanguageModal._primaryBlue.withOpacity(0.15),
+                    ],
+                  )
+                : null,
+            color: isSelected ? null : Colors.white.withOpacity(0.03),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isSelected
+                  ? _LanguageModal._primaryBlue.withOpacity(0.5)
+                  : Colors.white.withOpacity(0.08),
+              width: isSelected ? 1.5 : 1,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: _LanguageModal._primaryBlue.withOpacity(0.15),
+                      blurRadius: 12,
+                      spreadRadius: -2,
+                    ),
+                  ]
+                : null,
           ),
           child: Row(
             children: [
-               Text(flag, style: const TextStyle(fontSize: 24)),
-               const SizedBox(width: 12),
-               Expanded(child: Text(label, style: const TextStyle(color: Colors.white, fontSize: 16))),
-               if (isSelected) const Icon(LucideIcons.check, color: AppTheme.primary, size: 20)
+               Container(
+                 width: 36,
+                 height: 36,
+                 decoration: BoxDecoration(
+                   color: Colors.white.withOpacity(0.08),
+                   borderRadius: BorderRadius.circular(10),
+                   border: Border.all(color: Colors.white.withOpacity(0.1)),
+                 ),
+                 child: Center(child: Text(flag, style: const TextStyle(fontSize: 20))),
+               ),
+               const SizedBox(width: 14),
+               Expanded(
+                 child: Text(
+                   label, 
+                   style: TextStyle(
+                     color: isSelected ? Colors.white : Colors.white70, 
+                     fontSize: 16, 
+                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400
+                   )
+                 )
+               ),
+               if (isSelected) 
+                 Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [_LanguageModal._accentBlue, _LanguageModal._primaryBlue],
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                         BoxShadow(
+                           color: _LanguageModal._primaryBlue.withOpacity(0.4),
+                           blurRadius: 6,
+                         ),
+                      ],
+                    ),
+                    child: const Icon(LucideIcons.check, color: Colors.white, size: 14),
+                 )
             ],
           ),
         ),

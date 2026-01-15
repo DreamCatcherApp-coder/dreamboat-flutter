@@ -906,14 +906,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pressBackToExit => 'Pulsa atrás de nuevo para salir';
 
   @override
-  String get moonSyncTitle => 'Sincronización Lunar y Planetaria';
+  String get moonSyncTitle => 'Sincronización Luna y Planeta';
 
   @override
-  String get moonSyncSubtitle => 'Ayda bir kez yapılabilir';
+  String get moonSyncSubtitle => 'Se puede realizar una vez al mes';
 
   @override
   String get moonSyncDescription =>
-      'La Sincronización Lunar y Planetaria analiza tus sueños junto con la fase lunar del día en que soñaste, interpretando las fluctuaciones emocionales de tu subconsciente según las fases de la Luna. Relaciona la intensidad de palabras, el tono emocional y las etiquetas de estado de ánimo seleccionadas de tus sueños con el ciclo lunar. De esta manera, comprendes no solo el contenido de tus sueños, sino también la influencia de la Luna y la alineación planetaria en ti.';
+      'Sincronización Luna y Planeta analiza tus sueños del último mes junto con la fase lunar del día en que soñaste y los eventos cósmicos de ese período (como Luna de Sangre, eclipses). Al relacionar la emoción, intensidad y estado de ánimo en tus sueños con el ciclo lunar, te muestra qué te afectó este mes y a qué debes prestar atención durante ciclos lunares específicos (como luna llena, media luna). Se genera una vez al mes ya que se centra en el ciclo de la Luna.';
 
   @override
   String get moonSyncBtn => 'Iniciar Análisis Cósmico';

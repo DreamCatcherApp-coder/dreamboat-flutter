@@ -916,7 +916,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
-      'Mond & Planet Synchronisation analysiert deine unterbewussten emotionalen Schwankungen, indem sie deine Träume mit der Mondphase und kosmischen Ereignissen (Blauer Mond, Supermond, Finsternisse) des letzten Monats abgleicht. Sie korreliert Wortanzahl, emotionale Intensität und Stimmungstags mit dem Mondzyklus und bietet Ratschläge zur Ausrichtung. So verstehst du nicht nur den Inhalt, sondern auch den kosmischen Einfluss auf dich. Nur einmal im Monat möglich, um verändernde Effekte zu verfolgen und dich am Mondzyklus auszurichten.';
+      'Mond & Planet Synchronisation analysiert deine Träume des letzten Monats zusammen mit der Mondphase des Tages, an dem du geträumt hast, und den kosmischen Ereignissen dieses Zeitraums (wie Blutmond, Finsternisse). Indem sie Emotion, Intensität und Stimmung in deinen Träumen mit dem Mondzyklus abgleicht, zeigt sie, was dich diesen Monat beeinflusst hat und worauf du in bestimmten Mondzyklen (wie Vollmond, Halbmond) achten solltest. Sie wird einmal im Monat erstellt, da sie sich auf den Mondzyklus konzentriert.';
 
   @override
   String get moonSyncBtn => 'Kosmische Analyse Starten';

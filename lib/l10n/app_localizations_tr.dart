@@ -76,7 +76,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get statsOffline => 'İnternet gerekli';
 
   @override
-  String get statsNoData => 'Yeterli veri yok';
+  String get statsNoData =>
+      'Detaylı verilere erişebilmek için rüyalarını her gün kaydet';
 
   @override
   String get statsProcessing =>
@@ -904,7 +905,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
-      'Ay ve Gezegen Senkronizasyonu, son bir ay içinde rüyalarını gördüğün günkü Ayın evresi ve yaşanan kozmik olaylarla (kanlı ay, süper ay, ay tutulması gibi) birlikte analiz ederek bilinçaltındaki duygusal dalgalanmalarını Ayın evrelerine göre yorumlar. Rüyalarının kelime ve duygu yoğunluğunu, duygusal tonunu ve seçtiğin ruh hâli etiketlerini Ay’ın döngüsüyle eşleştirir ve bu dönemlerde yapman gerekenlerle ilgili sana tavsiyeler verir. Bu sayede rüyalarının yalnızca içeriğini değil, Ay ve Gezegen düzeninin senin üzerindeki etkisini de anlarsın. Ayın döngüsüyle uyumlu olması ve zaman içinde değişen etkileri daha düzenli takip edebilmen için ayda sadece bir kez yapılabilir.';
+      'Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay\'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.';
 
   @override
   String get moonSyncBtn => 'Kozmik Analizi Başlat';

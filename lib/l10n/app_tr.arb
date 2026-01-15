@@ -21,7 +21,7 @@
     "statsAnalysisDone": "Haftalık Analiz Yapıldı",
     "statsAnalyzing": "Analiz Ediliyor...",
     "statsOffline": "İnternet gerekli",
-    "statsNoData": "Yeterli veri yok",
+    "statsNoData": "Detaylı verilere erişebilmek için rüyalarını her gün kaydet",
     "statsProcessing": "Rüya Deseniniz hazırlanıyor,\nlütfen kısa bir süre bekleyiniz.",
 
     "guideTitle": "Lucid Rüya Rehberi",
@@ -293,7 +293,7 @@
     
     "moonSyncTitle": "Ay ve Gezegen Senkronizasyonu",
     "moonSyncSubtitle": "Ayda bir kez yapılabilir",
-    "moonSyncDescription": "Ay ve Gezegen Senkronizasyonu, son bir ay içinde rüyalarını gördüğün günkü Ayın evresi ve yaşanan kozmik olaylarla (kanlı ay, süper ay, ay tutulması gibi) birlikte analiz ederek bilinçaltındaki duygusal dalgalanmalarını Ayın evrelerine göre yorumlar. Rüyalarının kelime ve duygu yoğunluğunu, duygusal tonunu ve seçtiğin ruh hâli etiketlerini Ay’ın döngüsüyle eşleştirir ve bu dönemlerde yapman gerekenlerle ilgili sana tavsiyeler verir. Bu sayede rüyalarının yalnızca içeriğini değil, Ay ve Gezegen düzeninin senin üzerindeki etkisini de anlarsın. Ayın döngüsüyle uyumlu olması ve zaman içinde değişen etkileri daha düzenli takip edebilmen için ayda sadece bir kez yapılabilir.",
+    "moonSyncDescription": "Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.",
     "moonSyncBtn": "Kozmik Analizi Başlat",
     "moonSyncWait": "Yeni analiz için {days} gün beklemelisiniz.",
     "@moonSyncWait": {

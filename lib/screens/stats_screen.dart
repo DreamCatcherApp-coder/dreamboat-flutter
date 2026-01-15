@@ -420,7 +420,17 @@ class _StatsScreenState extends State<StatsScreen> {
           title: '',
           radius: 80,
         ));
-        legendItems.add(Text(t.statsNoData, style: const TextStyle(color: Colors.white70)));
+        legendItems.add(
+          Container(
+            width: double.infinity,
+            alignment: Alignment.center,
+            child: Text(
+              t.statsNoData, 
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70)
+            ),
+          )
+        );
     } else {
         final total = _moodStats.values.fold(0, (sum, item) => sum + item.count);
         
@@ -540,7 +550,7 @@ class _StatsScreenState extends State<StatsScreen> {
                              children: [
                                 Text(
                                   "$label (%$percent)",
-                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 13),
+                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 11),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 2),
@@ -634,26 +644,19 @@ class _StatsScreenState extends State<StatsScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 2.0),
-                            child: Icon(LucideIcons.pieChart, color: Color(0xFFFBBF24), size: 20),
+                          Text(
+                            t.statsAnalysisTitle, 
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Color(0xFFFBBF24), fontSize: 16, fontWeight: FontWeight.bold)
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                             child: Column(
-                               crossAxisAlignment: CrossAxisAlignment.start,
-                               children: [
-                                  Text(t.statsAnalysisTitle, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    t.statsRecordedDreams(_totalDreamsCount),
-                                    style: const TextStyle(color: Colors.white54, fontSize: 12)
-                                  ),
-                               ],
-                             )
+                          const SizedBox(height: 2),
+                          Text(
+                            t.statsRecordedDreams(_totalDreamsCount),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white54, fontSize: 12)
                           ),
                         ],
                       ),

@@ -911,7 +911,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
-      'Sincronização Lua e Planeta analisa suas flutuações emocionais subconscientes combinando a fase lunar e eventos cósmicos (Lua Azul, Superlua, eclipses) do último mês com seus sonhos. Correlaciona contagem de palavras, intensidade emocional e tags de humor com o ciclo lunar, oferecendo conselhos de alinhamento. Isso permite entender não só o conteúdo, mas a influência cósmica em você. Feito apenas uma vez por mês para acompanhar efeitos em mudança e alinhar-se com o ciclo lunar.';
+      'Sincronização Lua e Planeta analisa seus sonhos do último mês juntamente com a fase lunar do dia em que sonhou e os eventos cósmicos desse período (como Lua de Sangue, eclipses). Ao combinar emoção, intensidade e humor em seus sonhos com o ciclo lunar, mostra o que o afetou este mês e ao que você deve prestar atenção durante ciclos lunares específicos (como lua cheia, meia lua). É gerado uma vez por mês, pois é focado no ciclo da Lua.';
 
   @override
   String get moonSyncBtn => 'Iniciar Análise Cósmica';

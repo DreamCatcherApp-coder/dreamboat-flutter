@@ -35,10 +35,10 @@ class _MoodSelectionSheetState extends State<MoodSelectionSheet> {
         {'key': 'longing', 'label': t.moodLonging, 'icon': LucideIcons.cloudSun, 'color': const Color(0xFF38BDF8)}, // CloudSun (Horizon)
         {'key': 'confusion', 'label': t.moodConfusion, 'icon': LucideIcons.brain, 'color': const Color(0xFF2DD4BF)}, // Brain (Mental Confusion)
         {'key': 'anxiety', 'label': t.moodAnxiety, 'icon': LucideIcons.waves, 'color': const Color(0xFFFB923C)}, // Waves
-        {'key': 'sad', 'label': t.moodSad, 'icon': LucideIcons.cloud, 'color': const Color(0xFF60A5FA)}, // Cloud
+        {'key': 'sad', 'label': t.moodSad, 'icon': LucideIcons.cloudRain, 'color': const Color(0xFF60A5FA)}, // CloudRain
         {'key': 'scared', 'label': t.moodScared, 'icon': LucideIcons.ghost, 'color': const Color(0xFF8B5CF6)}, // Ghost
         {'key': 'anger', 'label': t.moodAnger, 'icon': LucideIcons.flame, 'color': const Color(0xFFEF4444)}, // Flame
-        {'key': 'neutral', 'label': t.moodNeutral, 'icon': LucideIcons.minus, 'color': const Color(0xFF9CA3AF)}, // Minus (Line)
+        {'key': 'neutral', 'label': t.moodNeutral, 'icon': LucideIcons.meh, 'color': const Color(0xFF9CA3AF)}, // Meh (Expressionless)
     ];
 
     // Calculate item width for 4 columns
@@ -129,8 +129,8 @@ class _MoodSelectionSheetState extends State<MoodSelectionSheet> {
                        onTap: () {
                          setState(() {
                            if (_selectedMood == m['key']) {
-                              // Deselect? No, maybe just ignore or toggle secondary?
-                              // For now, let's keep it simple: Select
+                              // Deselect: tapping the same mood again clears selection
+                             _selectedMood = null;
                            } else {
                              _selectedMood = m['key'] as String;
                            }

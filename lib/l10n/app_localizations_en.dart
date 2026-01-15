@@ -908,7 +908,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
-      'Moon & Planet Synchronization analyzes your subconscious emotional fluctuations by matching your dreams with the Moon’s phase and any cosmic events (Blue Moon, Super Moon, eclipses) of the last month. It correlates your dreams\' word count, emotional intensity, and mood tags with the lunar cycle, offering advice for alignment. This lets you understand not just dream content but the cosmic influence on you. Done only once a month to help you track changing effects and align with the Moon’s cycle.';
+      'Moon & Planet Synchronization analyzes your dreams from the last month alongside the Lunar phase of the day you dreamed and the cosmic events of that period (like Blood Moon, eclipses). By matching the emotion, intensity, and mood in your dreams with the Moon cycle, it shows what affected you this month and what you should pay attention to during specific moon cycles (like full moon, half moon). It is generated once a month as it focuses on the Moon\'s cycle.';
 
   @override
   String get moonSyncBtn => 'Start Cosmic Analysis';
