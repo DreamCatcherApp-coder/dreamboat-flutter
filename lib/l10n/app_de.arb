@@ -349,5 +349,7 @@
     "intensityFeltMedium": "Mäßig gefühlt",
     "intensityFeltIntense": "Intensiv gefühlt",
     "statsDreamLabel": "Träume",
-    "statsRecordedDreams": "Aufgezeichnete Träume: {count}"
+    "statsRecordedDreams": "Aufgezeichnete Träume: {count}",
+    "settingsSupportId": "Support-ID",
+    "settingsSupportIdCopied": "ID kopiert! Du kannst diesen Code an unser Support-Team senden."
 }

@@ -1099,4 +1099,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String statsRecordedDreams(Object count) {
     return 'Aufgezeichnete Träume: $count';
   }
+
+  @override
+  String get settingsSupportId => 'Support-ID';
+
+  @override
+  String get settingsSupportIdCopied =>
+      'ID kopiert! Du kannst diesen Code an unser Support-Team senden.';
 }

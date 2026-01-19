@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart'; // For kDebugMode
+import 'package:flutter/services.dart'; // For Clipboard
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dream_boat_mobile/theme/app_theme.dart';
 import 'package:dream_boat_mobile/widgets/background_sky.dart';
@@ -9,6 +10,7 @@ import 'package:dream_boat_mobile/widgets/custom_button.dart';
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/main.dart'; // To access MyApp for Locale change
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:purchases_flutter/purchases_flutter.dart'; // For Support ID
 
 import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
@@ -230,28 +232,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     title: t.settingsSupport,
                     onTap: () => _showSupportModal(context),
                   ),
+                  _SupportIdItem(
+                    onCopied: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(t.settingsSupportIdCopied)),
+                      );
+                    },
+                  ),
 
                    // DEBUG Toggle for Emulator Testing
                   if (kDebugMode)
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
-                          border: Border.all(color: Colors.red.withOpacity(0.5)),
-                          borderRadius: BorderRadius.circular(12)
+                      child: _SettingItem(
+                        icon: LucideIcons.bug,
+                        title: "DEBUG: Toggle PRO",
+                        value: isPro ? "ACTIVE" : "INACTIVE",
+                        trailing: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: isPro ? Colors.green.withOpacity(0.2) : Colors.amber.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: isPro ? Colors.green.withOpacity(0.5) : Colors.amber.withOpacity(0.5)
+                            ),
+                          ),
+                          child: Text(
+                            isPro ? "PRO" : "STD",
+                            style: TextStyle(
+                              color: isPro ? Colors.greenAccent : Colors.amberAccent,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
                         ),
-                        child: _SettingItem(
-                          icon: LucideIcons.bug, 
-                          title: "DEBUG: Toggle PRO",
-                          value: isPro ? "PRO ACTIVE" : "STANDARD",
-                          onTap: () {
-                             context.read<SubscriptionProvider>().debugSetProStatus(!isPro);
-                             ScaffoldMessenger.of(context).showSnackBar(
-                               SnackBar(content: Text("Debug: PRO status set to ${!isPro}"))
-                             );
-                          },
-                        ),
+                        onTap: () {
+                           context.read<SubscriptionProvider>().debugSetProStatus(!isPro);
+                           ScaffoldMessenger.of(context).showSnackBar(
+                             SnackBar(content: Text("Debug: PRO status set to ${!isPro}"))
+                           );
+                        },
                       ),
                     ),
                 ],
@@ -781,6 +801,93 @@ class _LanguageModal extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Support ID widget - shows RevenueCat app user ID with tap-to-copy
+class _SupportIdItem extends StatefulWidget {
+  final VoidCallback onCopied;
+
+  const _SupportIdItem({required this.onCopied});
+
+  @override
+  State<_SupportIdItem> createState() => _SupportIdItemState();
+}
+
+class _SupportIdItemState extends State<_SupportIdItem> {
+  String? _userId;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    try {
+      final userId = await Purchases.appUserID;
+      if (mounted) {
+        setState(() {
+          _userId = userId;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error getting user ID: $e');
+      if (mounted) {
+        setState(() {
+          _userId = null;
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _copyToClipboard() {
+    if (_userId != null) {
+      Clipboard.setData(ClipboardData(text: _userId!));
+      widget.onCopied();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+    
+    // Truncate the ID for display (show first 8 and last 4 characters for readability)
+    String displayId = '...';
+    if (_userId != null && _userId!.length > 16) {
+      displayId = '${_userId!.substring(0, 8)}...${_userId!.substring(_userId!.length - 4)}';
+    } else if (_userId != null) {
+      displayId = _userId!;
+    }
+
+    return GlassCard(
+      onTap: _copyToClipboard,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+           Text(t.settingsSupportId, style: const TextStyle(color: Colors.white, fontSize: 16)),
+           Row(
+             children: [
+               if (_isLoading) 
+                 const SizedBox(
+                   width: 14,
+                   height: 14,
+                   child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white38)),
+                 )
+               else
+                 Text(displayId, style: TextStyle(color: AppTheme.textMuted, fontSize: 13, fontFamily: 'monospace')),
+               const SizedBox(width: 8),
+               const Icon(LucideIcons.copy, color: Colors.grey, size: 16)
+             ],
+           )
+        ],
       ),
     );
   }

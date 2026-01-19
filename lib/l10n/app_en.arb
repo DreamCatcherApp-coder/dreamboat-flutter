@@ -350,5 +350,7 @@
     "intensityFeltMedium": "Felt moderately",
     "intensityFeltIntense": "Felt intensely",
     "statsDreamLabel": "Dreams",
-    "statsRecordedDreams": "Recorded dreams: {count}"
+    "statsRecordedDreams": "Recorded dreams: {count}",
+    "settingsSupportId": "Support ID",
+    "settingsSupportIdCopied": "ID copied! You can send this code to our support team."
 }

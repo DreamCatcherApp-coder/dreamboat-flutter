@@ -2065,6 +2065,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Kaydedilen rüya sayısı: {count}'**
   String statsRecordedDreams(Object count);
+
+  /// No description provided for @settingsSupportId.
+  ///
+  /// In tr, this message translates to:
+  /// **'Destek ID\'si'**
+  String get settingsSupportId;
+
+  /// No description provided for @settingsSupportIdCopied.
+  ///
+  /// In tr, this message translates to:
+  /// **'ID kopyalandı! Destek ekibine bu kodu gönderebilirsiniz.'**
+  String get settingsSupportIdCopied;
 }
 
 class _AppLocalizationsDelegate

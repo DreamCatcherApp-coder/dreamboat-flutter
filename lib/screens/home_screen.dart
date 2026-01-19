@@ -328,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     
                     // Row 1: New Dream (Full Width, Horizontal)
                     GlassBento(
-                      height: 120, // Increased from 80
+                      height: 120,
                       onTap: () => Navigator.push(context, FastSlidePageRoute(child: const NewDreamScreen())),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -350,19 +350,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Expanded(
                           child: BentoItem(
-                            height: 180, // Increased height to prevent overflow
+                            height: 180,
                             title: t.homeJournal,
-                            background: const CalendarPreview(), // Real Calendar Background
-                            content: null, // No content overlay needed
+                            background: const CalendarPreview(),
+                            content: null,
                             onTap: () => Navigator.push(context, FastSlidePageRoute(child: const JournalScreen())),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: BentoItem(
-                            height: 180, // Increased height to prevent overflow
+                            height: 180,
                             title: t.homeStats,
-                            background: const StatsPreview(), // Real Pie Chart Background
+                            background: const StatsPreview(),
                             content: null,
                             onTap: () => Navigator.push(context, FastSlidePageRoute(child: const StatsScreen())),
                           ),

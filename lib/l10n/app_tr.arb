@@ -367,5 +367,7 @@
     "intensityFeltMedium": "Orta hissediliyor",
     "intensityFeltIntense": "Yoğun hissediliyor",
     "statsDreamLabel": "Rüya",
-    "statsRecordedDreams": "Kaydedilen rüya sayısı: {count}"
+    "statsRecordedDreams": "Kaydedilen rüya sayısı: {count}",
+    "settingsSupportId": "Destek ID'si",
+    "settingsSupportIdCopied": "ID kopyalandı! Destek ekibine bu kodu gönderebilirsiniz."
 }

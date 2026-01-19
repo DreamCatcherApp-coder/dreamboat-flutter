@@ -25,26 +25,31 @@ class AdManager {
   int _adsShownThisSession = 0;
 
   // Configuration
-  // No cooldown or session limits for the new "Pay per Dream" model
+  static const int _maxRetries = 3;
+  int _retryCount = 0;
   
   /// Check if an ad is currently loaded and ready
   bool get isAdLoaded => _isAdLoaded && _interstitialAd != null;
 
   /// Initialize and preload the first ad.
   void initialize() {
+    _retryCount = 0;
     _loadInterstitialAd();
   }
 
   /// Preload an interstitial ad.
   void _loadInterstitialAd() {
+    debugPrint('AdManager: Loading interstitial ad (attempt ${_retryCount + 1}/$_maxRetries)...');
+    
     InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          debugPrint('AdManager: Interstitial loaded.');
+          debugPrint('AdManager: Interstitial loaded successfully.');
           _interstitialAd = ad;
           _isAdLoaded = true;
+          _retryCount = 0; // Reset retry count on success
 
           // Set up callbacks
           _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
@@ -54,6 +59,7 @@ class AdManager {
               _interstitialAd = null;
               _isAdLoaded = false;
               // Preload next
+              _retryCount = 0;
               _loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
@@ -61,15 +67,27 @@ class AdManager {
               ad.dispose();
               _interstitialAd = null;
               _isAdLoaded = false;
+              _retryCount = 0;
               _loadInterstitialAd();
             },
           );
         },
         onAdFailedToLoad: (error) {
-          debugPrint('AdManager: Failed to load interstitial: ${error.message}');
+          debugPrint('AdManager: Failed to load interstitial: ${error.message} (code: ${error.code})');
           _isAdLoaded = false;
-          // Retry logic could go here, but Google Ads SDK handles some retries.
-          // We can try again after a delay if needed.
+          _interstitialAd = null;
+          
+          // Retry with exponential backoff
+          if (_retryCount < _maxRetries) {
+            _retryCount++;
+            final delay = Duration(seconds: 2 * _retryCount); // 2s, 4s, 6s
+            debugPrint('AdManager: Retrying in ${delay.inSeconds} seconds...');
+            Future.delayed(delay, () {
+              _loadInterstitialAd();
+            });
+          } else {
+            debugPrint('AdManager: Max retries reached. Ad loading failed.');
+          }
         },
       ),
     );
