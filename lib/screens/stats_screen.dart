@@ -551,13 +551,14 @@ class _StatsScreenState extends State<StatsScreen> {
                                 Text(
                                   "$label (%$percent)",
                                   style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 11),
-                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  maxLines: 2,
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   intensityText,
                                   style: const TextStyle(fontSize: 11, color: Colors.white54, height: 1.1),
-                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
                                   maxLines: 2,
                                 ),
                              ],

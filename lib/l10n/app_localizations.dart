@@ -839,7 +839,7 @@ abstract class AppLocalizations {
   /// No description provided for @guideStage6Criteria.
   ///
   /// In tr, this message translates to:
-  /// **'1 hafta içinde 2 lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi yönettiysen son aşamaya geçebilirsin.'**
+  /// **'1 hafta içinde 3 kez lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi manipüle edebildiysen son aşamaya geçebilirsin.'**
   String get guideStage6Criteria;
 
   /// No description provided for @guideStage6BrainNote.
@@ -1289,7 +1289,7 @@ abstract class AppLocalizations {
   /// No description provided for @supportContent.
   ///
   /// In tr, this message translates to:
-  /// **'Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz.'**
+  /// **'Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz. E-posta metni içerisine Destek ID\'nizi yapıştırmayı unutmayın.'**
   String get supportContent;
 
   /// No description provided for @supportSendEmail.
@@ -2281,6 +2281,18 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Şartları sağladıkça yıldızlara tıklayarak görevleri gerçekleştirebilirsin. Tüm görevler tamamlandığında ilerlemenin kilidi açılır.'**
   String get stage5Hint;
+
+  /// No description provided for @stage6Task1.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyamı bilinçli bir şekilde manipüle edebildim'**
+  String get stage6Task1;
+
+  /// No description provided for @stage6Hint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şartları sağladıkça yıldızlara tıkla. 3 yıldız işaretlendiğinde ilerlemenin kilidi açılır.'**
+  String get stage6Hint;
 
   /// No description provided for @guideCriteriaNotMet.
   ///

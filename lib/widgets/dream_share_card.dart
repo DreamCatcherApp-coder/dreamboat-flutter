@@ -13,8 +13,8 @@ class DreamShareCard extends StatelessWidget {
   final String watermark;
   final String header;
   
-  /// Card dimensions (calculated for 1080px width at 2x pixel ratio)
-  static const double cardSize = 540.0; 
+  static const double cardWidth = 540.0;
+  static const double cardHeight = 960.0; // 9:16 Ratio for Instagram Stories
 
   const DreamShareCard({
     super.key,
@@ -26,13 +26,15 @@ class DreamShareCard extends StatelessWidget {
   /// Calculate font size based on text length for optimal fitting
   double _calculateFontSize() {
     final length = interpretation.length;
-    if (length < 80) return 26.0;
-    if (length < 120) return 24.0;
-    if (length < 180) return 22.0;
-    if (length < 250) return 20.0;
-    if (length < 350) return 18.0;
-    if (length < 450) return 16.0;
-    return 14.0;
+    // With more vertical space, we can be slightly more generous, 
+    // but width is the main constraint for readability.
+    if (length < 80) return 28.0;
+    if (length < 120) return 26.0;
+    if (length < 180) return 24.0;
+    if (length < 250) return 22.0;
+    if (length < 350) return 20.0;
+    if (length < 450) return 18.0;
+    return 16.0;
   }
 
   /// Splits text into first sentence (bold) and the rest (regular)
@@ -66,27 +68,27 @@ class DreamShareCard extends StatelessWidget {
     final fontSize = _calculateFontSize();
     
     return Container(
-      width: cardSize,
-      height: cardSize,
+      width: cardWidth,
+      height: cardHeight,
       decoration: BoxDecoration(
         // Base dark background
         color: const Color(0xFF0A0A1A),
-        borderRadius: BorderRadius.circular(40), // Softer corners
+        borderRadius: BorderRadius.circular(32), 
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(32),
         child: Stack(
           children: [
             // 1. Base Linear Gradient (Deep Void -> Indigo)
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   colors: [
-                    Color(0xFF0F0F23), // Deep void
-                    Color(0xFF16163F), // Dark navy
-                    Color(0xFF2E2E5E), // Lighter indigo bottom-right
+                    Color(0xFF0F0F23), // Deep void top
+                    Color(0xFF16163F), // Dark navy mid
+                    Color(0xFF2E2E5E), // Lighter indigo bottom
                   ],
                   stops: [0.0, 0.6, 1.0],
                 ),
@@ -99,83 +101,85 @@ class DreamShareCard extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   center: Alignment.center,
-                  radius: 0.8,
+                  radius: 1.0, // Larger radius for vertical
                   colors: [
                     const Color(0xFF4C1D95).withOpacity(0.15), // Center glow (Purple)
                     Colors.transparent,
-                    Colors.black.withOpacity(0.4), // Vignette edges
+                    Colors.black.withOpacity(0.5), // Vignette edges
                   ],
-                  stops: const [0.0, 0.6, 1.0],
+                  stops: const [0.0, 0.5, 1.0],
                 ),
               ),
             ),
 
             // 3. Star Field (Enhanced depth)
             CustomPaint(
-              size: const Size(cardSize, cardSize),
+              size: const Size(cardWidth, cardHeight),
               painter: _StarFieldPainter(),
             ),
             
             // 4. Content
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 28),
+              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 80), // Ample safe zones for Story UI
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // Center vertically
                 children: [
+                  // Spacer for potential top UI elements
+                  const SizedBox(height: 20),
+
                   // === HEADER SECTION ===
                   Text(
                     header.toUpperCase(),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.4),
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      letterSpacing: 1.5,
+                      letterSpacing: 2.0,
                       fontFamily: 'Nunito',
                       decoration: TextDecoration.none,
                     ),
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   
                   // Top Divider Line
                   Container(
-                    width: cardSize * 0.25,
+                    width: cardWidth * 0.2,
                     height: 1,
                     color: Colors.white.withOpacity(0.15),
                   ),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 32),
                   
                   // === MAIN CONTENT (Full text, no truncation) ===
-                  Expanded(
-                    child: Center(
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: _buildTextSpans(interpretation),
-                          style: TextStyle(
-                             color: Colors.white,
-                             fontSize: fontSize,
-                             height: 1.5,
-                             letterSpacing: 0.2,
-                             fontFamily: 'Nunito',
-                             decoration: TextDecoration.none,
-                          ),
-                        ),
+                  // No Expanded here since we are in a centered column with safe zones
+                  // We let text take what it needs, ensuring it fits with padding
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: _buildTextSpans(interpretation),
+                      style: TextStyle(
+                         color: Colors.white,
+                         fontSize: fontSize,
+                         height: 1.6,
+                         letterSpacing: 0.3,
+                         fontFamily: 'Nunito',
+                         decoration: TextDecoration.none,
                       ),
                     ),
                   ),
                   
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 32),
                   
                   // === FOOTER SECTION ===
                   // Bottom Divider Line
                   Container(
-                    width: cardSize * 0.25,
+                    width: cardWidth * 0.2,
                     height: 1,
                     color: Colors.white.withOpacity(0.15),
                   ),
                   
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   
                   // Watermark with boat icon
                   Row(
@@ -186,7 +190,7 @@ class DreamShareCard extends StatelessWidget {
                         'DREAMBOAT APP ',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.4),
-                          fontSize: 10,
+                          fontSize: 11,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.5,
                           fontFamily: 'Nunito',
@@ -195,14 +199,14 @@ class DreamShareCard extends StatelessWidget {
                       ),
                       Icon(
                         LucideIcons.sailboat,
-                        size: 11,
+                        size: 12,
                         color: Colors.white.withOpacity(0.4),
                       ),
                       Text(
                         ' ${_getWatermarkSuffix(watermark)}',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.4),
-                          fontSize: 10,
+                          fontSize: 11,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.5,
                           fontFamily: 'Nunito',
@@ -211,13 +215,16 @@ class DreamShareCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                  
+                  // Spacer for bottom UI
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
             
             // 5. Inner Glow / Border (Top-Left 3D effect)
             CustomPaint(
-               size: const Size(cardSize, cardSize),
+               size: const Size(cardWidth, cardHeight),
                painter: _InnerGlowPainter(),
             ),
           ],
@@ -247,7 +254,7 @@ class _InnerGlowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(40));
+    final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(32));
     
     // Gradient stroke for Top-Left
     final paint = Paint()
@@ -277,13 +284,13 @@ class _StarFieldPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    
-    for (int i = 0; i < 40; i++) {
+    // Increased star count for larger area
+    for (int i = 0; i < 80; i++) {
       final x = _random.nextDouble() * size.width;
       final y = _random.nextDouble() * size.height;
       
       // Varied size and opacity for depth
-      final double radius = _random.nextDouble() * 1.2 + 0.5;
+      final double radius = _random.nextDouble() * 1.5 + 0.5;
       final double opacity = _random.nextDouble() * 0.4 + 0.1;
       
       final starPaint = Paint()
@@ -291,10 +298,10 @@ class _StarFieldPainter extends CustomPainter {
         ..style = PaintingStyle.fill;
 
       // Glow effect for some stars
-      if (_random.nextDouble() > 0.8) {
+      if (_random.nextDouble() > 0.85) {
          canvas.drawCircle(
            Offset(x, y), 
-           radius * 2.5, 
+           radius * 3.0, 
            Paint()..color = Colors.white.withOpacity(0.05)
          );
       }

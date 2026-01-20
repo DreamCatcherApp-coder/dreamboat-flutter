@@ -421,7 +421,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get guideStage6Criteria =>
-      'Wenn du die Umgebung, das Licht oder ein Objekt in 2 Klarträumen in einer Woche bewusst gesteuert hast, kannst du zur letzten Stufe übergehen.';
+      'Wenn du die Umgebung, das Licht oder ein Objekt 3 Mal in Klarträumen in einer Woche bewusst manipuliert hast, kannst du zur letzten Stufe übergehen.';
 
   @override
   String get guideStage6BrainNote =>
@@ -670,7 +670,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get supportContent =>
-      'Dein Feedback ist für NovaBloom Studio sehr wertvoll.\n\nDu kannst uns eine E-Mail für Vorschläge, Fehlerberichte oder Kooperationsanfragen senden.';
+      'Dein Feedback ist für NovaBloom Studio sehr wertvoll.\n\nDu kannst uns eine E-Mail für Vorschläge, Fehlerberichte oder Kooperationsanfragen senden. Vergiss nicht, deine Support-ID in den E-Mail-Text einzufügen.';
 
   @override
   String get supportSendEmail => 'E-Mail senden';
@@ -1217,6 +1217,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get stage5Hint =>
       'Tippe auf Sterne bei Erfüllung. Fortschritt wird freigeschaltet, wenn alle Aufgaben erledigt sind.';
+
+  @override
+  String get stage6Task1 => 'Ich konnte meinen Traum bewusst manipulieren';
+
+  @override
+  String get stage6Hint =>
+      'Tippe auf die Sterne, wenn du die Bedingungen erfüllst. Der Fortschritt wird freigeschaltet, wenn alle 3 Sterne markiert sind.';
 
   @override
   String get guideCriteriaNotMet =>

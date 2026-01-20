@@ -106,7 +106,7 @@
     "guideStage6Content": "Tu mente ahora ha conocido los sueños lúcidos. En esta etapa, damos un paso atrás de la práctica de sueños y buscamos crear un entorno mental más saludable para los sueños lúcidos apoyando el equilibrio mental.",
     "guideStage6Importance": "La dopamina es un neurotransmisor que desempeña un papel en los procesos de motivación y atención. Los estímulos excesivos pueden dificultar el enfoque mental. Este contenido no es consejo médico; solo ofrece sugerencias de conciencia y estilo de vida.",
     "guideStage6Steps": "Limita tu tiempo en redes sociales a 1 hora durante 5 días.\nHaz ejercicio ligero, camina y toma sol.\nCome rico en Omega-3, aléjate del azúcar.\nHaz ejercicios de concentración antes de dormir.",
-    "guideStage6Criteria": "Si manejaste conscientemente el entorno, la luz o un objeto en 2 sueños lúcidos en una semana, puedes pasar a la etapa final.",
+    "guideStage6Criteria": "Si manipulaste conscientemente el entorno, la luz o un objeto 3 veces en sueños lúcidos en una semana, puedes pasar a la etapa final.",
     "guideStage6BrainNote": "No solo entrenaste tu mente, optimizaste su estructura biológica. Ahora los sueños conscientes no solo son posibles; se están convirtiendo en tu naturaleza.",
     "guideStage7Title": "7. Conciencia Avanzada y Guía Creativa",
     "guideStage7Subtitle": "Convirtiéndote en el Maestro del Sueño",
@@ -197,7 +197,7 @@
     "privacySection4Title": "4. Descargo de Responsabilidad Médica (IMPORTANTE):",
     "privacySection4Content": "Esta aplicación no es un dispositivo médico. Las interpretaciones y análisis de sueños proporcionados son únicamente para entretenimiento y desarrollo personal y no constituyen consejo médico. Nuestra aplicación no recopila ni procesa ningún dato biométrico o de salud.",
     "supportTitle": "Contáctanos",
-    "supportContent": "Tus comentarios son muy valiosos para NovaBloom Studio.\n\nPuedes enviarnos un correo electrónico para sugerencias, informes de errores o solicitudes de colaboración.",
+    "supportContent": "Tus comentarios son muy valiosos para NovaBloom Studio.\n\nPuedes enviarnos un correo electrónico para sugerencias, informes de errores o solicitudes de colaboración. No olvides pegar tu ID de soporte en el cuerpo del correo electrónico.",
     "supportSendEmail": "Enviar Correo",
     "supportEmailNotFound": "Aplicación de correo no encontrada.",
     "debugResetTitle": "Reinicio de Depuración",
@@ -387,5 +387,7 @@
     "stage5Task1": "Mantuve un Diario de Sueños",
     "stage5Task2": "Experimenté Señal de Conciencia en Sueño",
     "stage5Hint": "Toca las estrellas al cumplir las condiciones. El progreso se desbloquea al completar todo.",
+    "stage6Task1": "Pude manipular conscientemente mi sueño",
+    "stage6Hint": "Toca las estrellas al cumplir las condiciones. El progreso se desbloquea cuando las 3 estrellas están marcadas.",
     "guideCriteriaNotMet": "Debes completar los criterios de esta etapa para continuar."
 }

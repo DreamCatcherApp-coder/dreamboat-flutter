@@ -50,7 +50,7 @@ class _StageChecklistState extends State<StageChecklist> {
               ),
               const SizedBox(height: 12),
               Wrap(
-                spacing: 8,
+                spacing: 4, // Reduced from 8 to prevent early wrapping
                 runSpacing: 8,
                 children: List.generate(totalStars, (index) {
                   final isFilled = index < currentStars;
@@ -58,22 +58,12 @@ class _StageChecklistState extends State<StageChecklist> {
                     onTap: () {
                       int newStars = currentStars;
                       if (index < currentStars) {
-                        // Tapping on a filled star (or before it)
-                        // If we tap the last filled star, remove it.
-                        // If we tap an earlier star, maybe set to that level?
-                        // User request: "tap to add, tap again to remove" (toggle-ish logic)
-                        // Standard rating logic: set to index + 1.
-                        // But if we click the exact level we are at, maybe clear it?
-                        // Let's implement: Click index N -> Set level to N+1.
-                        // If level is already N+1, set to N.
-                        
                         if (index == currentStars - 1) {
                            newStars = index; // Remove last star
                         } else {
                            newStars = index + 1; // Update to this level
                         }
                       } else {
-                        // Tapping on empty star -> fill up to this one
                         newStars = index + 1;
                       }
                       
@@ -81,8 +71,9 @@ class _StageChecklistState extends State<StageChecklist> {
                     },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.all(4),
-                       decoration: BoxDecoration(
+                      width: 28, // Fixed width
+                      height: 28, // Fixed height
+                      decoration: BoxDecoration(
                         color: isFilled ? const Color(0xFFFBBF24) : Colors.transparent,
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -97,10 +88,12 @@ class _StageChecklistState extends State<StageChecklist> {
                           )
                         ] : null
                       ),
-                      child: Icon(
-                        LucideIcons.star,
-                        size: 16,
-                        color: isFilled ? Colors.black : Colors.white.withOpacity(0.3),
+                      child: Center( // Center icon
+                        child: Icon(
+                          LucideIcons.star,
+                          size: 14, // Slightly smaller icon
+                          color: isFilled ? Colors.black : Colors.white.withOpacity(0.3),
+                        ),
                       ),
                     ),
                   );

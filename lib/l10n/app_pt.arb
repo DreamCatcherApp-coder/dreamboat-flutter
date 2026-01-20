@@ -144,7 +144,7 @@
     "guideStage6Content": "Sua mente agora conheceu o sonho lúcido. Nesta fase, damos um passo atrás da prática de sonhos e buscamos criar um ambiente mental mais saudável para os sonhos lúcidos apoiando o equilíbrio mental.",
     "guideStage6Importance": "Dopamina é um neurotransmissor que desempenha um papel nos processos de motivação e atenção. Estímulos excessivos podem dificultar o foco mental. Este conteúdo não é aconselhamento médico; oferece apenas sugestões de consciência e estilo de vida.",
     "guideStage6Steps": "Limite seu tempo de mídia social para 1 hora por 5 dias.\nFaça exercício leve, caminhe e tome sol.\nComa rico em Omega-3, fique longe de açúcar.\nFaça exercícios de foco antes de dormir.",
-    "guideStage6Criteria": "Se você gerenciou conscientemente o ambiente, luz ou um objeto em 2 sonhos lúcidos numa semana, pode avançar para a fase final.",
+    "guideStage6Criteria": "Se você manipulou conscientemente o ambiente, luz ou um objeto 3 vezes em sonhos lúcidos numa semana, pode avançar para a fase final.",
     "guideStage6BrainNote": "Você não apenas treinou sua mente, otimizou sua estrutura biológica. Agora sonhos conscientes não são apenas possíveis; estão se tornando sua natureza.",
     "guideStage7Title": "7. Consciência Avançada e Orientação Criativa",
     "guideStage7Subtitle": "Tornando-se o Mestre do Sonho",
@@ -209,7 +209,7 @@
     "privacySection4Title": "4. Aviso Legal de Saúde e Médico (IMPORTANTE):",
     "privacySection4Content": "Este aplicativo não é um dispositivo médico. Interpretações e análises de sonhos fornecidas são apenas para fins de entretenimento e desenvolvimento pessoal e não constituem aconselhamento médico. Nosso aplicativo não coleta nem processa dados biométricos ou de saúde.",
     "supportTitle": "Fale Conosco",
-    "supportContent": "Seu feedback é muito valioso para o NovaBloom Studio.\n\nVocê pode nos enviar um e-mail para sugestões, relatórios de bugs ou solicitações de colaboração.",
+    "supportContent": "Seu feedback é muito valioso para o NovaBloom Studio.\n\nVocê pode nos enviar um e-mail para sugestões, relatórios de bugs ou solicitações de colaboração. Não se esqueça de colar seu ID de suporte no corpo do e-mail.",
     "supportSendEmail": "Enviar E-mail",
     "supportEmailNotFound": "Aplicativo de e-mail não encontrado.",
     "debugResetTitle": "Reinício de Debug",
@@ -385,5 +385,7 @@
     "stage5Task1": "Mantive um Diário de Sonhos",
     "stage5Task2": "Experimentei Sinal de Consciência no Sonho",
     "stage5Hint": "Toque nas estrelas ao cumprir. O progresso desbloqueia ao completar todas as tarefas.",
+    "stage6Task1": "Consegui manipular conscientemente meu sonho",
+    "stage6Hint": "Toque nas estrelas ao cumprir as condições. O progresso desbloqueia quando todas as 3 estrelas estiverem marcadas.",
     "guideCriteriaNotMet": "Você deve completar os critérios desta etapa para prosseguir."
 }

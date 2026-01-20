@@ -49,6 +49,7 @@ class _GuideScreenState extends State<GuideScreen> {
   // Stage 5 Checklist State
   // Map of Task Key -> Current Stars
   Map<String, int> _stage5Progress = {};
+  Map<String, int> _stage6Progress = {};
   
   @override
   void initState() {
@@ -81,6 +82,11 @@ class _GuideScreenState extends State<GuideScreen> {
         'task1': prefs.getInt('stage5_task1') ?? 0,
         'task2': prefs.getInt('stage5_task2') ?? 0,
       };
+      
+      // Load Stage 6 Checklist
+      _stage6Progress = {
+        'task1': prefs.getInt('stage6_task1') ?? 0,
+      };
     });
     
     _loadWbtbDreams();
@@ -96,6 +102,17 @@ class _GuideScreenState extends State<GuideScreen> {
        await prefs.setInt('stage5_task1', stars);
     } else if (taskKey == 'task2') {
        await prefs.setInt('stage5_task2', stars);
+    }
+  }
+
+  Future<void> _updateStage6Progress(String taskKey, int stars) async {
+    setState(() {
+      _stage6Progress[taskKey] = stars;
+    });
+    
+    final prefs = await SharedPreferences.getInstance();
+    if (taskKey == 'task1') {
+       await prefs.setInt('stage6_task1', stars);
     }
   }
 
@@ -152,11 +169,17 @@ class _GuideScreenState extends State<GuideScreen> {
   }
 
   bool get _canAdvance {
-    // Only Stage 5 (Optimization) - index 4 has criteria
+    // Stage 5 (Optimization) - index 4
     if (_progress == 4) {
        final stars1 = _stage5Progress['task1'] ?? 0;
        final stars2 = _stage5Progress['task2'] ?? 0;
        return stars1 >= 7 && stars2 >= 3;
+    }
+    
+    // Stage 6 (Dopamine Balance) - index 5
+    if (_progress == 5) {
+       final stars1 = _stage6Progress['task1'] ?? 0;
+       return stars1 >= 3;
     }
 
     // For all other stages, allow advancing immediately
@@ -839,6 +862,23 @@ class _GuideScreenState extends State<GuideScreen> {
                             },
                           ),
                         
+                        // Stage 6 Checklist (Index 5)
+                        if (index == 5) 
+                          StageChecklist(
+                            tasks: {
+                              'task1': 3, // 3 stars for manipulation task
+                            },
+                            progress: {
+                              'task1': _stage6Progress['task1'] ?? 0,
+                            }, 
+                            taskTitles: {
+                              'task1': t.stage6Task1,
+                            },
+                            onProgressChanged: (taskKey, stars) {
+                               _updateStage6Progress(taskKey, stars);
+                            },
+                          ),
+                        
                         const SizedBox(height: 24),
 
                         if (!isCompleted && index < stages.length - 1)
@@ -848,12 +888,12 @@ class _GuideScreenState extends State<GuideScreen> {
                             margin: const EdgeInsets.only(top: 20),
                             child: Column(
                               children: [
-                                // Hint Text for Stage 5
-                                if (index == 4) 
+                                // Hint Text for Stage 5 and Stage 6
+                                if (index == 4 || index == 5) 
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 32, left: 24, right: 24),
                                     child: Text(
-                                      t.stage5Hint,
+                                      index == 4 ? t.stage5Hint : t.stage6Hint,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white.withOpacity(0.5),

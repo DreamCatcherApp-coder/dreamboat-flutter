@@ -145,7 +145,7 @@
     "guideStage6Content": "Dein Geist hat nun das Klarträumen kennengelernt. In dieser Phase treten wir einen Schritt von der Traumpraxis zurück und versuchen, eine gesündere mentale Umgebung für Klarträume zu schaffen, indem wir das mentale Gleichgewicht unterstützen.",
     "guideStage6Importance": "Dopamin ist ein Neurotransmitter, der bei Motivations- und Aufmerksamkeitsprozessen eine Rolle spielt. Übermäßige Reize können die mentale Fokussierung erschweren. Dieser Inhalt ist kein medizinischer Rat; er bietet nur Vorschläge für Bewusstsein und Lebensstil.",
     "guideStage6Steps": "Begrenze deine Social-Media-Zeit für 5 Tage auf 1 Stunde.\nMache leichte Übungen, gehe spazieren und tanke Sonne.\nIss Omega-3-reich, bleibe fern von Zucker.\nMache Fokusübungen vor dem Schlafen.",
-    "guideStage6Criteria": "Wenn du die Umgebung, das Licht oder ein Objekt in 2 Klarträumen in einer Woche bewusst gesteuert hast, kannst du zur letzten Stufe übergehen.",
+    "guideStage6Criteria": "Wenn du die Umgebung, das Licht oder ein Objekt 3 Mal in Klarträumen in einer Woche bewusst manipuliert hast, kannst du zur letzten Stufe übergehen.",
     "guideStage6BrainNote": "Du hast nicht nur deinen Geist trainiert, du hast seine biologische Struktur optimiert. Jetzt sind bewusste Träume nicht nur möglich; sie werden zu deiner Natur.",
     "guideStage7Title": "7. Erweitertes Bewusstsein und Kreative Anleitung",
     "guideStage7Subtitle": "Meister des Traums werden",
@@ -210,7 +210,7 @@
     "privacySection4Title": "4. Gesundheits- und medizinischer Haftungsausschluss (WICHTIG):",
     "privacySection4Content": "Diese App ist kein medizinisches Gerät. Die bereitgestellten Traumdeutungen und Analysen dienen ausschließlich Unterhaltungs- und Persönlichkeitsentwicklungszwecken und stellen keine medizinische Beratung dar. Unsere App sammelt oder verarbeitet keine biometrischen oder gesundheitsbezogenen Daten.",
     "supportTitle": "Kontaktiere uns",
-    "supportContent": "Dein Feedback ist für NovaBloom Studio sehr wertvoll.\n\nDu kannst uns eine E-Mail für Vorschläge, Fehlerberichte oder Kooperationsanfragen senden.",
+    "supportContent": "Dein Feedback ist für NovaBloom Studio sehr wertvoll.\n\nDu kannst uns eine E-Mail für Vorschläge, Fehlerberichte oder Kooperationsanfragen senden. Vergiss nicht, deine Support-ID in den E-Mail-Text einzufügen.",
     "supportSendEmail": "E-Mail senden",
     "supportEmailNotFound": "E-Mail-App nicht gefunden.",
     "debugResetTitle": "Debug-Reset",
@@ -386,5 +386,7 @@
     "stage5Task1": "Traumtagebuch geführt",
     "stage5Task2": "Bewusstseinssignal im Traum erlebt",
     "stage5Hint": "Tippe auf Sterne bei Erfüllung. Fortschritt wird freigeschaltet, wenn alle Aufgaben erledigt sind.",
+    "stage6Task1": "Ich konnte meinen Traum bewusst manipulieren",
+    "stage6Hint": "Tippe auf die Sterne, wenn du die Bedingungen erfüllst. Der Fortschritt wird freigeschaltet, wenn alle 3 Sterne markiert sind.",
     "guideCriteriaNotMet": "Du musst die Kriterien dieser Stufe erfüllen, um fortzufahren."
 }

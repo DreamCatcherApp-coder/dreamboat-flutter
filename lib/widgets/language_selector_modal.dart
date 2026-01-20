@@ -17,11 +17,11 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
-  // Premium bluish color palette
-  static const _primaryBlue = Color(0xFF60A5FA);
-  static const _accentBlue = Color(0xFF3B82F6);
-  static const _deepBlue = Color(0xFF1E3A5F);
-  static const _darkBlue = Color(0xFF0A1628);
+  // Dark purple color palette (matching app theme)
+  static const _primaryPurple = Color(0xFFA78BFA);
+  static const _accentPurple = Color(0xFF8B5CF6);
+  static const _deepPurple = Color(0xFF1E1B35);
+  static const _darkPurple = Color(0xFF0F0D1A);
 
   @override
   void initState() {
@@ -65,18 +65,18 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                _deepBlue.withOpacity(0.95),
-                _darkBlue.withOpacity(0.98),
+                _deepPurple.withOpacity(0.98),
+                _darkPurple.withOpacity(0.99),
               ],
             ),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
-              color: _primaryBlue.withOpacity(0.15),
+              color: _primaryPurple.withOpacity(0.15),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: _accentBlue.withOpacity(0.1),
+                color: _accentPurple.withOpacity(0.1),
                 blurRadius: 30,
                 spreadRadius: -5,
                 offset: const Offset(0, -10),
@@ -94,15 +94,15 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      _primaryBlue.withOpacity(0.4),
-                      _accentBlue.withOpacity(0.6),
-                      _primaryBlue.withOpacity(0.4),
+                      _primaryPurple.withOpacity(0.4),
+                      _accentPurple.withOpacity(0.6),
+                      _primaryPurple.withOpacity(0.4),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(3),
                   boxShadow: [
                     BoxShadow(
-                      color: _primaryBlue.withOpacity(0.3),
+                      color: _primaryPurple.withOpacity(0.3),
                       blurRadius: 8,
                       spreadRadius: 1,
                     ),
@@ -117,7 +117,7 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
                 opacity: _fadeAnimation,
                 child: ShaderMask(
                   shaderCallback: (bounds) => LinearGradient(
-                    colors: [_primaryBlue, const Color(0xFF93C5FD)],
+                    colors: [_primaryPurple, const Color(0xFFD8B4FE)],
                   ).createShader(bounds),
                   child: Text(
                     AppLocalizations.of(context)!.settingsLanguage,
@@ -175,8 +175,8 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
             Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(16),
-          splashColor: _primaryBlue.withOpacity(0.15),
-          highlightColor: _primaryBlue.withOpacity(0.05),
+          splashColor: _primaryPurple.withOpacity(0.15),
+          highlightColor: _primaryPurple.withOpacity(0.05),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
@@ -186,8 +186,8 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        _accentBlue.withOpacity(0.25),
-                        _primaryBlue.withOpacity(0.15),
+                        _accentPurple.withOpacity(0.25),
+                        _primaryPurple.withOpacity(0.15),
                       ],
                     )
                   : null,
@@ -195,14 +195,14 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isSelected
-                    ? _primaryBlue.withOpacity(0.5)
+                    ? _primaryPurple.withOpacity(0.5)
                     : Colors.white.withOpacity(0.08),
                 width: isSelected ? 1.5 : 1,
               ),
               boxShadow: isSelected
                   ? [
                       BoxShadow(
-                        color: _primaryBlue.withOpacity(0.15),
+                        color: _primaryPurple.withOpacity(0.15),
                         blurRadius: 12,
                         spreadRadius: -2,
                       ),
@@ -251,12 +251,12 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [_accentBlue, _primaryBlue],
+                        colors: [_accentPurple, _primaryPurple],
                       ),
                       borderRadius: BorderRadius.circular(8),
                       boxShadow: [
                         BoxShadow(
-                          color: _primaryBlue.withOpacity(0.4),
+                          color: _primaryPurple.withOpacity(0.4),
                           blurRadius: 8,
                           spreadRadius: -1,
                         ),

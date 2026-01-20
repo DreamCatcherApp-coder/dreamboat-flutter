@@ -106,7 +106,7 @@
     "guideStage6Content": "Your mind has now met lucid dreaming. At this stage, we take a step back from dream practice and aim to create a healthier mental environment for lucid dreams by supporting mental balance.",
     "guideStage6Importance": "Dopamine is a neurotransmitter that plays a role in motivation and attention processes. Excessive stimuli can make mental focus difficult. This content is not medical advice; it only offers awareness and lifestyle suggestions.",
     "guideStage6Steps": "Limit your social media time to 1 hour for 5 days.\nGet light exercise, walk, and sunlight.\nEat rich in Omega-3, stay away from sugar.\nDo focus exercises before sleep.",
-    "guideStage6Criteria": "If you consciously managed the environment, light, or an object in 2 lucid dreams in a week, you can proceed to the final stage.",
+    "guideStage6Criteria": "If you consciously manipulated the environment, light, or an object 3 times in lucid dreams in a week, you can proceed to the final stage.",
     "guideStage6BrainNote": "You didn't just train your mind, you optimized its biological structure. Now conscious dreams are not just possible; they are becoming your nature.",
     "guideStage7Title": "7. Advanced Awareness and Creative Guidance",
     "guideStage7Subtitle": "Becoming the Master of the Dream",
@@ -197,7 +197,7 @@
     "privacySection4Title": "4. Health and Medical Disclaimer (IMPORTANT):",
     "privacySection4Content": "This app is not a medical device. Dream interpretations and analyses provided are solely for entertainment and personal development purposes and do not constitute medical advice. Our app does not collect or process any biometric or health data.",
     "supportTitle": "Contact Us",
-    "supportContent": "Your feedback is very valuable to NovaBloom Studio.\n\nYou can send us an email for suggestions, bug reports, or collaboration requests.",
+    "supportContent": "Your feedback is very valuable to NovaBloom Studio.\n\nYou can send us an email for suggestions, bug reports, or collaboration requests. Don't forget to paste your Support ID into the email body.",
     "supportSendEmail": "Send Email",
     "supportEmailNotFound": "Email app not found.",
     "debugResetTitle": "Debug Reset",
@@ -387,5 +387,7 @@
     "stage5Task1": "Kept a Dream Journal",
     "stage5Task2": "Experienced Awareness Signal in Dream",
     "stage5Hint": "Tap the stars as you fulfill the conditions. Progress unlocks when all tasks are completed.",
+    "stage6Task1": "I was able to consciously manipulate my dream",
+    "stage6Hint": "Tap the stars as you fulfill the conditions. Progress unlocks when all 3 stars are marked.",
     "guideCriteriaNotMet": "You must complete the criteria for this stage to proceed."
 }

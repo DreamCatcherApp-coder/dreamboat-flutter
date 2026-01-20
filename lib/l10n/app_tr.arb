@@ -132,7 +132,7 @@
     "guideStage6Content": "Artık zihnin lucid dreaming ile tanıştı. Bu aşamada rüya pratiğinden bir adım geri çekiliyor ve zihinsel dengeyi destekleyerek lucid rüyalar için daha sağlıklı bir zihinsel ortam oluşturmayı amaçlıyoruz.",
     "guideStage6Importance": "Dopamin, motivasyon ve dikkat süreçlerinde rol oynayan bir nörotransmitterdir. Aşırı uyaranlar zihinsel odaklanmayı zorlaştırabilir. Bu içerikler tıbbi tavsiye değildir; yalnızca farkındalık ve yaşam tarzı önerileri sunar.",
     "guideStage6Steps": "5 gün boyunca sosyal medya süreni 1 saatle sınırla.\nHafif egzersiz, yürüyüş ve güneş ışığı al.\nOmega-3 açısından zengin, şekerden uzak beslen.\nUyku öncesi odak egzersizleri yap.",
-    "guideStage6Criteria": "1 hafta içinde 2 lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi yönettiysen son aşamaya geçebilirsin.",
+    "guideStage6Criteria": "1 hafta içinde 3 kez lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi manipüle edebildiysen son aşamaya geçebilirsin.",
     "guideStage6BrainNote": "Artık zihnini sadece eğitmedin, onun biyolojik yapısını da optimize ettin. Şimdi bilinçli rüyalar sadece mümkün değil; senin doğan haline dönüşüyor.",
 
     "guideStage7Title": "7. İleri Farkındalık ve Yaratıcı Yönlendirme",
@@ -213,7 +213,7 @@
     "privacySection4Content": "Bu uygulama tıbbi bir cihaz değildir. Sunulan rüya yorumları ve analizler tamamen eğlence ve kişisel gelişim amaçlıdır, tıbbi tavsiye niteliği taşımaz. Uygulamamız herhangi bir biyometrik veya sağlık verisi toplamaz ve işlemez.",
     
     "supportTitle": "Bize Ulaşın",
-    "supportContent": "Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz.",
+    "supportContent": "Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz. E-posta metni içerisine Destek ID'nizi yapıştırmayı unutmayın.",
     "supportSendEmail": "E-posta Gönder",
     "supportEmailNotFound": "E-posta uygulaması bulunamadı.",
     
@@ -404,5 +404,7 @@
     "stage5Task1": "Rüya Günlüğü Tuttum",
     "stage5Task2": "Rüyamda Farkındalık Sinyali Yaşadım",
     "stage5Hint": "Şartları sağladıkça yıldızlara tıklayarak görevleri gerçekleştirebilirsin. Tüm görevler tamamlandığında ilerlemenin kilidi açılır.",
+    "stage6Task1": "Rüyamı bilinçli bir şekilde manipüle edebildim",
+    "stage6Hint": "Şartları sağladıkça yıldızlara tıkla. 3 yıldız işaretlendiğinde ilerlemenin kilidi açılır.",
     "guideCriteriaNotMet": "İlerlemek için bu aşamanın şartlarını tamamlamalısın."
 }

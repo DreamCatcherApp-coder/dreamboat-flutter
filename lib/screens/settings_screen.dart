@@ -232,13 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     title: t.settingsSupport,
                     onTap: () => _showSupportModal(context),
                   ),
-                  _SupportIdItem(
-                    onCopied: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(t.settingsSupportIdCopied)),
-                      );
-                    },
-                  ),
+                  // Support ID Item removed and moved to Support Modal
 
                    // DEBUG Toggle for Emulator Testing
                   if (kDebugMode)
@@ -522,7 +516,282 @@ class _SettingsScreenState extends State<SettingsScreen> {
   
   void _showSupportModal(BuildContext context) {
      final t = AppLocalizations.of(context)!;
-     showDialog(context: context, builder: (ctx) => Dialog(
+     showDialog(
+       context: context, 
+       builder: (ctx) => const _SupportDialog()
+     );
+  }
+}
+
+class _SettingItem extends StatelessWidget {
+  final IconData? icon; // Made optional
+  final String title;
+  final String? value;
+  final Widget? trailing; // New support for widgets like badges
+  final VoidCallback onTap;
+
+  const _SettingItem({this.icon, required this.title, this.value, this.trailing, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassCard(
+      onTap: onTap,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+           Text(title, style: const TextStyle(color: Colors.white, fontSize: 16)),
+           Row(
+             children: [
+               if (trailing != null) 
+                 trailing!
+               else if (value != null) 
+                 Text(value!, style: TextStyle(color: AppTheme.textMuted, fontSize: 14)),
+                 
+               const SizedBox(width: 8),
+               const Icon(LucideIcons.chevronRight, color: Colors.grey, size: 16)
+             ],
+           )
+        ],
+      ),
+    );
+  }
+}
+
+class _LanguageModal extends StatelessWidget {
+  // Dark purple color palette (matching app theme)
+  static const _primaryPurple = Color(0xFFA78BFA);
+  static const _accentPurple = Color(0xFF8B5CF6);
+  static const _deepPurple = Color(0xFF1E1B35);
+  static const _darkPurple = Color(0xFF0F0D1A);
+
+  @override
+  Widget build(BuildContext context) {
+     final t = AppLocalizations.of(context)!;
+     
+     final languages = [
+       {'code': 'tr', 'name': 'Türkçe', 'flag': '🇹🇷'},
+       {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
+       {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
+       {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
+       {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
+     ];
+
+     return Dialog(
+       backgroundColor: Colors.transparent,
+       child: Container(
+         padding: const EdgeInsets.all(24),
+         decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                _deepPurple.withOpacity(0.98),
+                _darkPurple.withOpacity(0.99),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: _primaryPurple.withOpacity(0.15),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: _accentPurple.withOpacity(0.1),
+                blurRadius: 30,
+                spreadRadius: -5,
+                offset: const Offset(0, 10),
+              ),
+            ],
+         ),
+         child: Column(
+           mainAxisSize: MainAxisSize.min,
+           children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(
+                        colors: [_primaryPurple, const Color(0xFFD8B4FE)],
+                      ).createShader(bounds),
+                      child: Text(
+                        t.settingsLanguage, 
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)
+                      ),
+                   ),
+                   IconButton(
+                     onPressed: () => Navigator.pop(context), 
+                     icon: const Icon(LucideIcons.x, color: Colors.white54),
+                     padding: EdgeInsets.zero,
+                     constraints: const BoxConstraints(),
+                   )
+                ],
+              ),
+              const SizedBox(height: 20),
+              ...languages.map((lang) => 
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: _LangOption(
+                    label: lang['name']!, 
+                    flag: lang['flag']!, 
+                    code: lang['code']!, 
+                    context: context
+                  ),
+                )
+              ),
+           ],
+         )
+       ),
+     );
+  }
+
+  Widget _LangOption({required String label, required String flag, required String code, required BuildContext context}) {
+    final isSelected = Localizations.localeOf(context).languageCode == code;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+           MyApp.setLocale(context, Locale(code));
+           Navigator.pop(context);
+        },
+        borderRadius: BorderRadius.circular(16),
+        splashColor: _LanguageModal._primaryPurple.withOpacity(0.15),
+        highlightColor: _LanguageModal._primaryPurple.withOpacity(0.05),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            gradient: isSelected
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      _LanguageModal._accentPurple.withOpacity(0.25),
+                      _LanguageModal._primaryPurple.withOpacity(0.15),
+                    ],
+                  )
+                : null,
+            color: isSelected ? null : Colors.white.withOpacity(0.03),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isSelected
+                  ? _LanguageModal._primaryPurple.withOpacity(0.5)
+                  : Colors.white.withOpacity(0.08),
+              width: isSelected ? 1.5 : 1,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: _LanguageModal._primaryPurple.withOpacity(0.15),
+                      blurRadius: 12,
+                      spreadRadius: -2,
+                    ),
+                  ]
+                : null,
+          ),
+          child: Row(
+            children: [
+               Container(
+                 width: 36,
+                 height: 36,
+                 decoration: BoxDecoration(
+                   color: Colors.white.withOpacity(0.08),
+                   borderRadius: BorderRadius.circular(10),
+                   border: Border.all(color: Colors.white.withOpacity(0.1)),
+                 ),
+                 child: Center(child: Text(flag, style: const TextStyle(fontSize: 20))),
+               ),
+               const SizedBox(width: 14),
+               Expanded(
+                 child: Text(
+                   label, 
+                   style: TextStyle(
+                     color: isSelected ? Colors.white : Colors.white70, 
+                     fontSize: 16, 
+                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400
+                   )
+                 )
+               ),
+               if (isSelected) 
+                 Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [_LanguageModal._accentPurple, _LanguageModal._primaryPurple],
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                         BoxShadow(
+                           color: _LanguageModal._primaryPurple.withOpacity(0.4),
+                           blurRadius: 6,
+                         ),
+                      ],
+                    ),
+                    child: const Icon(LucideIcons.check, color: Colors.white, size: 14),
+                 )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SupportDialog extends StatefulWidget {
+  const _SupportDialog();
+
+  @override
+  State<_SupportDialog> createState() => _SupportDialogState();
+}
+
+class _SupportDialogState extends State<_SupportDialog> {
+  String? _userId;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserId();
+  }
+
+  Future<void> _loadUserId() async {
+    try {
+      final userId = await Purchases.appUserID;
+      if (mounted) {
+        setState(() {
+          _userId = userId;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error getting user ID: $e');
+      if (mounted) {
+        setState(() {
+          _userId = null;
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _copyToClipboard() {
+    if (_userId != null) {
+      Clipboard.setData(ClipboardData(text: _userId!));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.settingsSupportIdCopied)),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context)!;
+
+    return Dialog(
         backgroundColor: Colors.transparent,
         child: GlassCard(
           child: Column(
@@ -579,316 +848,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   },
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
+              
+              // Email
               const Center(
                 child: Text("info@novabloomstudio.com", style: TextStyle(color: Colors.white38, fontSize: 12)),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Separator
+              const Divider(color: Colors.white10),
+
+              const SizedBox(height: 12),
+
+              // Support ID
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                   Text(t.settingsSupportId, style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                   const SizedBox(width: 8),
+                   if (_isLoading)
+                     const SizedBox(
+                        width: 14, height: 14, 
+                        child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white38))
+                     )
+                   else
+                     Text(
+                       _userId != null && _userId!.length > 16
+                           ? '${_userId!.substring(0, 8)}...${_userId!.substring(_userId!.length - 4)}'
+                           : _userId ?? '...',
+                       style: const TextStyle(color: Colors.white70, fontSize: 11, fontFamily: 'monospace'),
+                     ),
+                   const SizedBox(width: 8),
+                   InkWell(
+                     onTap: _copyToClipboard,
+                     borderRadius: BorderRadius.circular(8),
+                     child: const Padding(
+                       padding: EdgeInsets.all(4.0),
+                       child: Icon(LucideIcons.copy, color: Colors.white38, size: 14),
+                     ),
+                   )
+                ],
               )
             ]
           )
         )
-     ));
-  }
-}
-
-class _SettingItem extends StatelessWidget {
-  final IconData? icon; // Made optional
-  final String title;
-  final String? value;
-  final Widget? trailing; // New support for widgets like badges
-  final VoidCallback onTap;
-
-  const _SettingItem({this.icon, required this.title, this.value, this.trailing, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassCard(
-      onTap: onTap,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-           Text(title, style: const TextStyle(color: Colors.white, fontSize: 16)),
-           Row(
-             children: [
-               if (trailing != null) 
-                 trailing!
-               else if (value != null) 
-                 Text(value!, style: TextStyle(color: AppTheme.textMuted, fontSize: 14)),
-                 
-               const SizedBox(width: 8),
-               const Icon(LucideIcons.chevronRight, color: Colors.grey, size: 16)
-             ],
-           )
-        ],
-      ),
-    );
-  }
-}
-
-class _LanguageModal extends StatelessWidget {
-  // Premium bluish color palette (same as LanguageSelectorModal)
-  static const _primaryBlue = Color(0xFF60A5FA);
-  static const _accentBlue = Color(0xFF3B82F6);
-  static const _deepBlue = Color(0xFF1E3A5F);
-  static const _darkBlue = Color(0xFF0A1628);
-
-  @override
-  Widget build(BuildContext context) {
-     final t = AppLocalizations.of(context)!;
-     
-     final languages = [
-       {'code': 'tr', 'name': 'Türkçe', 'flag': '🇹🇷'},
-       {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
-       {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
-       {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
-       {'code': 'pt', 'name': 'Português', 'flag': '🇵🇹'},
-     ];
-
-     return Dialog(
-       backgroundColor: Colors.transparent,
-       child: Container(
-         padding: const EdgeInsets.all(24),
-         decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                _deepBlue.withOpacity(0.95),
-                _darkBlue.withOpacity(0.98),
-              ],
-            ),
-            borderRadius: BorderRadius.circular(24),
-            border: Border.all(
-              color: _primaryBlue.withOpacity(0.15),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: _accentBlue.withOpacity(0.1),
-                blurRadius: 30,
-                spreadRadius: -5,
-                offset: const Offset(0, 10),
-              ),
-            ],
-         ),
-         child: Column(
-           mainAxisSize: MainAxisSize.min,
-           children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                   ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
-                        colors: [_primaryBlue, const Color(0xFF93C5FD)],
-                      ).createShader(bounds),
-                      child: Text(
-                        t.settingsLanguage, 
-                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)
-                      ),
-                   ),
-                   IconButton(
-                     onPressed: () => Navigator.pop(context), 
-                     icon: const Icon(LucideIcons.x, color: Colors.white54),
-                     padding: EdgeInsets.zero,
-                     constraints: const BoxConstraints(),
-                   )
-                ],
-              ),
-              const SizedBox(height: 20),
-              ...languages.map((lang) => 
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: _LangOption(
-                    label: lang['name']!, 
-                    flag: lang['flag']!, 
-                    code: lang['code']!, 
-                    context: context
-                  ),
-                )
-              ),
-           ],
-         )
-       ),
      );
-  }
-
-  Widget _LangOption({required String label, required String flag, required String code, required BuildContext context}) {
-    final isSelected = Localizations.localeOf(context).languageCode == code;
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-           MyApp.setLocale(context, Locale(code));
-           Navigator.pop(context);
-        },
-        borderRadius: BorderRadius.circular(16),
-        splashColor: _LanguageModal._primaryBlue.withOpacity(0.15),
-        highlightColor: _LanguageModal._primaryBlue.withOpacity(0.05),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          decoration: BoxDecoration(
-            gradient: isSelected
-                ? LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      _LanguageModal._accentBlue.withOpacity(0.25),
-                      _LanguageModal._primaryBlue.withOpacity(0.15),
-                    ],
-                  )
-                : null,
-            color: isSelected ? null : Colors.white.withOpacity(0.03),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: isSelected
-                  ? _LanguageModal._primaryBlue.withOpacity(0.5)
-                  : Colors.white.withOpacity(0.08),
-              width: isSelected ? 1.5 : 1,
-            ),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: _LanguageModal._primaryBlue.withOpacity(0.15),
-                      blurRadius: 12,
-                      spreadRadius: -2,
-                    ),
-                  ]
-                : null,
-          ),
-          child: Row(
-            children: [
-               Container(
-                 width: 36,
-                 height: 36,
-                 decoration: BoxDecoration(
-                   color: Colors.white.withOpacity(0.08),
-                   borderRadius: BorderRadius.circular(10),
-                   border: Border.all(color: Colors.white.withOpacity(0.1)),
-                 ),
-                 child: Center(child: Text(flag, style: const TextStyle(fontSize: 20))),
-               ),
-               const SizedBox(width: 14),
-               Expanded(
-                 child: Text(
-                   label, 
-                   style: TextStyle(
-                     color: isSelected ? Colors.white : Colors.white70, 
-                     fontSize: 16, 
-                     fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400
-                   )
-                 )
-               ),
-               if (isSelected) 
-                 Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [_LanguageModal._accentBlue, _LanguageModal._primaryBlue],
-                      ),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                         BoxShadow(
-                           color: _LanguageModal._primaryBlue.withOpacity(0.4),
-                           blurRadius: 6,
-                         ),
-                      ],
-                    ),
-                    child: const Icon(LucideIcons.check, color: Colors.white, size: 14),
-                 )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Support ID widget - shows RevenueCat app user ID with tap-to-copy
-class _SupportIdItem extends StatefulWidget {
-  final VoidCallback onCopied;
-
-  const _SupportIdItem({required this.onCopied});
-
-  @override
-  State<_SupportIdItem> createState() => _SupportIdItemState();
-}
-
-class _SupportIdItemState extends State<_SupportIdItem> {
-  String? _userId;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserId();
-  }
-
-  Future<void> _loadUserId() async {
-    try {
-      final userId = await Purchases.appUserID;
-      if (mounted) {
-        setState(() {
-          _userId = userId;
-          _isLoading = false;
-        });
-      }
-    } catch (e) {
-      debugPrint('Error getting user ID: $e');
-      if (mounted) {
-        setState(() {
-          _userId = null;
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  void _copyToClipboard() {
-    if (_userId != null) {
-      Clipboard.setData(ClipboardData(text: _userId!));
-      widget.onCopied();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context)!;
-    
-    // Truncate the ID for display (show first 8 and last 4 characters for readability)
-    String displayId = '...';
-    if (_userId != null && _userId!.length > 16) {
-      displayId = '${_userId!.substring(0, 8)}...${_userId!.substring(_userId!.length - 4)}';
-    } else if (_userId != null) {
-      displayId = _userId!;
-    }
-
-    return GlassCard(
-      onTap: _copyToClipboard,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-           Text(t.settingsSupportId, style: const TextStyle(color: Colors.white, fontSize: 16)),
-           Row(
-             children: [
-               if (_isLoading) 
-                 const SizedBox(
-                   width: 14,
-                   height: 14,
-                   child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(Colors.white38)),
-                 )
-               else
-                 Text(displayId, style: TextStyle(color: AppTheme.textMuted, fontSize: 13, fontFamily: 'monospace')),
-               const SizedBox(width: 8),
-               const Icon(LucideIcons.copy, color: Colors.grey, size: 16)
-             ],
-           )
-        ],
-      ),
-    );
   }
 }

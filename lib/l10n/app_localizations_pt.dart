@@ -420,7 +420,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get guideStage6Criteria =>
-      'Se você gerenciou conscientemente o ambiente, luz ou um objeto em 2 sonhos lúcidos numa semana, pode avançar para a fase final.';
+      'Se você manipulou conscientemente o ambiente, luz ou um objeto 3 vezes em sonhos lúcidos numa semana, pode avançar para a fase final.';
 
   @override
   String get guideStage6BrainNote =>
@@ -670,7 +670,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get supportContent =>
-      'Seu feedback é muito valioso para o NovaBloom Studio.\n\nVocê pode nos enviar um e-mail para sugestões, relatórios de bugs ou solicitações de colaboração.';
+      'Seu feedback é muito valioso para o NovaBloom Studio.\n\nVocê pode nos enviar um e-mail para sugestões, relatórios de bugs ou solicitações de colaboração. Não se esqueça de colar seu ID de suporte no corpo do e-mail.';
 
   @override
   String get supportSendEmail => 'Enviar E-mail';
@@ -1213,6 +1213,13 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get stage5Hint =>
       'Toque nas estrelas ao cumprir. O progresso desbloqueia ao completar todas as tarefas.';
+
+  @override
+  String get stage6Task1 => 'Consegui manipular conscientemente meu sonho';
+
+  @override
+  String get stage6Hint =>
+      'Toque nas estrelas ao cumprir as condições. O progresso desbloqueia quando todas as 3 estrelas estiverem marcadas.';
 
   @override
   String get guideCriteriaNotMet =>

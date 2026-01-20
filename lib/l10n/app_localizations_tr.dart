@@ -417,7 +417,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get guideStage6Criteria =>
-      '1 hafta içinde 2 lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi yönettiysen son aşamaya geçebilirsin.';
+      '1 hafta içinde 3 kez lucid rüyada bilinçli şekilde ortamı, ışığı veya bir objeyi manipüle edebildiysen son aşamaya geçebilirsin.';
 
   @override
   String get guideStage6BrainNote =>
@@ -664,7 +664,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get supportContent =>
-      'Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz.';
+      'Görüşleriniz NovaBloom Studio için çok değerli.\n\nÖneri, hata bildirimi veya işbirliği talepleriniz için bize e-posta gönderebilirsiniz. E-posta metni içerisine Destek ID\'nizi yapıştırmayı unutmayın.';
 
   @override
   String get supportSendEmail => 'E-posta Gönder';
@@ -1204,6 +1204,13 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get stage5Hint =>
       'Şartları sağladıkça yıldızlara tıklayarak görevleri gerçekleştirebilirsin. Tüm görevler tamamlandığında ilerlemenin kilidi açılır.';
+
+  @override
+  String get stage6Task1 => 'Rüyamı bilinçli bir şekilde manipüle edebildim';
+
+  @override
+  String get stage6Hint =>
+      'Şartları sağladıkça yıldızlara tıkla. 3 yıldız işaretlendiğinde ilerlemenin kilidi açılır.';
 
   @override
   String get guideCriteriaNotMet =>
