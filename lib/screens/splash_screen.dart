@@ -128,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
-                            width: 160, height: 160,
+                            width: 120, height: 120,
                             child: Center(
                               child: Image.asset(
                                 'assets/images/db_logo_icon.png',

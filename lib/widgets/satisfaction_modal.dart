@@ -109,10 +109,11 @@ class SatisfactionModal extends StatelessWidget {
                             ),
                           ]
                         ),
-                        child: const Icon(
-                          LucideIcons.sailboat,
-                          size: 32,
-                          color: Color(0xFF6366F1), // Indigo accent
+                        child: Image.asset(
+                          'assets/images/db_logo_icon.png',
+                          width: 22,
+                          height: 22,
+                          color: const Color(0xFF6366F1), // Indigo accent
                         ),
                       ),
                       const SizedBox(height: 16),

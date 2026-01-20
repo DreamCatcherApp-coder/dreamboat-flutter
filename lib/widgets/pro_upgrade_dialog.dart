@@ -197,7 +197,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                 blendMode: BlendMode.srcIn,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const [
+                                  children: [
                                     Text(
                                       "DreamBoat PRO ",
                                       style: TextStyle(
@@ -207,10 +207,12 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                         letterSpacing: 1.5,
                                       ),
                                     ),
-                                    Icon(
-                                      LucideIcons.sailboat,
-                                      color: Color(0xFFFBBF24),
-                                      size: 24,
+                                    Image.asset(
+                                      'assets/images/db_logo_icon.png',
+                                      color: const Color(0xFFFBBF24),
+                                      width: 28,
+                                      height: 28,
+                                      fit: BoxFit.contain,
                                     ),
                                   ],
                                 ),

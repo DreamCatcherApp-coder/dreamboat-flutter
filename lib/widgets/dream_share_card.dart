@@ -197,9 +197,10 @@ class DreamShareCard extends StatelessWidget {
                           decoration: TextDecoration.none,
                         ),
                       ),
-                      Icon(
-                        LucideIcons.sailboat,
-                        size: 12,
+                      Image.asset(
+                        'assets/images/db_logo_icon.png',
+                        width: 12,
+                        height: 12,
                         color: Colors.white.withOpacity(0.4),
                       ),
                       Text(

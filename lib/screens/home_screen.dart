@@ -237,10 +237,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
+                                color: Colors.white.withOpacity(0.05),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withOpacity(0.1),
                                 ),
                               ),
                               child: Icon(
@@ -270,8 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const SizedBox(width: 4),
                                   Image.asset(
                                     'assets/images/db_logo_icon.png',
-                                    width: 56,
-                                    height: 56,
+                                    width: 32,
+                                    height: 32,
                                     fit: BoxFit.contain,
                                     color: isPro ? const Color(0xFFFBBF24) : const Color(0xFFE8ECFF),
                                   ),
@@ -308,10 +308,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
+                                color: Colors.white.withOpacity(0.05),
                                 borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withOpacity(0.1),
                                 ),
                               ),
                               child: Text(

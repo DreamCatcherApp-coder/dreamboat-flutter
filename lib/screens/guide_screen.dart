@@ -1036,7 +1036,7 @@ class _GuideScreenState extends State<GuideScreen> {
   Widget _buildIntentRepetitionExercise() {
     final t = AppLocalizations.of(context)!;
     // Show as complete if counter reached 10 OR if stage is already completed (progress > 0)
-    final isComplete = _intentRepeatCount >= 10 || _progress > 0;
+    final isComplete = _intentRepeatCount >= 10;
     final progress = _intentRepeatCount / 10;
     
     return Container(
