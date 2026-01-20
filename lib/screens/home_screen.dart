@@ -16,6 +16,7 @@ import 'package:dream_boat_mobile/widgets/language_selector_modal.dart';
 import 'package:dream_boat_mobile/utils/custom_page_route.dart'; // [NEW]
 import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
+import 'package:dream_boat_mobile/widgets/dreamboat_logo.dart';
 import 'dart:math' as math;
 
 import 'package:google_fonts/google_fonts.dart';
@@ -266,8 +267,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       letterSpacing: 0.5
                                     ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Icon(LucideIcons.sailboat, size: 21, color: isPro ? const Color(0xFFFBBF24) : const Color(0xFFE8ECFF)),
+                                  const SizedBox(width: 4),
+                                  Image.asset(
+                                    'assets/images/db_logo_icon.png',
+                                    width: 56,
+                                    height: 56,
+                                    fit: BoxFit.contain,
+                                    color: isPro ? const Color(0xFFFBBF24) : const Color(0xFFE8ECFF),
+                                  ),
                                   if (isPro) ...[
                                     const SizedBox(width: 8),
                                     const ProBadge()

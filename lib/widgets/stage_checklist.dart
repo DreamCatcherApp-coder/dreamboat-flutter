@@ -30,6 +30,7 @@ class _StageChecklistState extends State<StageChecklist> {
         final displayTitle = widget.taskTitles[taskKey] ?? taskKey;
 
         return Container(
+          width: double.infinity, // Ensure equal width for all task boxes
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(

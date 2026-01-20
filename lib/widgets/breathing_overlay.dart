@@ -127,9 +127,9 @@ class _BreathingOverlayState extends State<BreathingOverlay>
               },
             ),
             
-            // Dark overlay
+            // Dark overlay - fully opaque for calm experience
             Container(
-              color: Colors.black.withOpacity(0.85),
+              color: Colors.black,
             ),
             
             // Content

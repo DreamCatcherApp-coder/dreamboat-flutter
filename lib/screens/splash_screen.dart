@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late Animation<double> _seedScale;
   late Animation<double> _logoOpacity;
   late Animation<double> _logoScale;
-  late Animation<double> _linesProgress;
+
   late Animation<double> _textOpacity;
 
   @override
@@ -58,10 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       CurvedAnimation(parent: _controller, curve: const Interval(0.30, 0.50, curve: Curves.elasticOut))
     );
 
-    // 3. Constellation Lines
-    _linesProgress = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: const Interval(0.50, 0.80, curve: Curves.easeInOut))
-    );
+
 
     // 4. Text Reveal
     _textOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -131,15 +128,18 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
-                            width: 140, height: 140,
-                            child: CustomPaint(
-                              painter: _ConstellationLogoPainter(progress: _linesProgress.value),
-                              child: const Center(
-                                child: Icon(LucideIcons.sailboat, size: 64, color: Color(0xFFFBBF24)), // Golden Boat
+                            width: 160, height: 160,
+                            child: Center(
+                              child: Image.asset(
+                                'assets/images/db_logo_icon.png',
+                                width: 160,
+                                height: 160,
+                                fit: BoxFit.contain,
+                                color: Colors.white,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 0),
                           // Phase 4: Text
                           Opacity(
                             opacity: _textOpacity.value,
@@ -168,71 +168,5 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         ),
       ),
     );
-  }
-}
-
-// Custom Painter to draw lines connecting nicely around the center icon
-class _ConstellationLogoPainter extends CustomPainter {
-  final double progress;
-
-  _ConstellationLogoPainter({required this.progress});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    if (progress == 0) return;
-
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width * 0.45; // Just outside the icon
-    
-    final paintLine = Paint()
-      ..color = const Color(0xFFFBBF24).withOpacity(0.4) // Faint Gold
-      ..strokeWidth = 1.5
-      ..style = PaintingStyle.stroke;
-
-    final paintDot = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-    
-    // Define 5 points of a pentagon-ish shape roughly framing the boat
-    // Angles: -90 (top), -18 (top right), 54 (bottom right), 126 (bottom left), 198 (top left) 
-    final angles = [-pi/2, -pi/6, pi/6, pi/2 + pi/6, pi - pi/6, pi + pi/6]; 
-    final List<Offset> points = [];
-
-    for (var angle in angles) {
-      points.add(Offset(
-        center.dx + radius * cos(angle),
-        center.dy + radius * sin(angle)
-      ));
-    }
-
-    // Draw lines progressively
-    int totalSegments = points.length; 
-    // We want to connect them sequentially: 0->1, 1->2 ... last->0
-    
-    // Calculate how many segments we can fully or partially draw based on progress
-    double totalPathLength = totalSegments.toDouble();
-    double currentDraw = progress * totalPathLength;
-
-    for (int i = 0; i < totalSegments; i++) {
-        int nextI = (i + 1) % totalSegments;
-        Offset p1 = points[i];
-        Offset p2 = points[nextI];
-
-        // Draw Dot at P1
-        if (progress > (i / totalSegments)) {
-           canvas.drawCircle(p1, 2.0, paintDot);
-        }
-
-        if (currentDraw > i) {
-          double segmentProgress = (currentDraw - i).clamp(0.0, 1.0);
-          Offset target = Offset.lerp(p1, p2, segmentProgress)!;
-          canvas.drawLine(p1, target, paintLine);
-        }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _ConstellationLogoPainter oldDelegate) {
-    return oldDelegate.progress != progress;
   }
 }
