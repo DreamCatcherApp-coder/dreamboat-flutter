@@ -47,19 +47,27 @@ class DreamEntry {
   }
 
   factory DreamEntry.fromJson(Map<String, dynamic> json) {
+    // Parse date with fallback
+    DateTime parsedDate;
+    try {
+      parsedDate = DateTime.parse(json['date'] ?? '');
+    } catch (e) {
+      parsedDate = DateTime.now(); // Fallback to current date if parsing fails
+    }
+    
     return DreamEntry(
-      id: json['id'],
-      text: json['text'],
-      date: DateTime.parse(json['date']),
-      mood: json['mood'],
+      id: json['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+      text: json['text']?.toString() ?? '',
+      date: parsedDate,
+      mood: json['mood']?.toString() ?? 'neutral',
       secondaryMoods: (json['secondaryMoods'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
-      moodIntensity: json['moodIntensity'],
-      vividness: json['vividness'],
-      interpretation: json['interpretation'] ?? '',
-      title: json['title'],
-      isFavorite: json['isFavorite'] ?? false,
+      moodIntensity: json['moodIntensity'] as int?,
+      vividness: json['vividness'] as int?,
+      interpretation: json['interpretation']?.toString() ?? '',
+      title: json['title']?.toString(),
+      isFavorite: json['isFavorite'] as bool? ?? false,
       astronomicalEvents: (json['astronomicalEvents'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
-      guideStage: json['guideStage'],
+      guideStage: json['guideStage'] as int?,
     );
   }
 

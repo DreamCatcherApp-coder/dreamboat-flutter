@@ -259,9 +259,9 @@
     "offlineAnalysis": "Conexão à internet necessária para análise.",
     "proUpgradeSubtitle": "Sem assinatura. Compra única, acesso vitalício.",
     "proFeatureAdsTitle": "Experiência Sem Anúncios",
-    "proFeatureAdsSubtitle": "Concentre-se apenas nos seus sonhos e no seu mundo dos sonhos.",
+    "proFeatureAdsSubtitle": "Sem anúncios nas interpretações de sonhos.\nConcentre-se apenas nos seus sonhos e no que eles querem lhe dizer.",
     "proFeatureAnalysisTitle": "Análise Semanal de Padrões de Sonhos",
-    "proFeatureAnalysisSubtitle": "Descubra conexões ocultas entre seus sonhos. Identifique temas recorrentes, emoções e mensagens do subconsciente ao longo do tempo.",
+    "proFeatureAnalysisSubtitle": "Revela conexões ocultas entre seus sonhos. Descubra temas recorrentes, emoções e mensagens do subconsciente ao longo do tempo.",
     "proFeatureGuideTitle": "Guia de Sonhos Lúcidos",
     "proFeatureGuideSubtitle": "Assuma o controle dos seus sonhos. Técnicas guiadas passo a passo do iniciante ao avançado.",
     "proProcessing": "Processando...",
@@ -274,9 +274,9 @@
     "notifReminderBody": "Não se esqueça de registrar seu sonho! 🌙",
     "pressBackToExit": "Pressione voltar novamente para sair",
     
-    "moonSyncTitle": "Sincronização Lua e Planeta",
+    "moonSyncTitle": "Sincronização Mensal de Lua e Planeta",
     "moonSyncSubtitle": "Pode ser feito uma vez por mês",
-    "moonSyncDescription": "Sincronização Lua e Planeta analisa seus sonhos do último mês juntamente com a fase lunar do dia em que sonhou e os eventos cósmicos desse período (como Lua de Sangue, eclipses). Ao combinar emoção, intensidade e humor em seus sonhos com o ciclo lunar, mostra o que o afetou este mês e ao que você deve prestar atenção durante ciclos lunares específicos (como lua cheia, meia lua). É gerado uma vez por mês, pois é focado no ciclo da Lua.",
+    "moonSyncDescription": "Interpreta seus sonhos junto com os ciclos lunares e eventos cósmicos. Aprenda o que influenciou você este mês e ao que deve prestar atenção.",
     "moonSyncBtn": "Iniciar Análise Cósmica",
     "moonSyncWait": "Você deve esperar {days} dias para uma nova análise.",
     "@moonSyncWait": {
@@ -319,6 +319,7 @@
     "planMonthly": "MENSAL",
     "planAnnual": "ANUAL",
     "mostPopular": "MAIS POPULAR",
+    "discountPercent": "-30% DESCONTO",
     "subscribeNow": "Assinar Agora",
     "billingMonthly": "Pagamento mensal recorrente. Cancele quando quiser.",
     "billingAnnual": "Cobrado como um único pagamento. Pagamento anual recorrente.",
@@ -388,5 +389,13 @@
     "stage5Hint": "Toque nas estrelas ao cumprir. O progresso desbloqueia ao completar todas as tarefas.",
     "stage6Task1": "Consegui manipular conscientemente meu sonho",
     "stage6Hint": "Toque nas estrelas ao cumprir as condições. O progresso desbloqueia quando todas as 3 estrelas estiverem marcadas.",
-    "guideCriteriaNotMet": "Você deve completar os critérios desta etapa para prosseguir."
+    "guideCriteriaNotMet": "Você deve completar os critérios desta etapa para prosseguir.",
+    "rateLimitWait": "Muitas solicitações. Por favor, tente novamente em {minutes} minuto(s).",
+    "@rateLimitWait": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    }
 }

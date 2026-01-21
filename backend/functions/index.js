@@ -1,12 +1,20 @@
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
+const { initializeApp } = require("firebase-admin/app");
 const { OpenAI } = require("openai");
+const { enforceRateLimit } = require("./rateLimiter");
+
+// Initialize Firebase Admin
+initializeApp();
 
 // Güvenli API Key - Firebase Secrets ile saklanır
 // Deploy öncesi: firebase functions:secrets:set OPENAI_API_KEY
 const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
 exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => {
+    // Rate limit check
+    await enforceRateLimit('interpretDream', request);
+
     const openai = new OpenAI({ apiKey: openaiApiKey.value() });
 
     const { dreamText, mood, language } = request.data;
@@ -165,6 +173,9 @@ User Mood Context: ${mood}
 });
 
 exports.generateDailyTip = onCall({ secrets: [openaiApiKey] }, async (request) => {
+    // Rate limit check
+    await enforceRateLimit('generateDailyTip', request);
+
     const openai = new OpenAI({ apiKey: openaiApiKey.value() });
 
     const { language } = request.data;
@@ -224,6 +235,9 @@ Reply in ${targetLanguage} language.
 });
 
 exports.analyzeDreams = onCall({ secrets: [openaiApiKey] }, async (request) => {
+    // Rate limit check
+    await enforceRateLimit('analyzeDreams', request);
+
     const openai = new OpenAI({ apiKey: openaiApiKey.value() });
 
     const { dreams, language } = request.data;
@@ -312,6 +326,9 @@ REMEMBER: No "kullanıcı", no **bold**, no bullet points. Always "sen/senin" (y
 
 // Moon & Planet Synchronization Analysis
 exports.analyzeMoonSync = onCall({ secrets: [openaiApiKey] }, async (request) => {
+    // Rate limit check
+    await enforceRateLimit('analyzeMoonSync', request);
+
     const openai = new OpenAI({ apiKey: openaiApiKey.value() });
 
     const { dreamData, language } = request.data;

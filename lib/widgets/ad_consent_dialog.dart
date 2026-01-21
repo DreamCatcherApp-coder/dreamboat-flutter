@@ -10,13 +10,17 @@ import 'package:provider/provider.dart';
 class AdConsentDialog extends StatefulWidget {
   final VoidCallback onWatchAd;
   final VoidCallback onRetry;
+  final VoidCallback? onSkipAd; // Called when user chooses to skip ad (when loading failed)
   final bool isAdLoaded;
+  final bool adLoadFailed; // True when max retries reached
 
   const AdConsentDialog({
     super.key,
     required this.onWatchAd,
     required this.onRetry,
     required this.isAdLoaded,
+    this.onSkipAd,
+    this.adLoadFailed = false,
   });
 
   @override
@@ -136,6 +140,19 @@ class _AdConsentDialogState extends State<AdConsentDialog> {
                     ),
                     const SizedBox(height: 12),
 
+                    // Skip Ad Button - Only show when adLoadFailed and onSkipAd is provided
+                    if (widget.adLoadFailed && widget.onSkipAd != null) ...[
+                      _buildTertiaryButton(
+                        context,
+                        label: t.adSkipThisTime, // "Bu sefer reklamsız devam"
+                        onTap: () {
+                          Navigator.pop(context);
+                          widget.onSkipAd!();
+                        },
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+
                      // Pro Button (Primary Visual - Gold)
                      _buildPrimaryButton(
                       context,
@@ -239,6 +256,37 @@ class _AdConsentDialogState extends State<AdConsentDialog> {
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+  }
+
+  Widget _buildTertiaryButton(BuildContext context, {
+    required String label, 
+    required VoidCallback onTap 
+  }) {
+      return SizedBox(
+        width: double.infinity,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Center(
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.6),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

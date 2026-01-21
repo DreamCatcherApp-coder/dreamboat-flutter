@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dream_boat_mobile/models/dream_entry.dart';
 
@@ -10,8 +11,16 @@ class DreamService {
     final String? dreamsJson = prefs.getString(_storageKey);
     if (dreamsJson == null) return [];
 
-    final List<dynamic> decoded = jsonDecode(dreamsJson);
-    return decoded.map((e) => DreamEntry.fromJson(e)).toList();
+    try {
+      final List<dynamic> decoded = jsonDecode(dreamsJson);
+      return decoded.map((e) => DreamEntry.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (e) {
+      // JSON parsing failed - data might be corrupted
+      debugPrint('DreamService: Error parsing dreams data: $e');
+      // Return empty list to prevent app crash
+      // Future improvement: backup corrupted data and notify user
+      return [];
+    }
   }
 
   Future<void> saveDream(DreamEntry dream) async {
@@ -65,7 +74,7 @@ class DreamService {
   Future<void> _saveList(List<DreamEntry> dreams) async {
     final prefs = await SharedPreferences.getInstance();
     final String encoded = jsonEncode(dreams.map((e) => e.toJson()).toList());
-    print("MyDream: Persisting ${dreams.length} dreams to storage.");
+    debugPrint("DreamService: Persisting ${dreams.length} dreams to storage.");
     await prefs.setString(_storageKey, encoded);
   }
 

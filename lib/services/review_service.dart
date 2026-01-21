@@ -6,10 +6,15 @@ import '../widgets/feedback_modal.dart';
 
 class ReviewService {
   static const String _kLastReviewRequestDate = 'last_review_request_date';
+  static const String _kReviewOutcome = 'last_review_outcome'; // 'dismissed', 'interacted'
   static const String _kLoginStreak = 'login_streak_days';
   static const String _kLastLoginDate = 'last_login_date';
 
-  /// Checks if the user is eligible for a review request (e.g., once per month).
+  // Cooldown periods
+  static const int _fullCooldownDays = 30; // For users who interacted (rated/gave feedback)
+  static const int _dismissedCooldownDays = 3; // For users who dismissed without interaction
+
+  /// Checks if the user is eligible for a review request based on last outcome.
   static Future<bool> isReviewPeriodEligible() async {
     final prefs = await SharedPreferences.getInstance();
     final lastRequestTs = prefs.getInt(_kLastReviewRequestDate);
@@ -19,13 +24,24 @@ class ReviewService {
     final lastRequestDate = DateTime.fromMillisecondsSinceEpoch(lastRequestTs);
     final difference = DateTime.now().difference(lastRequestDate).inDays;
 
-    return difference >= 30; // 30 days cooldown
+    // Get last outcome to determine cooldown period
+    final lastOutcome = prefs.getString(_kReviewOutcome) ?? 'dismissed';
+    
+    if (lastOutcome == 'interacted') {
+      // User rated or gave feedback - full 30 day cooldown
+      return difference >= _fullCooldownDays;
+    } else {
+      // User dismissed - shorter 3 day cooldown
+      return difference >= _dismissedCooldownDays;
+    }
   }
 
-  /// Updates the last review request date to now.
-  static Future<void> _updateLastReviewRequestDate() async {
+  /// Updates the last review request date with outcome type.
+  static Future<void> _updateLastReviewRequestDate({required String outcome}) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_kLastReviewRequestDate, DateTime.now().millisecondsSinceEpoch);
+    await prefs.setString(_kReviewOutcome, outcome);
+    debugPrint('ReviewService: Cooldown updated with outcome: $outcome');
   }
 
   /// Main method to trigger the review flow.
@@ -37,30 +53,31 @@ class ReviewService {
       return;
     }
 
-    // Mark as requested immediately so we don't ask again for a month, 
-    // regardless of whether they interact or dismiss the dialog.
-    await _updateLastReviewRequestDate();
+    // NOTE: We no longer mark as requested immediately.
+    // We update cooldown AFTER user interaction with appropriate outcome.
 
     // 2. Show Satisfaction Modal
     if (!context.mounted) return;
     
-    showDialog(
+    final dialogResult = await showDialog<String>(
       context: context,
+      barrierDismissible: true, // Allow dismissing by tapping outside
       builder: (ctx) => SatisfactionModal(
         onSatisfied: () async {
-          Navigator.of(ctx).pop(); // Close modal
+          Navigator.of(ctx).pop('satisfied'); // Return result
           
           // 3a. Positive: Request In-App Review
           final InAppReview inAppReview = InAppReview.instance;
 
           if (await inAppReview.isAvailable()) {
             await inAppReview.requestReview();
-          } else {
-             // Fallback to store listing if needed
           }
+          
+          // Mark as interacted - full cooldown
+          await _updateLastReviewRequestDate(outcome: 'interacted');
         },
         onNeutralOrNegative: () async {
-          Navigator.of(ctx).pop(); // Close modal
+          Navigator.of(ctx).pop('feedback'); // Return result
           
           // 3b. Negative/Neutral: Show Feedback Modal
           if (context.mounted) {
@@ -70,11 +87,18 @@ class ReviewService {
             );
           }
           
-          // Still mark as requested to avoid pestering
-          await _updateLastReviewRequestDate();
+          // Mark as interacted - full cooldown
+          await _updateLastReviewRequestDate(outcome: 'interacted');
         },
       ),
     );
+
+    // User dismissed dialog (tapped outside or pressed back)
+    if (dialogResult == null && context.mounted) {
+      // Short cooldown - ask again in 3 days
+      await _updateLastReviewRequestDate(outcome: 'dismissed');
+      debugPrint('ReviewService: Dialog dismissed, will ask again in $_dismissedCooldownDays days');
+    }
   }
 
   /// Helper to track login streaks. Call this on app start.

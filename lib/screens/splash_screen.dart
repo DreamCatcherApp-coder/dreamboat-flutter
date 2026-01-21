@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dream_boat_mobile/screens/home_screen.dart';
 import 'package:dream_boat_mobile/widgets/background_sky.dart';
+import 'package:dream_boat_mobile/services/firebase_ready_service.dart';
 import 'dart:math';
 
 class SplashScreen extends StatefulWidget {
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 4), // Slightly longer for smooth hold
+      duration: const Duration(milliseconds: 2000), // Optimized: 2s instead of 4s
     );
 
     // 1. Cosmic Seed
@@ -67,19 +67,28 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     _controller.forward();
 
-    // Navigate
-    Future.delayed(const Duration(milliseconds: 3800), () {
-      if (mounted) {
-        Navigator.of(context).pushReplacement(
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const HomeScreen(),
-            transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
-            transitionDuration: const Duration(milliseconds: 1000),
-          ),
-        );
-      }
-    });
+    // Navigate when BOTH animation completes AND Firebase is ready
+    _navigateWhenReady();
 
+  }
+
+  /// Navigates to home when both animation and Firebase init are complete
+  Future<void> _navigateWhenReady() async {
+    // Wait for minimum animation time (1.5s) + Firebase ready (with 3s timeout)
+    await Future.wait([
+      Future.delayed(const Duration(milliseconds: 1500)), // Minimum splash time
+      FirebaseReadyService().waitWithTimeout(timeout: const Duration(seconds: 3)),
+    ]);
+
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const HomeScreen(),
+          transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+          transitionDuration: const Duration(milliseconds: 500),
+        ),
+      );
+    }
   }
 
   @override

@@ -1637,7 +1637,7 @@ abstract class AppLocalizations {
   /// No description provided for @proFeatureAdsSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Sadece rüyalarınıza ve rüya dünyanıza odaklanın.'**
+  /// **'Rüya yorumlamalarında reklam yok.\nSadece rüyalarınıza ve size anlatmak istediklerine odaklanın.'**
   String get proFeatureAdsSubtitle;
 
   /// No description provided for @proFeatureAnalysisTitle.
@@ -1649,7 +1649,7 @@ abstract class AppLocalizations {
   /// No description provided for @proFeatureAnalysisSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Rüyalarınız arasındaki gizli bağlantıları ortaya çıkarın. Tekrarlayan temaları, duyguları ve bilinçaltı mesajlarını zamanla keşfedin.'**
+  /// **'Rüyalarınız arasındaki gizli bağlantıları ortaya çıkarır. Tekrarlayan temaları, duyguları ve bilinçaltı mesajlarını zamanla keşfedin.'**
   String get proFeatureAnalysisSubtitle;
 
   /// No description provided for @proFeatureGuideTitle.
@@ -1721,7 +1721,7 @@ abstract class AppLocalizations {
   /// No description provided for @moonSyncTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Ay ve Gezegen Senkronizasyonu'**
+  /// **'Aylık Ay ve Gezegen Senkronizasyonu'**
   String get moonSyncTitle;
 
   /// No description provided for @moonSyncSubtitle.
@@ -1733,7 +1733,7 @@ abstract class AppLocalizations {
   /// No description provided for @moonSyncDescription.
   ///
   /// In tr, this message translates to:
-  /// **'Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay\'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.'**
+  /// **'Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.'**
   String get moonSyncDescription;
 
   /// No description provided for @moonSyncBtn.
@@ -1898,6 +1898,12 @@ abstract class AppLocalizations {
   /// **'EN POPÜLER'**
   String get mostPopular;
 
+  /// No description provided for @discountPercent.
+  ///
+  /// In tr, this message translates to:
+  /// **'-%30 İNDİRİM'**
+  String get discountPercent;
+
   /// No description provided for @subscribeNow.
   ///
   /// In tr, this message translates to:
@@ -1937,7 +1943,7 @@ abstract class AppLocalizations {
   /// No description provided for @proFeatureMoonSync.
   ///
   /// In tr, this message translates to:
-  /// **'Ay ve Gezegen Senkronizasyonu'**
+  /// **'Aylık Ay ve Gezegen Senkronizasyonu'**
   String get proFeatureMoonSync;
 
   /// No description provided for @freeTrialDays.
@@ -2041,6 +2047,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tekrar Dene'**
   String get adRetry;
+
+  /// No description provided for @adSkipThisTime.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu sefer reklamsız devam'**
+  String get adSkipThisTime;
 
   /// No description provided for @intensityFeltLight.
   ///
@@ -2305,6 +2317,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'İlerlemek için bu aşamanın şartlarını tamamlamalısın.'**
   String get guideCriteriaNotMet;
+
+  /// No description provided for @rateLimitWait.
+  ///
+  /// In tr, this message translates to:
+  /// **'Çok fazla istek gönderildi. Lütfen {minutes} dakika sonra tekrar deneyin.'**
+  String rateLimitWait(int minutes);
 }
 
 class _AppLocalizationsDelegate

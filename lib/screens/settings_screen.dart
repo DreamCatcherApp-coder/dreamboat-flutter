@@ -290,6 +290,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // Don't allow if already restoring
     if (provider.isRestoring) return;
     
+    // Check if payment system is still loading
+    if (provider.isConfiguring) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(t.restoreUnavailable)),
+      );
+      return;
+    }
+    
     final result = await provider.restorePurchases();
     
     if (!context.mounted) return;
@@ -301,6 +309,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         break;
       case 'not_found':
         message = t.restoreNotFound;
+        break;
+      case 'not_configured':
+        message = t.restoreUnavailable;
         break;
       case 'unavailable':
         message = t.restoreUnavailable;

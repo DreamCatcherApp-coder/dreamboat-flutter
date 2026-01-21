@@ -21,19 +21,25 @@ class AdManager {
   // State
   InterstitialAd? _interstitialAd;
   bool _isAdLoaded = false;
+  bool _adLoadFailed = false; // Track if ad loading failed after max retries
   DateTime? _lastAdShownTime;
   int _adsShownThisSession = 0;
 
   // Configuration
   static const int _maxRetries = 3;
+  static const int _retryDelayMinutes = 5; // Auto-retry after 5 minutes on failure
   int _retryCount = 0;
   
   /// Check if an ad is currently loaded and ready
   bool get isAdLoaded => _isAdLoaded && _interstitialAd != null;
+  
+  /// Check if ad loading has failed (max retries reached)
+  bool get adLoadFailed => _adLoadFailed;
 
   /// Initialize and preload the first ad.
   void initialize() {
     _retryCount = 0;
+    _adLoadFailed = false;
     _loadInterstitialAd();
   }
 
@@ -49,6 +55,7 @@ class AdManager {
           debugPrint('AdManager: Interstitial loaded successfully.');
           _interstitialAd = ad;
           _isAdLoaded = true;
+          _adLoadFailed = false; // Reset failed state
           _retryCount = 0; // Reset retry count on success
 
           // Set up callbacks
@@ -87,6 +94,15 @@ class AdManager {
             });
           } else {
             debugPrint('AdManager: Max retries reached. Ad loading failed.');
+            _adLoadFailed = true; // Mark as failed for UI to handle
+            
+            // Schedule auto-retry after delay
+            debugPrint('AdManager: Will auto-retry in $_retryDelayMinutes minutes.');
+            Future.delayed(Duration(minutes: _retryDelayMinutes), () {
+              _retryCount = 0;
+              _adLoadFailed = false;
+              _loadInterstitialAd();
+            });
           }
         },
       ),

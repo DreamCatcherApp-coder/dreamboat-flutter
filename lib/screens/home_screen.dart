@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: Colors.transparent, // Important transparency
             body: SafeArea(
               child: SingleChildScrollView(
-                physics: const NeverScrollableScrollPhysics(),
+                physics: const ClampingScrollPhysics(), // Changed from NeverScrollable for small screen compatibility
                 padding: const EdgeInsets.fromLTRB(20, 33, 20, 40),
                 child: Stack(
                   children: [

@@ -16,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart'; // for kDebugMode
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:dream_boat_mobile/services/firebase_ready_service.dart';
 
 void main() async {
   debugPrint('=== MAIN START ===');
@@ -74,8 +75,13 @@ Future<void> _initFirebaseInBackground() async {
           : AndroidProvider.playIntegrity,
     );
     debugPrint('=== Background: App Check activated (${kDebugMode ? "DEBUG" : "PLAY_INTEGRITY"}) ===');
+    
+    // Signal that Firebase is ready for splash screen
+    FirebaseReadyService().markReady();
   } catch (e) {
     debugPrint('=== Background: Firebase/AppCheck init failed: $e ===');
+    // Still mark as ready so splash doesn't wait forever
+    FirebaseReadyService().markReady();
   }
 }
 

@@ -260,9 +260,9 @@
     "offlineAnalysis": "Für die Analyse ist eine Internetverbindung erforderlich.",
     "proUpgradeSubtitle": "Kein Abo. Einmalkauf, lebenslanger Zugriff.",
     "proFeatureAdsTitle": "Werbefreie Erfahrung",
-    "proFeatureAdsSubtitle": "Konzentriere dich nur auf deine Träume und deine Traumwelt.",
+    "proFeatureAdsSubtitle": "Keine Werbung bei Traumdeutungen.\nKonzentriere dich nur auf deine Träume und was sie dir sagen wollen.",
     "proFeatureAnalysisTitle": "Wöchentliche Traummuster-Analyse",
-    "proFeatureAnalysisSubtitle": "Entdecke verborgene Verbindungen zwischen deinen Träumen. Erkenne wiederkehrende Themen, Emotionen und Botschaften des Unterbewusstseins im Laufe der Zeit.",
+    "proFeatureAnalysisSubtitle": "Deckt verborgene Verbindungen zwischen deinen Träumen auf. Entdecke wiederkehrende Themen, Emotionen und Botschaften des Unterbewusstseins im Laufe der Zeit.",
     "proFeatureGuideTitle": "Klartraum-Leitfaden",
     "proFeatureGuideSubtitle": "Übernimm die Kontrolle über deine Träume. Schritt-für-Schritt angeleitete Klartraumtechniken von Anfänger bis Fortgeschritten.",
     "proProcessing": "Verarbeitung...",
@@ -275,9 +275,9 @@
     "notifReminderBody": "Vergiss nicht, deinen Traum aufzuzeichnen! 🌙",
     "pressBackToExit": "Drücke erneut zurück zum Beenden",
     
-    "moonSyncTitle": "Mond & Planet Synchronisation",
+    "moonSyncTitle": "Monatliche Mond- & Planetensynchronisation",
     "moonSyncSubtitle": "Kann einmal im Monat durchgeführt werden",
-    "moonSyncDescription": "Mond & Planet Synchronisation analysiert deine Träume des letzten Monats zusammen mit der Mondphase des Tages, an dem du geträumt hast, und den kosmischen Ereignissen dieses Zeitraums (wie Blutmond, Finsternisse). Indem sie Emotion, Intensität und Stimmung in deinen Träumen mit dem Mondzyklus abgleicht, zeigt sie, was dich diesen Monat beeinflusst hat und worauf du in bestimmten Mondzyklen (wie Vollmond, Halbmond) achten solltest. Sie wird einmal im Monat erstellt, da sie sich auf den Mondzyklus konzentriert.",
+    "moonSyncDescription": "Interpretiert deine Träume zusammen mit Mondzyklen und kosmischen Ereignissen. Erfahre, was dich diesen Monat beeinflusst hat und worauf du achten solltest.",
     "moonSyncBtn": "Kosmische Analyse Starten",
     "moonSyncWait": "Du musst {days} Tage auf eine neue Analyse warten.",
     "@moonSyncWait": {
@@ -320,6 +320,7 @@
     "planMonthly": "MONATLICH",
     "planAnnual": "JÄHRLICH",
     "mostPopular": "BELIEBTESTE",
+    "discountPercent": "-30% RABATT",
     "subscribeNow": "Jetzt abonnieren",
     "billingMonthly": "Monatlich wiederkehrende Zahlung. Jederzeit kündbar.",
     "billingAnnual": "Als Einmalzahlung abgerechnet. Jährlich wiederkehrend.",
@@ -389,5 +390,13 @@
     "stage5Hint": "Tippe auf Sterne bei Erfüllung. Fortschritt wird freigeschaltet, wenn alle Aufgaben erledigt sind.",
     "stage6Task1": "Ich konnte meinen Traum bewusst manipulieren",
     "stage6Hint": "Tippe auf die Sterne, wenn du die Bedingungen erfüllst. Der Fortschritt wird freigeschaltet, wenn alle 3 Sterne markiert sind.",
-    "guideCriteriaNotMet": "Du musst die Kriterien dieser Stufe erfüllen, um fortzufahren."
+    "guideCriteriaNotMet": "Du musst die Kriterien dieser Stufe erfüllen, um fortzufahren.",
+    "rateLimitWait": "Zu viele Anfragen. Bitte versuche es in {minutes} Minute(n) erneut.",
+    "@rateLimitWait": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    }
 }

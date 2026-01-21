@@ -73,11 +73,35 @@ class OpenAIService {
         'title': data['title'] as String?,
         'interpretation': data['interpretation'] as String?,
       };
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('interpretDream FirebaseError: ${e.code} - ${e.message}');
+      
+      // Check for rate limit error
+      if (e.code == 'resource-exhausted') {
+        // Try to extract resetMinutes from details
+        int resetMinutes = 5; // Default fallback
+        if (e.details is Map && e.details['resetMinutes'] != null) {
+          resetMinutes = e.details['resetMinutes'] as int;
+        }
+        return {
+          'title': null,
+          'interpretation': null,
+          'error': 'rate_limit',
+          'resetMinutes': resetMinutes.toString(),
+        };
+      }
+      
+      return {
+        'title': null,
+        'interpretation': null,
+        'error': 'connection_error',
+      };
     } catch (e) {
       debugPrint('interpretDream Error: $e');
       return {
         'title': null,
-        'interpretation': "Bağlantı hatası: $e",
+        'interpretation': null,
+        'error': 'connection_error',
       };
     }
   }
@@ -124,10 +148,10 @@ class OpenAIService {
         debugPrint("GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
       }
 
-      return data['result'] ?? "Analiz tamamlanamadı.";
+      return data['result'] ?? '';
     } catch (e) {
       debugPrint('analyzeDreams Error: $e');
-      return "Connection Error: $e";
+      return ''; // Return empty string to indicate error - UI will show localized message
     }
   }
 
@@ -149,10 +173,10 @@ class OpenAIService {
         debugPrint("GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
       }
 
-      return data['result'] ?? "Kozmik analiz tamamlanamadı.";
+      return data['result'] ?? '';
     } catch (e) {
       debugPrint('analyzeMoonSync Error: $e');
-      return "Connection Error: $e";
+      return ''; // Return empty string to indicate error - UI will show localized message
     }
   }
 }

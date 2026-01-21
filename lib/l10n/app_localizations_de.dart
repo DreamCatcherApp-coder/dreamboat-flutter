@@ -864,14 +864,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get proFeatureAdsSubtitle =>
-      'Konzentriere dich nur auf deine Träume und deine Traumwelt.';
+      'Keine Werbung bei Traumdeutungen.\nKonzentriere dich nur auf deine Träume und was sie dir sagen wollen.';
 
   @override
   String get proFeatureAnalysisTitle => 'Wöchentliche Traummuster-Analyse';
 
   @override
   String get proFeatureAnalysisSubtitle =>
-      'Entdecke verborgene Verbindungen zwischen deinen Träumen. Erkenne wiederkehrende Themen, Emotionen und Botschaften des Unterbewusstseins im Laufe der Zeit.';
+      'Deckt verborgene Verbindungen zwischen deinen Träumen auf. Entdecke wiederkehrende Themen, Emotionen und Botschaften des Unterbewusstseins im Laufe der Zeit.';
 
   @override
   String get proFeatureGuideTitle => 'Klartraum-Leitfaden';
@@ -912,14 +912,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pressBackToExit => 'Drücke erneut zurück zum Beenden';
 
   @override
-  String get moonSyncTitle => 'Mond & Planet Synchronisation';
+  String get moonSyncTitle => 'Monatliche Mond- & Planetensynchronisation';
 
   @override
   String get moonSyncSubtitle => 'Kann einmal im Monat durchgeführt werden';
 
   @override
   String get moonSyncDescription =>
-      'Mond & Planet Synchronisation analysiert deine Träume des letzten Monats zusammen mit der Mondphase des Tages, an dem du geträumt hast, und den kosmischen Ereignissen dieses Zeitraums (wie Blutmond, Finsternisse). Indem sie Emotion, Intensität und Stimmung in deinen Träumen mit dem Mondzyklus abgleicht, zeigt sie, was dich diesen Monat beeinflusst hat und worauf du in bestimmten Mondzyklen (wie Vollmond, Halbmond) achten solltest. Sie wird einmal im Monat erstellt, da sie sich auf den Mondzyklus konzentriert.';
+      'Interpretiert deine Träume zusammen mit Mondzyklen und kosmischen Ereignissen. Erfahre, was dich diesen Monat beeinflusst hat und worauf du achten solltest.';
 
   @override
   String get moonSyncBtn => 'Kosmische Analyse Starten';
@@ -1010,6 +1010,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mostPopular => 'BELIEBTESTE';
 
   @override
+  String get discountPercent => '-30% RABATT';
+
+  @override
   String get subscribeNow => 'Jetzt abonnieren';
 
   @override
@@ -1085,6 +1088,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get adRetry => 'Erneut versuchen';
+
+  @override
+  String get adSkipThisTime => 'Bu sefer reklamsız devam';
 
   @override
   String get intensityFeltLight => 'Leicht gefühlt';
@@ -1231,4 +1237,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get guideCriteriaNotMet =>
       'Du musst die Kriterien dieser Stufe erfüllen, um fortzufahren.';
+
+  @override
+  String rateLimitWait(int minutes) {
+    return 'Zu viele Anfragen. Bitte versuche es in $minutes Minute(n) erneut.';
+  }
 }

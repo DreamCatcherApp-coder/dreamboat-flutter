@@ -210,8 +210,8 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                     Image.asset(
                                       'assets/images/db_logo_icon.png',
                                       color: const Color(0xFFFBBF24),
-                                      width: 28,
-                                      height: 28,
+                                      width: 36,
+                                      height: 36,
                                       fit: BoxFit.contain,
                                     ),
                                   ],
@@ -249,6 +249,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                   billingInfo: t.billingAnnual,
                                   isPopular: true,
                                   popularLabel: t.mostPopular,
+                                  discountLabel: t.discountPercent,
                                   isSelected: _isYearlySelected,
                                   onTap: () => setState(() => _isYearlySelected = true),
                                   onSubscribe: () => _handlePurchase(true),
@@ -408,6 +409,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     required String billingInfo,
     required bool isPopular,
     String? popularLabel,
+    String? discountLabel,
     required bool isSelected,
     required VoidCallback onTap,
     required VoidCallback onSubscribe,
@@ -417,7 +419,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(top: 16, left: 12, right: 12, bottom: 12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: isSelected 
@@ -498,13 +500,17 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                     height: 1.3,
                   ),
                 ),
+                
+                // Space for discount badge below
+                if (discountLabel != null)
+                  const SizedBox(height: 8),
               ],
             ),
             
-            // Popular badge
+            // Popular badge (top)
             if (isPopular && popularLabel != null)
               Positioned(
-                top: -20,
+                top: -24,
                 left: 0,
                 right: 0,
                 child: Center(
@@ -528,6 +534,41 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            
+            // Discount badge (bottom)
+            if (discountLabel != null)
+              Positioned(
+                bottom: -20,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF10B981), Color(0xFF059669)],
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF10B981).withOpacity(0.5),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      discountLabel,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),

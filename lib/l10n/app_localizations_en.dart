@@ -857,14 +857,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get proFeatureAdsSubtitle =>
-      'Focus only on your dreams and your dream world.';
+      'No ads during dream interpretations.\nFocus only on your dreams and what they want to tell you.';
 
   @override
   String get proFeatureAnalysisTitle => 'Weekly Dream Pattern Analysis';
 
   @override
   String get proFeatureAnalysisSubtitle =>
-      'Uncover hidden connections between your dreams. Discover recurring themes, emotions, and subconscious messages over time.';
+      'Uncovers hidden connections between your dreams. Discover recurring themes, emotions, and subconscious messages over time.';
 
   @override
   String get proFeatureGuideTitle => 'Lucid Dream Guide';
@@ -903,14 +903,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pressBackToExit => 'Press back again to exit';
 
   @override
-  String get moonSyncTitle => 'Moon & Planet Synchronization';
+  String get moonSyncTitle => 'Monthly Moon & Planet Synchronization';
 
   @override
   String get moonSyncSubtitle => 'Can be done once a month';
 
   @override
   String get moonSyncDescription =>
-      'Moon & Planet Synchronization analyzes your dreams from the last month alongside the Lunar phase of the day you dreamed and the cosmic events of that period (like Blood Moon, eclipses). By matching the emotion, intensity, and mood in your dreams with the Moon cycle, it shows what affected you this month and what you should pay attention to during specific moon cycles (like full moon, half moon). It is generated once a month as it focuses on the Moon\'s cycle.';
+      'Interprets your dreams alongside Moon cycles and cosmic events. Learn what influenced you this month and what you should pay attention to.';
 
   @override
   String get moonSyncBtn => 'Start Cosmic Analysis';
@@ -1000,6 +1000,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mostPopular => 'MOST POPULAR';
 
   @override
+  String get discountPercent => '-30% OFF';
+
+  @override
   String get subscribeNow => 'Subscribe Now';
 
   @override
@@ -1074,6 +1077,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adRetry => 'Retry';
+
+  @override
+  String get adSkipThisTime => 'Continue without ad this time';
 
   @override
   String get intensityFeltLight => 'Felt lightly';
@@ -1219,4 +1225,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guideCriteriaNotMet =>
       'You must complete the criteria for this stage to proceed.';
+
+  @override
+  String rateLimitWait(int minutes) {
+    return 'Too many requests. Please try again in $minutes minute(s).';
+  }
 }

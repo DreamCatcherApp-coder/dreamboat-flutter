@@ -1,1 +1,13 @@
-{}
+{
+  "de": [
+    "adSkipThisTime"
+  ],
+
+  "es": [
+    "adSkipThisTime"
+  ],
+
+  "pt": [
+    "adSkipThisTime"
+  ]
+}

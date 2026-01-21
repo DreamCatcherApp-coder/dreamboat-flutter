@@ -861,14 +861,14 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get proFeatureAdsSubtitle =>
-      'Concentre-se apenas nos seus sonhos e no seu mundo dos sonhos.';
+      'Sem anúncios nas interpretações de sonhos.\nConcentre-se apenas nos seus sonhos e no que eles querem lhe dizer.';
 
   @override
   String get proFeatureAnalysisTitle => 'Análise Semanal de Padrões de Sonhos';
 
   @override
   String get proFeatureAnalysisSubtitle =>
-      'Descubra conexões ocultas entre seus sonhos. Identifique temas recorrentes, emoções e mensagens do subconsciente ao longo do tempo.';
+      'Revela conexões ocultas entre seus sonhos. Descubra temas recorrentes, emoções e mensagens do subconsciente ao longo do tempo.';
 
   @override
   String get proFeatureGuideTitle => 'Guia de Sonhos Lúcidos';
@@ -907,14 +907,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pressBackToExit => 'Pressione voltar novamente para sair';
 
   @override
-  String get moonSyncTitle => 'Sincronização Lua e Planeta';
+  String get moonSyncTitle => 'Sincronização Mensal de Lua e Planeta';
 
   @override
   String get moonSyncSubtitle => 'Pode ser feito uma vez por mês';
 
   @override
   String get moonSyncDescription =>
-      'Sincronização Lua e Planeta analisa seus sonhos do último mês juntamente com a fase lunar do dia em que sonhou e os eventos cósmicos desse período (como Lua de Sangue, eclipses). Ao combinar emoção, intensidade e humor em seus sonhos com o ciclo lunar, mostra o que o afetou este mês e ao que você deve prestar atenção durante ciclos lunares específicos (como lua cheia, meia lua). É gerado uma vez por mês, pois é focado no ciclo da Lua.';
+      'Interpreta seus sonhos junto com os ciclos lunares e eventos cósmicos. Aprenda o que influenciou você este mês e ao que deve prestar atenção.';
 
   @override
   String get moonSyncBtn => 'Iniciar Análise Cósmica';
@@ -1005,6 +1005,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get mostPopular => 'MAIS POPULAR';
 
   @override
+  String get discountPercent => '-30% DESCONTO';
+
+  @override
   String get subscribeNow => 'Assinar Agora';
 
   @override
@@ -1081,6 +1084,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get adRetry => 'Tentar Anuncio Novamente';
+
+  @override
+  String get adSkipThisTime => 'Bu sefer reklamsız devam';
 
   @override
   String get intensityFeltLight => 'Sentido levemente';
@@ -1227,4 +1233,9 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get guideCriteriaNotMet =>
       'Você deve completar os critérios desta etapa para prosseguir.';
+
+  @override
+  String rateLimitWait(int minutes) {
+    return 'Muitas solicitações. Por favor, tente novamente em $minutes minuto(s).';
+  }
 }

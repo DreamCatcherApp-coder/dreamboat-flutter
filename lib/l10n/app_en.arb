@@ -260,9 +260,9 @@
     "offlineAnalysis": "Internet connection is required for analysis.",
     "proUpgradeSubtitle": "No subscription. One-time purchase, lifetime access.",
     "proFeatureAdsTitle": "Ad-Free Experience",
-    "proFeatureAdsSubtitle": "Focus only on your dreams and your dream world.",
+    "proFeatureAdsSubtitle": "No ads during dream interpretations.\nFocus only on your dreams and what they want to tell you.",
     "proFeatureAnalysisTitle": "Weekly Dream Pattern Analysis",
-    "proFeatureAnalysisSubtitle": "Uncover hidden connections between your dreams. Discover recurring themes, emotions, and subconscious messages over time.",
+    "proFeatureAnalysisSubtitle": "Uncovers hidden connections between your dreams. Discover recurring themes, emotions, and subconscious messages over time.",
     "proFeatureGuideTitle": "Lucid Dream Guide",
     "proFeatureGuideSubtitle": "Take control of your dreams. Step-by-step guided lucid dream techniques from beginner to advanced.",
     "proProcessing": "Processing...",
@@ -275,9 +275,9 @@
     "notifReminderBody": "Don't forget to record your dream! 🌙",
     "pressBackToExit": "Press back again to exit",
     
-    "moonSyncTitle": "Moon & Planet Synchronization",
+    "moonSyncTitle": "Monthly Moon & Planet Synchronization",
     "moonSyncSubtitle": "Can be done once a month",
-    "moonSyncDescription": "Moon & Planet Synchronization analyzes your dreams from the last month alongside the Lunar phase of the day you dreamed and the cosmic events of that period (like Blood Moon, eclipses). By matching the emotion, intensity, and mood in your dreams with the Moon cycle, it shows what affected you this month and what you should pay attention to during specific moon cycles (like full moon, half moon). It is generated once a month as it focuses on the Moon's cycle.",
+    "moonSyncDescription": "Interprets your dreams alongside Moon cycles and cosmic events. Learn what influenced you this month and what you should pay attention to.",
     "moonSyncBtn": "Start Cosmic Analysis",
     "moonSyncWait": "You must wait {days} days for a new analysis.",
     "@moonSyncWait": {
@@ -320,6 +320,7 @@
     "planMonthly": "MONTHLY",
     "planAnnual": "ANNUAL",
     "mostPopular": "MOST POPULAR",
+    "discountPercent": "-30% OFF",
     "subscribeNow": "Subscribe Now",
     "billingMonthly": "Recurring monthly payment. Cancel anytime.",
     "billingAnnual": "Billed as one payment. Recurring annual payment.",
@@ -347,6 +348,7 @@
     "adConsentPro": "Upgrade to PRO (Ad-Free)",
     "adLoadError": "The ad could not be loaded at the moment. You can try again shortly or upgrade to PRO.",
     "adRetry": "Retry",
+    "adSkipThisTime": "Continue without ad this time",
     "intensityFeltLight": "Felt lightly",
     "intensityFeltMedium": "Felt moderately",
     "intensityFeltIntense": "Felt intensely",
@@ -390,5 +392,13 @@
     "stage5Hint": "Tap the stars as you fulfill the conditions. Progress unlocks when all tasks are completed.",
     "stage6Task1": "I was able to consciously manipulate my dream",
     "stage6Hint": "Tap the stars as you fulfill the conditions. Progress unlocks when all 3 stars are marked.",
-    "guideCriteriaNotMet": "You must complete the criteria for this stage to proceed."
+    "guideCriteriaNotMet": "You must complete the criteria for this stage to proceed.",
+    "rateLimitWait": "Too many requests. Please try again in {minutes} minute(s).",
+    "@rateLimitWait": {
+        "placeholders": {
+            "minutes": {
+                "type": "int"
+            }
+        }
+    }
 }

@@ -38,6 +38,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   bool _isSaving = false;
   bool _isModalOpen = false; // [NEW] To prevent scaffold resize
   bool _isAdDialogOpen = false; // [NEW] To prevent premature unlock
+  int? _rateLimitMinutes; // [NEW] Rate limit countdown minutes
 
   @override
   void initState() {
@@ -62,7 +63,10 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
 
   void _showMoodModal() {
     setState(() => _isModalOpen = true); // Lock layout
+    
+    // Aggressive keyboard dismissal for Android 12+ compatibility
     _focusNode.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     
     showModalBottomSheet(
@@ -84,8 +88,9 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   }
   
   Future<void> _checkAdAndProcess(String mood, List<String> secondaryMoods, int intensity, int vividness) async {
-    // Lock everything down
+    // Lock everything down - aggressive keyboard dismissal
     _focusNode.unfocus();
+    FocusManager.instance.primaryFocus?.unfocus();
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
     // 1. Check PRO Status
@@ -114,6 +119,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       barrierDismissible: false,
       builder: (context) => AdConsentDialog(
         isAdLoaded: AdManager.instance.isAdLoaded,
+        adLoadFailed: AdManager.instance.adLoadFailed,
         onWatchAd: () async {
             // AdConsentDialog closed itself before calling this.
             // Top route is Mood Sheet.
@@ -152,6 +158,11 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
               if (mounted) _checkAdAndProcess(mood, secondaryMoods, intensity, vividness); // Recursion (safeish)
            });
         },
+        onSkipAd: () {
+           // Skip ad - only available when adLoadFailed is true
+           if (mounted) Navigator.pop(context); // Close Mood Sheet
+           if (mounted) _processDream(mood, secondaryMoods, intensity, vividness);
+        },
       )
     );
     // If canceled (Back), we do nothing. User is back at Sheet.
@@ -180,8 +191,19 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
         title = null;
       } else {
         final result = await openAIService.interpretDream(_controller.text, mood, locale);
-        interpretation = result['interpretation'] ?? t.dreamTooShort;
-        title = result['title'];
+        // Check for rate limit error first
+        if (result['error'] == 'rate_limit') {
+          final resetMinutes = int.tryParse(result['resetMinutes'] ?? '5') ?? 5;
+          setState(() => _rateLimitMinutes = resetMinutes);
+          interpretation = t.rateLimitWait(resetMinutes);
+          title = null;
+        } else if (result.containsKey('error') || result['interpretation'] == null) {
+          interpretation = t.offlineInterpretation; // Use offline message for any error
+          title = null;
+        } else {
+          interpretation = result['interpretation']!;
+          title = result['title'];
+        }
       }
       
       // Save Dream

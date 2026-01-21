@@ -855,14 +855,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get proFeatureAdsSubtitle =>
-      'Sadece rüyalarınıza ve rüya dünyanıza odaklanın.';
+      'Rüya yorumlamalarında reklam yok.\nSadece rüyalarınıza ve size anlatmak istediklerine odaklanın.';
 
   @override
   String get proFeatureAnalysisTitle => 'Haftalık Rüya Desen Analizi';
 
   @override
   String get proFeatureAnalysisSubtitle =>
-      'Rüyalarınız arasındaki gizli bağlantıları ortaya çıkarın. Tekrarlayan temaları, duyguları ve bilinçaltı mesajlarını zamanla keşfedin.';
+      'Rüyalarınız arasındaki gizli bağlantıları ortaya çıkarır. Tekrarlayan temaları, duyguları ve bilinçaltı mesajlarını zamanla keşfedin.';
 
   @override
   String get proFeatureGuideTitle => 'Lucid Rüya Rehberi';
@@ -901,14 +901,14 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pressBackToExit => 'Çıkmak için tekrar geri tuşuna basın';
 
   @override
-  String get moonSyncTitle => 'Ay ve Gezegen Senkronizasyonu';
+  String get moonSyncTitle => 'Aylık Ay ve Gezegen Senkronizasyonu';
 
   @override
   String get moonSyncSubtitle => 'Ayda bir kez yapılabilir';
 
   @override
   String get moonSyncDescription =>
-      'Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay\'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.';
+      'Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.';
 
   @override
   String get moonSyncBtn => 'Kozmik Analizi Başlat';
@@ -999,6 +999,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mostPopular => 'EN POPÜLER';
 
   @override
+  String get discountPercent => '-%30 İNDİRİM';
+
+  @override
   String get subscribeNow => 'Abone Ol';
 
   @override
@@ -1019,7 +1022,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get proFeatureGuide => 'Lucid Rüya Rehberi';
 
   @override
-  String get proFeatureMoonSync => 'Ay ve Gezegen Senkronizasyonu';
+  String get proFeatureMoonSync => 'Aylık Ay ve Gezegen Senkronizasyonu';
 
   @override
   String get freeTrialDays => 'Gün Ücretsiz Dene';
@@ -1074,6 +1077,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get adRetry => 'Tekrar Dene';
+
+  @override
+  String get adSkipThisTime => 'Bu sefer reklamsız devam';
 
   @override
   String get intensityFeltLight => 'Hafif hissediliyor';
@@ -1218,4 +1224,9 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get guideCriteriaNotMet =>
       'İlerlemek için bu aşamanın şartlarını tamamlamalısın.';
+
+  @override
+  String rateLimitWait(int minutes) {
+    return 'Çok fazla istek gönderildi. Lütfen $minutes dakika sonra tekrar deneyin.';
+  }
 }

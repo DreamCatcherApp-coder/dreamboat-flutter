@@ -10,6 +10,7 @@ class SubscriptionProvider extends ChangeNotifier {
   bool _isLoading = true;
   bool _isRestoring = false;
   bool _isConfigured = false;  // Track if RevenueCat is configured
+  bool _isConfiguring = false; // Track if RevenueCat is currently being configured
   CustomerInfo? _customerInfo;
   Offerings? _offerings;
 
@@ -22,6 +23,8 @@ class SubscriptionProvider extends ChangeNotifier {
   bool get isPro => _isPro;
   bool get isLoading => _isLoading;
   bool get isRestoring => _isRestoring;
+  bool get isConfigured => _isConfigured; // Exposed for UI to check
+  bool get isConfiguring => _isConfiguring; // Exposed for UI to show loading
   Offerings? get offerings => _offerings;
   CustomerInfo? get customerInfo => _customerInfo;
 
@@ -52,6 +55,9 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> _configureRevenueCat() async {
+    _isConfiguring = true;
+    notifyListeners();
+    
     try {
       debugPrint('=== Configuring RevenueCat (background) ===');
       
@@ -63,7 +69,9 @@ class SubscriptionProvider extends ChangeNotifier {
       });
       
       _isConfigured = true;
+      _isConfiguring = false;
       debugPrint('RevenueCat configured successfully');
+      notifyListeners();
       
       // Get customer info with timeout
       try {
@@ -95,6 +103,8 @@ class SubscriptionProvider extends ChangeNotifier {
     } catch (e, stackTrace) {
       debugPrint('RevenueCat initialization error: $e');
       debugPrint('Stack: $stackTrace');
+      _isConfiguring = false;
+      notifyListeners();
       // Keep cached status on error (fail-open)
     }
   }
@@ -118,11 +128,12 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   /// User-triggered restore purchases functionality (required for App Store)
-  /// Returns: 'success' if PRO was restored, 'not_found' if no purchases found, 'error' on failure
+  /// Returns: 'success' if PRO was restored, 'not_found' if no purchases found, 
+  /// 'not_configured' if payment system not ready, 'error' on failure
   Future<String> restorePurchases() async {
     if (!_isConfigured) {
       debugPrint('RevenueCat not configured, cannot restore');
-      return 'error';
+      return 'not_configured'; // UI should show "Payment system loading, please wait"
     }
     
     _isRestoring = true;

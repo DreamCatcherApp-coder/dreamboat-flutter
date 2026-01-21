@@ -19,19 +19,25 @@ class NotificationService {
       debugPrint('NotificationService: Timezone database initialized');
       
       // Get Device Timezone with timeout to prevent blocking on emulator
-      String timeZoneName = 'Europe/Istanbul'; // Fallback
+      String timeZoneName = 'UTC'; // Universal fallback for global compatibility
       try {
         timeZoneName = await FlutterTimezone.getLocalTimezone()
             .timeout(const Duration(seconds: 3), onTimeout: () {
-          debugPrint('NotificationService: Timezone lookup timed out, using fallback');
-          return 'Europe/Istanbul';
+          debugPrint('NotificationService: Timezone lookup timed out, using UTC fallback');
+          return 'UTC';
         });
         debugPrint('NotificationService: Got timezone: $timeZoneName');
       } catch (e) {
-        debugPrint('NotificationService: Timezone error: $e, using fallback');
+        debugPrint('NotificationService: Timezone error: $e, using UTC fallback');
       }
       
-      tz.setLocalLocation(tz.getLocation(timeZoneName));
+      // Validate timezone exists in database, fallback to UTC if not found
+      try {
+        tz.setLocalLocation(tz.getLocation(timeZoneName));
+      } catch (e) {
+        debugPrint('NotificationService: Invalid timezone $timeZoneName, using UTC');
+        tz.setLocalLocation(tz.getLocation('UTC'));
+      }
 
       // Android Settings
       const fln.AndroidInitializationSettings androidSettings = fln.AndroidInitializationSettings('@mipmap/launcher_icon');
@@ -138,8 +144,8 @@ class NotificationService {
       debugPrint('NotificationService: Showing instant notification...');
       await _notificationsPlugin.show(
         999,
-        'Test Bildirimi',
-        'Bu bir test bildirimidir.',
+        'Test Notification', // Changed from Turkish
+        'This is a test notification.', // Changed from Turkish
         const fln.NotificationDetails(
           android: fln.AndroidNotificationDetails(
             'daily_reminder_channel',
