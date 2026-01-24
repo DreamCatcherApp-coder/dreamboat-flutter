@@ -77,12 +77,16 @@ class OpenAIService {
         'interpretation': data['interpretation'] as String?,
       };
     } on FirebaseFunctionsException catch (e) {
-      debugPrint('interpretDream FirebaseError: ${e.code} - ${e.message}');
+      debugPrint('=== interpretDream FirebaseError ===');
+      debugPrint('Code: ${e.code}');
+      debugPrint('Message: ${e.message}');
+      debugPrint('Details: ${e.details}');
+      debugPrint('Plugin: ${e.plugin}');
+      debugPrint('StackTrace: ${e.stackTrace}');
       
       // Check for rate limit error
       if (e.code == 'resource-exhausted') {
-        // Try to extract resetMinutes from details
-        int resetMinutes = 5; // Default fallback
+        int resetMinutes = 5;
         if (e.details is Map && e.details['resetMinutes'] != null) {
           resetMinutes = e.details['resetMinutes'] as int;
         }
@@ -97,14 +101,19 @@ class OpenAIService {
       return {
         'title': null,
         'interpretation': null,
-        'error': 'connection_error',
+        'error': 'firebase_error',
+        'details': '${e.code}: ${e.message}',
       };
-    } catch (e) {
-      debugPrint('interpretDream Error: $e');
+    } catch (e, stackTrace) {
+      debugPrint('=== interpretDream Unknown Error ===');
+      debugPrint('Error Type: ${e.runtimeType}');
+      debugPrint('Error: $e');
+      debugPrint('StackTrace: $stackTrace');
       return {
         'title': null,
         'interpretation': null,
-        'error': 'connection_error',
+        'error': 'unknown_error',
+        'details': e.toString(),
       };
     }
   }
