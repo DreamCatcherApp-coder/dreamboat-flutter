@@ -23,6 +23,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart'; // For SystemNavigator
 
 import 'package:dream_boat_mobile/services/notification_service.dart';
+import 'package:dream_boat_mobile/services/biometric_service.dart';
+import 'package:dream_boat_mobile/widgets/biometric_prompt_modal.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dream_boat_mobile/services/review_service.dart';
@@ -164,6 +166,36 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  /// Opens the Journal screen with biometric authentication check
+  Future<void> _openJournal(BuildContext context, AppLocalizations t) async {
+    // First time? Show the prompt modal
+    if (!await BiometricService.hasShownBiometricPrompt()) {
+      final wantsLock = await showBiometricPromptModal(context);
+      if (wantsLock == true) {
+        // User wants to enable lock, try to authenticate
+        final success = await BiometricService.authenticate(t.biometricLockReason);
+        if (success) {
+          await BiometricService.setJournalLockEnabled(true);
+        }
+      }
+      await BiometricService.setShownBiometricPrompt();
+    }
+    
+    // If lock is enabled, require authentication
+    if (await BiometricService.isJournalLockEnabled()) {
+      final authenticated = await BiometricService.authenticate(t.biometricLockReason);
+      if (!authenticated) {
+        // Authentication failed, don't navigate
+        return;
+      }
+    }
+    
+    // Navigate to journal
+    if (context.mounted) {
+      Navigator.push(context, FastSlidePageRoute(child: const JournalScreen()));
+    }
   }
 
   @override
@@ -361,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: t.homeJournal,
                             background: const CalendarPreview(),
                             content: null,
-                            onTap: () => Navigator.push(context, FastSlidePageRoute(child: const JournalScreen())),
+                            onTap: () => _openJournal(context, t),
                           ),
                         ),
                         const SizedBox(width: 16),

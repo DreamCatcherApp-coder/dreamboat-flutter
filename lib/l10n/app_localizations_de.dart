@@ -576,6 +576,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get upgradeCancel => 'Vielleicht später';
 
   @override
+  String get privacyPolicyLink => 'Datenschutzrichtlinie';
+
+  @override
+  String get termsOfUseLink => 'Nutzungsbedingungen';
+
+  @override
   String get upgradeSuccess => 'Willkommen bei DreamBoat PRO!';
 
   @override
@@ -909,7 +915,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notifReminderBody =>
-      'Vergiss nicht, deinen Traum aufzuzeichnen! 🌙';
+      'Vergiss nicht, deinen Traum aufzuzeichnen! 📝';
 
   @override
   String get pressBackToExit => 'Drücke erneut zurück zum Beenden';
@@ -922,6 +928,10 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
+      'Die Mond- und Planetensynchronisation analysiert deine Träume des letzten Monats zusammen mit der Mondphase am Tag, an dem du sie hattest, und kosmischen Ereignissen in diesem Zeitraum (wie Blutmond, Finsternisse). Indem sie die Emotionen, Intensität und Stimmung deiner Träume mit dem Mondzyklus abgleicht, zeigt sie dir, was dich diesen Monat beeinflusst hat und worauf du in bestimmten Mondphasen (Vollmond, Halbmond usw.) achten solltest. Da sie sich auf den Mondzyklus konzentriert, wird sie einmal im Monat erstellt.';
+
+  @override
+  String get moonSyncDescriptionShort =>
       'Interpretiert deine Träume zusammen mit Mondzyklen und kosmischen Ereignissen. Erfahre, was dich diesen Monat beeinflusst hat und worauf du achten solltest.';
 
   @override
@@ -1020,11 +1030,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get billingMonthly =>
-      'Monatlich wiederkehrende Zahlung. Jederzeit kündbar.';
+      'Monatliches Abo mit automatischer Verlängerung.\nJederzeit kündbar.';
 
   @override
   String get billingAnnual =>
-      'Als Einmalzahlung abgerechnet. Jährlich wiederkehrend.';
+      'Jährliches Abo mit automatischer Verlängerung.\nEinmal pro Jahr abgerechnet.';
 
   @override
   String get proFeatureAds => 'Werbefreie Erfahrung';
@@ -1040,6 +1050,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get freeTrialDays => 'Tage Kostenlos Testen';
+
+  @override
+  String get freeTrialBadge => 'Erste 7 Tage kostenlos';
 
   @override
   String get then => 'Danach';
@@ -1418,4 +1431,35 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get emailLabelLanguage => 'Sprache';
+
+  @override
+  String get biometricLockTitle => 'Möchtest du dein Traumtagebuch sperren?';
+
+  @override
+  String get biometricLockMessage =>
+      'Deine Träume können sehr persönlich sein.\nDu kannst dein Traumtagebuch mit Fingerabdruck / Face ID schützen.';
+
+  @override
+  String get biometricLockYes => 'Ja, Schützen';
+
+  @override
+  String get biometricLockNo => 'Jetzt Nicht';
+
+  @override
+  String get biometricLockReason =>
+      'Authentifiziere dich für den Zugriff auf das Traumtagebuch';
+
+  @override
+  String get biometricLockSettingsTitle => 'Traumtagebuch-Sperre';
+
+  @override
+  String get biometricLockSettingsSubtitle =>
+      'Mit Fingerabdruck / Face ID schützen';
+
+  @override
+  String get biometricNotAvailable =>
+      'Biometrische Funktion auf deinem Gerät nicht gefunden. Du kannst biometrische Daten in Einstellungen > Sicherheit hinzufügen.';
+
+  @override
+  String get biometricAuthFailed => 'Authentifizierung fehlgeschlagen';
 }

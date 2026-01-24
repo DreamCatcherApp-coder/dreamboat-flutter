@@ -98,6 +98,8 @@
     "upgradeTitle": "Auf DreamBoat PRO upgraden",
     "upgradeBtn": "DreamBoat PRO freischalten (88,99 ₺)",
     "upgradeCancel": "Vielleicht später",
+    "privacyPolicyLink": "Datenschutzrichtlinie",
+    "termsOfUseLink": "Nutzungsbedingungen",
     "upgradeSuccess": "Willkommen bei DreamBoat PRO!",
     "upgradeStart": "Starten",
     "settingsRestorePurchases": "Käufe wiederherstellen",
@@ -273,12 +275,13 @@
     "notifOpenSettings": "Einstellungen Öffnen",
     "notifOpenSettingsHint": "Du musst Benachrichtigungen in den Einstellungen aktivieren.",
     "allow": "Erlauben",
-    "notifReminderBody": "Vergiss nicht, deinen Traum aufzuzeichnen! 🌙",
+    "notifReminderBody": "Vergiss nicht, deinen Traum aufzuzeichnen! 📝",
     "pressBackToExit": "Drücke erneut zurück zum Beenden",
     
     "moonSyncTitle": "Monatliche Mond- & Planetensynchronisation",
     "moonSyncSubtitle": "Kann einmal im Monat durchgeführt werden",
-    "moonSyncDescription": "Interpretiert deine Träume zusammen mit Mondzyklen und kosmischen Ereignissen. Erfahre, was dich diesen Monat beeinflusst hat und worauf du achten solltest.",
+    "moonSyncDescription": "Die Mond- und Planetensynchronisation analysiert deine Träume des letzten Monats zusammen mit der Mondphase am Tag, an dem du sie hattest, und kosmischen Ereignissen in diesem Zeitraum (wie Blutmond, Finsternisse). Indem sie die Emotionen, Intensität und Stimmung deiner Träume mit dem Mondzyklus abgleicht, zeigt sie dir, was dich diesen Monat beeinflusst hat und worauf du in bestimmten Mondphasen (Vollmond, Halbmond usw.) achten solltest. Da sie sich auf den Mondzyklus konzentriert, wird sie einmal im Monat erstellt.",
+    "moonSyncDescriptionShort": "Interpretiert deine Träume zusammen mit Mondzyklen und kosmischen Ereignissen. Erfahre, was dich diesen Monat beeinflusst hat und worauf du achten solltest.",
     "moonSyncBtn": "Kosmische Analyse Starten",
     "moonSyncWait": "Du musst {days} Tage auf eine neue Analyse warten.",
     "@moonSyncWait": {
@@ -323,14 +326,15 @@
     "mostPopular": "BELIEBTESTE",
     "discountPercent": "-30% RABATT",
     "subscribeNow": "Jetzt abonnieren",
-    "billingMonthly": "Monatlich wiederkehrende Zahlung. Jederzeit kündbar.",
-    "billingAnnual": "Als Einmalzahlung abgerechnet. Jährlich wiederkehrend.",
+    "billingMonthly": "Monatliches Abo mit automatischer Verlängerung.\nJederzeit kündbar.",
+    "billingAnnual": "Jährliches Abo mit automatischer Verlängerung.\nEinmal pro Jahr abgerechnet.",
     "proFeatureAds": "Werbefreie Erfahrung",
     "proFeatureAnalysis": "Wöchentliche Muster-Analyse",
     "proFeatureGuide": "Klartraum-Leitfaden",
     "proFeatureMoonSync": "Mond- und Planetensynchronisation",
     
     "freeTrialDays": "Tage Kostenlos Testen",
+    "freeTrialBadge": "Erste 7 Tage kostenlos",
     "then": "Danach",
 
     "reviewSatisfactionTitle": "Gefällt dir DreamBoat?",
@@ -465,5 +469,15 @@
     "emailLabelSupportId": "Support-ID (Benutzer-ID)",
     "emailLabelAppVersion": "App-Version",
     "emailLabelPlatform": "Plattform",
-    "emailLabelLanguage": "Sprache"
+    "emailLabelLanguage": "Sprache",
+    
+    "biometricLockTitle": "Möchtest du dein Traumtagebuch sperren?",
+    "biometricLockMessage": "Deine Träume können sehr persönlich sein.\nDu kannst dein Traumtagebuch mit Fingerabdruck / Face ID schützen.",
+    "biometricLockYes": "Ja, Schützen",
+    "biometricLockNo": "Jetzt Nicht",
+    "biometricLockReason": "Authentifiziere dich für den Zugriff auf das Traumtagebuch",
+    "biometricLockSettingsTitle": "Traumtagebuch-Sperre",
+    "biometricLockSettingsSubtitle": "Mit Fingerabdruck / Face ID schützen",
+    "biometricNotAvailable": "Biometrische Funktion auf deinem Gerät nicht gefunden. Du kannst biometrische Daten in Einstellungen > Sicherheit hinzufügen.",
+    "biometricAuthFailed": "Authentifizierung fehlgeschlagen"
 }

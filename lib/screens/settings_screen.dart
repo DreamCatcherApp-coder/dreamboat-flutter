@@ -21,6 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'dart:io';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:dream_boat_mobile/services/biometric_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -35,6 +36,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   TimeOfDay _notifTime = const TimeOfDay(hour: 9, minute: 0);
   bool _use24HourFormat = true;
   String _debugTimeZone = '';
+  
+  // Biometric Lock State
+  bool _biometricLockEnabled = false;
+  bool _biometricAvailable = false;
 
   @override
   void initState() {
@@ -61,6 +66,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _notifTime = TimeOfDay(hour: hour, minute: minute);
       
       _debugTimeZone = timezone;
+    });
+    
+    // Load biometric state
+    final biometricAvailable = await BiometricService.isBiometricAvailable();
+    final biometricEnabled = await BiometricService.isJournalLockEnabled();
+    if (mounted) {
+      setState(() {
+        _biometricAvailable = biometricAvailable;
+        _biometricLockEnabled = biometricEnabled;
+      });
+    }
+  }
+  
+  Future<void> _toggleBiometricLock(bool newValue) async {
+    final t = AppLocalizations.of(context)!;
+    
+    // Require biometric authentication to change the setting
+    final authenticated = await BiometricService.authenticate(t.biometricLockReason);
+    if (!authenticated) return;
+    
+    await BiometricService.setJournalLockEnabled(newValue);
+    setState(() {
+      _biometricLockEnabled = newValue;
     });
   }
   
@@ -208,6 +236,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           : "${_notifTime.hourOfPeriod == 0 ? 12 : _notifTime.hourOfPeriod}:${_notifTime.minute.toString().padLeft(2, '0')} ${_notifTime.period == DayPeriod.am ? 'AM' : 'PM'}")
                       : "Off",
                     onTap: () => _showNotificationModal(context),
+                  ),
+                  // Biometric Lock Toggle
+                  _BiometricSettingItem(
+                    t: t,
+                    isEnabled: _biometricLockEnabled,
+                    isAvailable: _biometricAvailable,
+                    onToggle: _toggleBiometricLock,
                   ),
                   _SettingItem(
                     icon: LucideIcons.refreshCw,
@@ -566,6 +601,67 @@ class _SettingItem extends StatelessWidget {
                const Icon(LucideIcons.chevronRight, color: Colors.grey, size: 16)
              ],
            )
+        ],
+      ),
+    );
+  }
+}
+
+class _BiometricSettingItem extends StatelessWidget {
+  final AppLocalizations t;
+  final bool isEnabled;
+  final bool isAvailable;
+  final Function(bool) onToggle;
+
+  const _BiometricSettingItem({
+    required this.t,
+    required this.isEnabled,
+    required this.isAvailable,
+    required this.onToggle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Icon(
+            LucideIcons.lock, 
+            color: isAvailable ? Colors.white : Colors.grey,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t.biometricLockSettingsTitle,
+                  style: TextStyle(
+                    color: isAvailable ? Colors.white : Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  isAvailable 
+                    ? t.biometricLockSettingsSubtitle
+                    : t.biometricNotAvailable,
+                  style: TextStyle(
+                    color: isAvailable ? Colors.white54 : Colors.grey.withOpacity(0.6),
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Switch(
+            value: isEnabled,
+            onChanged: isAvailable ? onToggle : null,
+            activeColor: const Color(0xFF8B5CF6),
+          ),
         ],
       ),
     );

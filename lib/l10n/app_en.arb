@@ -180,6 +180,8 @@
     "upgradeBenefits": "Ad-Free Experience\nFull Dream Analysis\nUnlimited Dream Interpretation\nExclusive Guide Access",
     "upgradeBtn": "Unlock DreamBoat PRO (88.99 ₺)",
     "upgradeCancel": "Maybe later",
+    "privacyPolicyLink": "Privacy Policy",
+    "termsOfUseLink": "Terms of Use",
     "upgradeSuccess": "Welcome to DreamBoat PRO!",
     "upgradeStart": "Start",
     "proRequired": "PRO Version Required",
@@ -273,12 +275,13 @@
     "notifOpenSettings": "Open Settings",
     "notifOpenSettingsHint": "You need to enable notifications in settings.",
     "allow": "Allow",
-    "notifReminderBody": "Don't forget to record your dream! 🌙",
+    "notifReminderBody": "Don't forget to record your dream! 📝",
     "pressBackToExit": "Press back again to exit",
     
     "moonSyncTitle": "Monthly Moon & Planet Synchronization",
     "moonSyncSubtitle": "Can be done once a month",
-    "moonSyncDescription": "Interprets your dreams alongside Moon cycles and cosmic events. Learn what influenced you this month and what you should pay attention to.",
+    "moonSyncDescription": "Moon and Planet Synchronization analyzes your dreams from the past month alongside the Moon phase on the day you had them and cosmic events during that period (such as Blood Moon, eclipses). By matching the emotions, intensity, and mood in your dreams with the Moon cycle, it shows what influenced you this month and what you should pay attention to during specific lunar phases (full moon, half moon, etc.). Since it focuses on the Moon's cycle, it is generated once a month.",
+    "moonSyncDescriptionShort": "Interprets your dreams alongside Moon cycles and cosmic events. Learn what influenced you this month and what you should pay attention to.",
     "moonSyncBtn": "Start Cosmic Analysis",
     "moonSyncWait": "You must wait {days} days for a new analysis.",
     "@moonSyncWait": {
@@ -323,14 +326,15 @@
     "mostPopular": "MOST POPULAR",
     "discountPercent": "-30% OFF",
     "subscribeNow": "Subscribe Now",
-    "billingMonthly": "Recurring monthly payment. Cancel anytime.",
-    "billingAnnual": "Billed as one payment. Recurring annual payment.",
+    "billingMonthly": "Monthly auto-renewing subscription.\nCancel anytime.",
+    "billingAnnual": "Yearly auto-renewing subscription.\nBilled once per year.",
     "proFeatureAds": "Ad-Free Experience",
     "proFeatureAnalysis": "Weekly Pattern Analysis",
     "proFeatureGuide": "Lucid Dream Guide",
     "proFeatureMoonSync": "Moon & Planet Synchronization",
     
     "freeTrialDays": "Days Free Trial",
+    "freeTrialBadge": "First 7 days free",
     "then": "Then",
 
     "reviewSatisfactionTitle": "Enjoying DreamBoat?",
@@ -467,5 +471,15 @@
     "emailLabelSupportId": "Support ID (User ID)",
     "emailLabelAppVersion": "App Version",
     "emailLabelPlatform": "Platform",
-    "emailLabelLanguage": "Language"
+    "emailLabelLanguage": "Language",
+    
+    "biometricLockTitle": "Would you like to lock your Dream Journal?",
+    "biometricLockMessage": "Your dreams can be very personal.\nYou can protect your Dream Journal with fingerprint / Face ID.",
+    "biometricLockYes": "Yes, Protect",
+    "biometricLockNo": "Not Now",
+    "biometricLockReason": "Authenticate to access Dream Journal",
+    "biometricLockSettingsTitle": "Dream Journal Lock",
+    "biometricLockSettingsSubtitle": "Protect with fingerprint / Face ID",
+    "biometricNotAvailable": "Biometric feature not found on your device. You can add biometric data in Settings > Security.",
+    "biometricAuthFailed": "Authentication failed"
 }

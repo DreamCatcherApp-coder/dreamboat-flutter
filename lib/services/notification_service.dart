@@ -110,7 +110,7 @@ class NotificationService {
       // Cancel existing notifications first
       await _notificationsPlugin.cancelAll();
       
-      final notificationBody = message ?? 'Rüyanızı kaydetmeyi unutmayın! 🌙';
+      final notificationBody = message ?? 'Rüyanızı kaydetmeyi unutmayın! 📝';
       
       await _notificationsPlugin.zonedSchedule(
         0, // ID

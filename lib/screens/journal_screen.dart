@@ -15,6 +15,7 @@ import 'package:dream_boat_mobile/providers/subscription_provider.dart';
 import 'package:dream_boat_mobile/services/moon_phase_service.dart';
 import 'package:dream_boat_mobile/services/share_service.dart';
 import 'package:dream_boat_mobile/services/review_service.dart';
+import 'package:dream_boat_mobile/services/biometric_service.dart';
 
 class JournalScreen extends StatefulWidget {
   final bool Function(DreamEntry)? filter;
@@ -26,7 +27,7 @@ class JournalScreen extends StatefulWidget {
   State<JournalScreen> createState() => _JournalScreenState();
 }
 
-class _JournalScreenState extends State<JournalScreen> {
+class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserver {
   // 0: All, 1: Favorites
   int _selectedIndex = 0; 
   late PageController _pageController;
@@ -44,12 +45,38 @@ class _JournalScreenState extends State<JournalScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _pageController = PageController(initialPage: 0);
     // Defer Ad loading to check PRO status
     WidgetsBinding.instance.addPostFrameCallback((_) {
        // Pro check logic removed/simplified if needed
     });
     _loadDreams();
+  }
+  
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+  
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _checkBiometricOnResume();
+    }
+  }
+  
+  Future<void> _checkBiometricOnResume() async {
+    // Only check if lock is enabled
+    if (await BiometricService.isJournalLockEnabled()) {
+      final t = AppLocalizations.of(context)!;
+      final authenticated = await BiometricService.authenticate(t.biometricLockReason);
+      if (!authenticated && mounted) {
+        // Authentication failed, pop back to home
+        Navigator.of(context).pop();
+      }
+    }
   }
   
 

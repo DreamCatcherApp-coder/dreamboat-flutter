@@ -180,6 +180,8 @@
     "upgradeBenefits": "Experiencia Sin Anuncios\nAnálisis Completo de Sueños\nInterpretación Ilimitada de Sueños\nAcceso Exclusivo a la Guía",
     "upgradeBtn": "Desbloquear DreamBoat PRO (88,99 ₺)",
     "upgradeCancel": "Quizás después",
+    "privacyPolicyLink": "Política de Privacidad",
+    "termsOfUseLink": "Términos de Uso",
     "upgradeSuccess": "¡Bienvenido a DreamBoat PRO!",
     "upgradeStart": "Empezar",
     "proRequired": "Se Requiere Versión PRO",
@@ -273,12 +275,13 @@
     "notifOpenSettings": "Abrir Ajustes",
     "notifOpenSettingsHint": "Debes activar las notificaciones en los ajustes.",
     "allow": "Permitir",
-    "notifReminderBody": "¡No olvides registrar tu sueño! 🌙",
+    "notifReminderBody": "¡No olvides registrar tu sueño! 📝",
     "pressBackToExit": "Pulsa atrás de nuevo para salir",
     
     "moonSyncTitle": "Sincronización Mensual de Luna y Planeta",
     "moonSyncSubtitle": "Se puede realizar una vez al mes",
-    "moonSyncDescription": "Interpreta tus sueños junto con los ciclos lunares y eventos cósmicos. Aprende qué te influyó este mes y a qué debes prestar atención.",
+    "moonSyncDescription": "La Sincronización de Luna y Planetas analiza tus sueños del último mes junto con la fase lunar del día que los tuviste y los eventos cósmicos de ese período (como Luna de Sangre, eclipses). Al relacionar las emociones, intensidad y estado de ánimo de tus sueños con el ciclo lunar, te muestra qué te influyó este mes y a qué debes prestar atención durante fases lunares específicas (luna llena, cuarto, etc.). Como se centra en el ciclo lunar, se genera una vez al mes.",
+    "moonSyncDescriptionShort": "Interpreta tus sueños junto con los ciclos lunares y eventos cósmicos. Aprende qué te influyó este mes y a qué debes prestar atención.",
     "moonSyncBtn": "Iniciar Análisis Cósmico",
     "moonSyncWait": "Debes esperar {days} días para un nuevo análisis.",
     "@moonSyncWait": {
@@ -323,14 +326,15 @@
     "mostPopular": "MÁS POPULAR",
     "discountPercent": "-30% DESCUENTO",
     "subscribeNow": "Suscribirse",
-    "billingMonthly": "Pago mensual recurrente. Cancela cuando quieras.",
-    "billingAnnual": "Facturado como un solo pago. Pago anual recurrente.",
+    "billingMonthly": "Suscripción mensual con renovación automática.\nCancela cuando quieras.",
+    "billingAnnual": "Suscripción anual con renovación automática.\nSe factura una vez al año.",
     "proFeatureAds": "Experiencia Sin Anuncios",
     "proFeatureAnalysis": "Análisis Semanal de Patrones",
     "proFeatureGuide": "Guía de Sueños Lúcidos",
     "proFeatureMoonSync": "Sincronización Lunar y Planetaria",
     
     "freeTrialDays": "Días de Prueba Gratis",
+    "freeTrialBadge": "Primeros 7 días gratis",
     "then": "Luego",
 
     "reviewSatisfactionTitle": "¿Te gusta DreamBoat?",
@@ -466,5 +470,15 @@
     "emailLabelSupportId": "ID de Soporte (ID de Usuario)",
     "emailLabelAppVersion": "Versión de la App",
     "emailLabelPlatform": "Plataforma",
-    "emailLabelLanguage": "Idioma"
+    "emailLabelLanguage": "Idioma",
+    
+    "biometricLockTitle": "¿Te gustaría bloquear tu Diario de Sueños?",
+    "biometricLockMessage": "Tus sueños pueden ser muy personales.\nPuedes proteger tu Diario de Sueños con huella digital / Face ID.",
+    "biometricLockYes": "Sí, Proteger",
+    "biometricLockNo": "Ahora No",
+    "biometricLockReason": "Autentícate para acceder al Diario de Sueños",
+    "biometricLockSettingsTitle": "Bloqueo del Diario de Sueños",
+    "biometricLockSettingsSubtitle": "Proteger con huella digital / Face ID",
+    "biometricNotAvailable": "Función biométrica no encontrada en tu dispositivo. Puedes agregar datos biométricos en Ajustes > Seguridad.",
+    "biometricAuthFailed": "Autenticación fallida"
 }

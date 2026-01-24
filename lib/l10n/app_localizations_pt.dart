@@ -576,6 +576,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get upgradeCancel => 'Talvez depois';
 
   @override
+  String get privacyPolicyLink => 'Política de Privacidade';
+
+  @override
+  String get termsOfUseLink => 'Termos de Uso';
+
+  @override
   String get upgradeSuccess => 'Bem-vindo ao DreamBoat PRO!';
 
   @override
@@ -904,7 +910,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get allow => 'Permitir';
 
   @override
-  String get notifReminderBody => 'Não se esqueça de registrar seu sonho! 🌙';
+  String get notifReminderBody => 'Não se esqueça de registrar seu sonho! 📝';
 
   @override
   String get pressBackToExit => 'Pressione voltar novamente para sair';
@@ -917,6 +923,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
+      'A Sincronização de Lua e Planetas analisa seus sonhos do último mês junto com a fase lunar do dia em que os teve e os eventos cósmicos desse período (como Lua de Sangue, eclipses). Ao relacionar as emoções, intensidade e estado de espírito dos seus sonhos com o ciclo lunar, mostra o que influenciou você este mês e ao que deve prestar atenção durante fases lunares específicas (lua cheia, quarto, etc.). Como foca no ciclo lunar, é gerada uma vez por mês.';
+
+  @override
+  String get moonSyncDescriptionShort =>
       'Interpreta seus sonhos junto com os ciclos lunares e eventos cósmicos. Aprenda o que influenciou você este mês e ao que deve prestar atenção.';
 
   @override
@@ -1015,11 +1025,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get billingMonthly =>
-      'Pagamento mensal recorrente. Cancele quando quiser.';
+      'Assinatura mensal com renovação automática.\nCancele quando quiser.';
 
   @override
   String get billingAnnual =>
-      'Cobrado como um único pagamento. Pagamento anual recorrente.';
+      'Assinatura anual com renovação automática.\nCobrado uma vez por ano.';
 
   @override
   String get proFeatureAds => 'Experiência Sem Anúncios';
@@ -1035,6 +1045,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get freeTrialDays => 'Dias de Teste Grátis';
+
+  @override
+  String get freeTrialBadge => 'Primeiros 7 dias grátis';
 
   @override
   String get then => 'Depois';
@@ -1414,4 +1427,35 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get emailLabelLanguage => 'Idioma';
+
+  @override
+  String get biometricLockTitle => 'Gostaria de bloquear seu Diário de Sonhos?';
+
+  @override
+  String get biometricLockMessage =>
+      'Seus sonhos podem ser muito pessoais.\nVocê pode proteger seu Diário de Sonhos com impressão digital / Face ID.';
+
+  @override
+  String get biometricLockYes => 'Sim, Proteger';
+
+  @override
+  String get biometricLockNo => 'Agora Não';
+
+  @override
+  String get biometricLockReason =>
+      'Autentique-se para acessar o Diário de Sonhos';
+
+  @override
+  String get biometricLockSettingsTitle => 'Bloqueio do Diário de Sonhos';
+
+  @override
+  String get biometricLockSettingsSubtitle =>
+      'Proteger com impressão digital / Face ID';
+
+  @override
+  String get biometricNotAvailable =>
+      'Recurso biométrico não encontrado no seu dispositivo. Você pode adicionar dados biométricos em Configurações > Segurança.';
+
+  @override
+  String get biometricAuthFailed => 'Autenticação falhou';
 }

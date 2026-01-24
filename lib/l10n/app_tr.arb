@@ -183,6 +183,8 @@
     "upgradeBenefits": "Reklamsız Deneyim\nTam Rüya Analizi\nLimitsiz Rüya Yorumu\nÖzel Rehber Erişimi",
     "upgradeBtn": "DreamBoat PRO'yu Aç (88,99 ₺)",
     "upgradeCancel": "Belki daha sonra",
+    "privacyPolicyLink": "Gizlilik Politikası",
+    "termsOfUseLink": "Kullanım Şartları",
     "upgradeSuccess": "DreamBoat PRO'ya hoşgeldin!",
     "upgradeStart": "Başla",
     "proRequired": "PRO Versiyon Gerekir",
@@ -290,12 +292,13 @@
     "notifOpenSettings": "Ayarları Aç",
     "notifOpenSettingsHint": "Bildirimleri etkinleştirmek için ayarlardan izin vermeniz gerekiyor.",
     "allow": "İzin Ver",
-    "notifReminderBody": "Rüyanızı kaydetmeyi unutmayın! 🌙",
+    "notifReminderBody": "Rüyanızı kaydetmeyi unutmayın! 📝",
     "pressBackToExit": "Çıkmak için tekrar geri tuşuna basın",
     
     "moonSyncTitle": "Aylık Ay ve Gezegen Senkronizasyonu",
     "moonSyncSubtitle": "Ayda bir kez yapılabilir",
-    "moonSyncDescription": "Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.",
+    "moonSyncDescription": "Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.",
+    "moonSyncDescriptionShort": "Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.",
     "moonSyncBtn": "Kozmik Analizi Başlat",
     "moonSyncWait": "Yeni analiz için {days} gün beklemelisiniz.",
     "@moonSyncWait": {
@@ -340,14 +343,15 @@
     "mostPopular": "EN POPÜLER",
     "discountPercent": "-%30 İNDİRİM",
     "subscribeNow": "Abone Ol",
-    "billingMonthly": "Aylık yinelenen ödeme. İstediğin zaman iptal et.",
-    "billingAnnual": "Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.",
+    "billingMonthly": "Aylık otomatik yenilenen abonelik.\nİstediğin zaman iptal edebilirsin.",
+    "billingAnnual": "Yıllık otomatik yenilenen abonelik.\nHer yıl bir kez faturalandırılır.",
     "proFeatureAds": "Reklamsız Deneyim",
     "proFeatureAnalysis": "Haftalık Desen Analizi",
     "proFeatureGuide": "Lucid Rüya Rehberi",
     "proFeatureMoonSync": "Aylık Ay ve Gezegen Senkronizasyonu",
     
     "freeTrialDays": "Gün Ücretsiz Dene",
+    "freeTrialBadge": "İlk 7 gün ücretsiz dene",
     "then": "Sonra",
 
     "reviewSatisfactionTitle": "DreamBoat'u sevdin mi?",
@@ -484,5 +488,15 @@
     "emailLabelSupportId": "Destek Kimliği (User ID)",
     "emailLabelAppVersion": "Uygulama Sürümü",
     "emailLabelPlatform": "Platform",
-    "emailLabelLanguage": "Dil"
+    "emailLabelLanguage": "Dil",
+    
+    "biometricLockTitle": "Rüya Günlüğünü Kilitlemek İster misin?",
+    "biometricLockMessage": "Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü'nü parmak izi / Face ID ile koruyabilirsin.",
+    "biometricLockYes": "Evet, Koru",
+    "biometricLockNo": "Şimdilik Hayır",
+    "biometricLockReason": "Rüya Günlüğü'ne erişmek için doğrula",
+    "biometricLockSettingsTitle": "Rüya Günlüğü Kilidi",
+    "biometricLockSettingsSubtitle": "Parmak izi / Face ID ile koru",
+    "biometricNotAvailable": "Cihazınızda biyometrik özellik bulunamadı. Ayarlar > Güvenlik kısmından biyometrik verinizi ekleyebilirsiniz.",
+    "biometricAuthFailed": "Doğrulama başarısız"
 }

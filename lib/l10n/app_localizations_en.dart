@@ -573,6 +573,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upgradeCancel => 'Maybe later';
 
   @override
+  String get privacyPolicyLink => 'Privacy Policy';
+
+  @override
+  String get termsOfUseLink => 'Terms of Use';
+
+  @override
   String get upgradeSuccess => 'Welcome to DreamBoat PRO!';
 
   @override
@@ -900,7 +906,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get allow => 'Allow';
 
   @override
-  String get notifReminderBody => 'Don\'t forget to record your dream! 🌙';
+  String get notifReminderBody => 'Don\'t forget to record your dream! 📝';
 
   @override
   String get pressBackToExit => 'Press back again to exit';
@@ -913,6 +919,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
+      'Moon and Planet Synchronization analyzes your dreams from the past month alongside the Moon phase on the day you had them and cosmic events during that period (such as Blood Moon, eclipses). By matching the emotions, intensity, and mood in your dreams with the Moon cycle, it shows what influenced you this month and what you should pay attention to during specific lunar phases (full moon, half moon, etc.). Since it focuses on the Moon\'s cycle, it is generated once a month.';
+
+  @override
+  String get moonSyncDescriptionShort =>
       'Interprets your dreams alongside Moon cycles and cosmic events. Learn what influenced you this month and what you should pay attention to.';
 
   @override
@@ -1009,11 +1019,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subscribeNow => 'Subscribe Now';
 
   @override
-  String get billingMonthly => 'Recurring monthly payment. Cancel anytime.';
+  String get billingMonthly =>
+      'Monthly auto-renewing subscription.\nCancel anytime.';
 
   @override
   String get billingAnnual =>
-      'Billed as one payment. Recurring annual payment.';
+      'Yearly auto-renewing subscription.\nBilled once per year.';
 
   @override
   String get proFeatureAds => 'Ad-Free Experience';
@@ -1029,6 +1040,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get freeTrialDays => 'Days Free Trial';
+
+  @override
+  String get freeTrialBadge => 'First 7 days free';
 
   @override
   String get then => 'Then';
@@ -1405,4 +1419,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailLabelLanguage => 'Language';
+
+  @override
+  String get biometricLockTitle => 'Would you like to lock your Dream Journal?';
+
+  @override
+  String get biometricLockMessage =>
+      'Your dreams can be very personal.\nYou can protect your Dream Journal with fingerprint / Face ID.';
+
+  @override
+  String get biometricLockYes => 'Yes, Protect';
+
+  @override
+  String get biometricLockNo => 'Not Now';
+
+  @override
+  String get biometricLockReason => 'Authenticate to access Dream Journal';
+
+  @override
+  String get biometricLockSettingsTitle => 'Dream Journal Lock';
+
+  @override
+  String get biometricLockSettingsSubtitle =>
+      'Protect with fingerprint / Face ID';
+
+  @override
+  String get biometricNotAvailable =>
+      'Biometric feature not found on your device. You can add biometric data in Settings > Security.';
+
+  @override
+  String get biometricAuthFailed => 'Authentication failed';
 }

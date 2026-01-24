@@ -6,6 +6,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/services/connectivity_service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 
 class ProUpgradeDialog extends StatefulWidget {
@@ -91,6 +92,22 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
       if (mounted) {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  void _openLegalUrl(BuildContext context, String type) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    // Map locale to supported URL paths, default to 'en'
+    final supportedLocales = ['en', 'tr', 'es', 'de', 'fr', 'pt', 'it'];
+    final urlLocale = supportedLocales.contains(locale) ? locale : 'en';
+    
+    final path = type == 'privacy' ? 'privacy' : 'terms';
+    final url = Uri.parse('https://www.novabloomstudio.com/$urlLocale/$path');
+    
+    try {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      debugPrint('Could not launch $url: $e');
     }
   }
 
@@ -224,53 +241,76 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                           
                           const SizedBox(height: 24),
 
-                          // Side-by-side pricing cards
-                          Row(
+                          // Side-by-side pricing cards with centered badge
+                          Stack(
+                            clipBehavior: Clip.none,
                             children: [
-                              // Monthly Card
-                              Expanded(
-                                child: _buildPricingCard(
-                                  title: t.planMonthly,
-                                  price: monthlyPrice,
-                                  billingInfo: t.billingMonthly,
-                                  isPopular: false,
-                                  isSelected: !_isYearlySelected,
-                                  onTap: () => setState(() => _isYearlySelected = false),
-                                  onSubscribe: () => _handlePurchase(false),
-                                  subscribeText: t.subscribeNow,
-                                ),
-                              ),
-                              
-                              const SizedBox(width: 12),
-                              
-                              // Annual Card
-                              Expanded(
-                                child: _buildPricingCard(
-                                  title: t.planAnnual,
-                                  price: yearlyPrice,
-                                  billingInfo: t.billingAnnual,
-                                  isPopular: true,
-                                  popularLabel: t.mostPopular,
-                                  discountLabel: t.discountPercent,
-                                  isSelected: _isYearlySelected,
-                                  onTap: () => setState(() => _isYearlySelected = true),
-                                  onSubscribe: () => _handlePurchase(true),
-                                  subscribeText: t.subscribeNow,
-                                ),
+                              Row(
+                                children: [
+                                  // Monthly Card
+                                  Expanded(
+                                    child: _buildPricingCard(
+                                      title: t.planMonthly,
+                                      price: monthlyPrice,
+                                      billingInfo: t.billingMonthly,
+                                      isPopular: false,
+                                      isSelected: !_isYearlySelected,
+                                      onTap: () => setState(() => _isYearlySelected = false),
+                                      onSubscribe: () => _handlePurchase(false),
+                                      subscribeText: t.subscribeNow,
+                                    ),
+                                  ),
+                                  
+                                  const SizedBox(width: 12),
+                                  
+                                  // Annual Card
+                                  Expanded(
+                                    child: _buildPricingCard(
+                                      title: t.planAnnual,
+                                      price: yearlyPrice,
+                                      billingInfo: t.billingAnnual,
+                                      isPopular: true,
+                                      popularLabel: t.mostPopular,
+                                      discountLabel: t.discountPercent,
+                                      isSelected: _isYearlySelected,
+                                      onTap: () => setState(() => _isYearlySelected = true),
+                                      onSubscribe: () => _handlePurchase(true),
+                                      subscribeText: t.subscribeNow,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                           
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 28),
                           
-                          // Divider
-                          Container(
-                            width: 100,
-                            height: 1,
-                            color: Colors.white.withOpacity(0.1),
+                          // Free Trial Badge - subtle, smaller than main badges
+                          Center(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                              decoration: BoxDecoration(
+                                // Subtle glass effect
+                                color: const Color(0xFF3EE6C4).withOpacity(0.08),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: const Color(0xFF3EE6C4).withOpacity(0.30),
+                                  width: 0.5,
+                                ),
+                              ),
+                              child: Text(
+                                t.freeTrialBadge,
+                                style: TextStyle(
+                                  color: const Color(0xFF3EE6C4).withOpacity(0.85),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ),
                           ),
                           
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 18),
 
                           // PRO Features with descriptions (no icons)
                           _buildFeatureWithSubtitle(
@@ -283,7 +323,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                           ),
                           _buildFeatureWithSubtitle(
                             title: t.moonSyncTitle,
-                            subtitle: t.moonSyncDescription,
+                            subtitle: t.moonSyncDescriptionShort,
                           ),
                           _buildFeatureWithSubtitle(
                             title: t.proFeatureGuideTitle,
@@ -344,6 +384,49 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                 letterSpacing: 0.5,
                               ),
                             ),
+                          ),
+                          
+                          const SizedBox(height: 8),
+                          
+                          // Legal links row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () => _openLegalUrl(context, 'privacy'),
+                                child: Text(
+                                  t.privacyPolicyLink,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.35),
+                                    fontSize: 11,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white.withOpacity(0.35),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: Text(
+                                  '|',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.2),
+                                    fontSize: 11,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () => _openLegalUrl(context, 'terms'),
+                                child: Text(
+                                  t.termsOfUseLink,
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.35),
+                                    fontSize: 11,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.white.withOpacity(0.35),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -547,22 +630,22 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
             // Discount badge (bottom)
             if (discountLabel != null)
               Positioned(
-                bottom: -20,
+                bottom: -28,
                 left: 0,
                 right: 0,
                 child: Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         colors: [Color(0xFF10B981), Color(0xFF059669)],
                       ),
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF10B981).withOpacity(0.5),
-                          blurRadius: 10,
-                          spreadRadius: 2,
+                          color: const Color(0xFF10B981).withOpacity(0.55),
+                          blurRadius: 12,
+                          spreadRadius: 3,
                         ),
                       ],
                     ),
@@ -570,7 +653,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                       discountLabel,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
                       ),

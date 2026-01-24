@@ -571,6 +571,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get upgradeCancel => 'Belki daha sonra';
 
   @override
+  String get privacyPolicyLink => 'Gizlilik Politikası';
+
+  @override
+  String get termsOfUseLink => 'Kullanım Şartları';
+
+  @override
   String get upgradeSuccess => 'DreamBoat PRO\'ya hoşgeldin!';
 
   @override
@@ -898,7 +904,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get allow => 'İzin Ver';
 
   @override
-  String get notifReminderBody => 'Rüyanızı kaydetmeyi unutmayın! 🌙';
+  String get notifReminderBody => 'Rüyanızı kaydetmeyi unutmayın! 📝';
 
   @override
   String get pressBackToExit => 'Çıkmak için tekrar geri tuşuna basın';
@@ -911,6 +917,10 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moonSyncDescription =>
+      'Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay\'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.';
+
+  @override
+  String get moonSyncDescriptionShort =>
       'Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.';
 
   @override
@@ -1009,11 +1019,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get billingMonthly =>
-      'Aylık yinelenen ödeme. İstediğin zaman iptal et.';
+      'Aylık otomatik yenilenen abonelik.\nİstediğin zaman iptal edebilirsin.';
 
   @override
   String get billingAnnual =>
-      'Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.';
+      'Yıllık otomatik yenilenen abonelik.\nHer yıl bir kez faturalandırılır.';
 
   @override
   String get proFeatureAds => 'Reklamsız Deneyim';
@@ -1029,6 +1039,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get freeTrialDays => 'Gün Ücretsiz Dene';
+
+  @override
+  String get freeTrialBadge => 'İlk 7 gün ücretsiz dene';
 
   @override
   String get then => 'Sonra';
@@ -1404,4 +1417,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get emailLabelLanguage => 'Dil';
+
+  @override
+  String get biometricLockTitle => 'Rüya Günlüğünü Kilitlemek İster misin?';
+
+  @override
+  String get biometricLockMessage =>
+      'Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü\'nü parmak izi / Face ID ile koruyabilirsin.';
+
+  @override
+  String get biometricLockYes => 'Evet, Koru';
+
+  @override
+  String get biometricLockNo => 'Şimdilik Hayır';
+
+  @override
+  String get biometricLockReason => 'Rüya Günlüğü\'ne erişmek için doğrula';
+
+  @override
+  String get biometricLockSettingsTitle => 'Rüya Günlüğü Kilidi';
+
+  @override
+  String get biometricLockSettingsSubtitle => 'Parmak izi / Face ID ile koru';
+
+  @override
+  String get biometricNotAvailable =>
+      'Cihazınızda biyometrik özellik bulunamadı. Ayarlar > Güvenlik kısmından biyometrik verinizi ekleyebilirsiniz.';
+
+  @override
+  String get biometricAuthFailed => 'Doğrulama başarısız';
 }

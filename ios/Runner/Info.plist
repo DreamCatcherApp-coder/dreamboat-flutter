@@ -47,5 +47,7 @@
 	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3940256099942544~3347511713</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Rüya günlüğünüzü yalnızca sizin görebilmeniz için Face ID kullanıyoruz.</string>
 </dict>
 </plist>

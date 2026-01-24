@@ -1118,6 +1118,18 @@ abstract class AppLocalizations {
   /// **'Belki daha sonra'**
   String get upgradeCancel;
 
+  /// No description provided for @privacyPolicyLink.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gizlilik Politikası'**
+  String get privacyPolicyLink;
+
+  /// No description provided for @termsOfUseLink.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kullanım Şartları'**
+  String get termsOfUseLink;
+
   /// No description provided for @upgradeSuccess.
   ///
   /// In tr, this message translates to:
@@ -1715,7 +1727,7 @@ abstract class AppLocalizations {
   /// No description provided for @notifReminderBody.
   ///
   /// In tr, this message translates to:
-  /// **'Rüyanızı kaydetmeyi unutmayın! 🌙'**
+  /// **'Rüyanızı kaydetmeyi unutmayın! 📝'**
   String get notifReminderBody;
 
   /// No description provided for @pressBackToExit.
@@ -1739,8 +1751,14 @@ abstract class AppLocalizations {
   /// No description provided for @moonSyncDescription.
   ///
   /// In tr, this message translates to:
-  /// **'Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.'**
+  /// **'Ay ve Gezegen Senkronizasyonu, son bir ay içindeki rüyalarını gördüğün güne ait Ay evresi ve o dönemdeki kozmik olaylarla (Kanlı Ay, tutulmalar gibi) birlikte analiz eder. Rüyalarındaki duygu, yoğunluk ve ruh hâlini Ay döngüsüyle eşleştirerek, bu ay seni nelerin etkilediğini ve belirli ay döngülerinde (dolunay, yarım ay gibi) nelere dikkat etmen gerektiğini gösterir. Ay\'ın döngüsüne odaklı olduğu için ayda bir kez oluşturulur.'**
   String get moonSyncDescription;
+
+  /// No description provided for @moonSyncDescriptionShort.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyalarını Ay döngüleri ve kozmik olaylarla birlikte yorumlar. Bu ay seni nelerin etkilediğini ve nelere dikkat etmen gerektiğini öğrenirsin.'**
+  String get moonSyncDescriptionShort;
 
   /// No description provided for @moonSyncBtn.
   ///
@@ -1919,13 +1937,13 @@ abstract class AppLocalizations {
   /// No description provided for @billingMonthly.
   ///
   /// In tr, this message translates to:
-  /// **'Aylık yinelenen ödeme. İstediğin zaman iptal et.'**
+  /// **'Aylık otomatik yenilenen abonelik.\nİstediğin zaman iptal edebilirsin.'**
   String get billingMonthly;
 
   /// No description provided for @billingAnnual.
   ///
   /// In tr, this message translates to:
-  /// **'Tek seferlik ödeme olarak faturalandırılır. Yıllık yinelenir.'**
+  /// **'Yıllık otomatik yenilenen abonelik.\nHer yıl bir kez faturalandırılır.'**
   String get billingAnnual;
 
   /// No description provided for @proFeatureAds.
@@ -1957,6 +1975,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Gün Ücretsiz Dene'**
   String get freeTrialDays;
+
+  /// No description provided for @freeTrialBadge.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlk 7 gün ücretsiz dene'**
+  String get freeTrialBadge;
 
   /// No description provided for @then.
   ///
@@ -2647,6 +2671,60 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Dil'**
   String get emailLabelLanguage;
+
+  /// No description provided for @biometricLockTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya Günlüğünü Kilitlemek İster misin?'**
+  String get biometricLockTitle;
+
+  /// No description provided for @biometricLockMessage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü\'nü parmak izi / Face ID ile koruyabilirsin.'**
+  String get biometricLockMessage;
+
+  /// No description provided for @biometricLockYes.
+  ///
+  /// In tr, this message translates to:
+  /// **'Evet, Koru'**
+  String get biometricLockYes;
+
+  /// No description provided for @biometricLockNo.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şimdilik Hayır'**
+  String get biometricLockNo;
+
+  /// No description provided for @biometricLockReason.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya Günlüğü\'ne erişmek için doğrula'**
+  String get biometricLockReason;
+
+  /// No description provided for @biometricLockSettingsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya Günlüğü Kilidi'**
+  String get biometricLockSettingsTitle;
+
+  /// No description provided for @biometricLockSettingsSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Parmak izi / Face ID ile koru'**
+  String get biometricLockSettingsSubtitle;
+
+  /// No description provided for @biometricNotAvailable.
+  ///
+  /// In tr, this message translates to:
+  /// **'Cihazınızda biyometrik özellik bulunamadı. Ayarlar > Güvenlik kısmından biyometrik verinizi ekleyebilirsiniz.'**
+  String get biometricNotAvailable;
+
+  /// No description provided for @biometricAuthFailed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Doğrulama başarısız'**
+  String get biometricAuthFailed;
 }
 
 class _AppLocalizationsDelegate
