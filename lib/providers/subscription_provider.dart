@@ -14,9 +14,10 @@ class SubscriptionProvider extends ChangeNotifier {
   CustomerInfo? _customerInfo;
   Offerings? _offerings;
 
-  // RevenueCat API Key (Production - Play Store)
-  static const String _revenueCatApiKey = 'goog_LBAhypBGyaAupCMVbaViawqANGq';
-  
+  // RevenueCat API Keys
+  static const String _androidApiKey = 'goog_LBAhypBGyaAupCMVbaViawqANGq';
+  static const String _iosApiKey = 'appl_place_holder_key_until_setup'; // TODO: Update from RevenueCat Dashboard
+
   // Entitlement identifier from RevenueCat dashboard
   static const String _proEntitlement = 'pro';
 
@@ -61,8 +62,20 @@ class SubscriptionProvider extends ChangeNotifier {
     try {
       debugPrint('=== Configuring RevenueCat (background) ===');
       
+      String apiKey;
+      if (Platform.isAndroid) {
+        apiKey = _androidApiKey;
+        debugPrint('Using Android API Key');
+      } else if (Platform.isIOS) {
+        apiKey = _iosApiKey; 
+        debugPrint('Using iOS API Key');
+      } else {
+         // Fallback or other platforms
+         apiKey = _androidApiKey;
+      }
+
       // Configure with timeout to prevent hanging
-      await Purchases.configure(PurchasesConfiguration(_revenueCatApiKey))
+      await Purchases.configure(PurchasesConfiguration(apiKey))
           .timeout(const Duration(seconds: 10), onTimeout: () {
         debugPrint('RevenueCat configure timed out');
         throw TimeoutException('RevenueCat configure timed out');
