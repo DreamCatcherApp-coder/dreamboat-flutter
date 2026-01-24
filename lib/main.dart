@@ -73,6 +73,9 @@ Future<void> _initFirebaseInBackground() async {
       androidProvider: kDebugMode 
           ? AndroidProvider.debug 
           : AndroidProvider.playIntegrity,
+      appleProvider: kDebugMode 
+          ? AppleProvider.debug 
+          : AppleProvider.appAttest,
     );
     debugPrint('=== Background: App Check activated (${kDebugMode ? "DEBUG" : "PLAY_INTEGRITY"}) ===');
     
