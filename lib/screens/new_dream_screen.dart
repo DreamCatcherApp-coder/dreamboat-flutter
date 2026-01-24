@@ -193,7 +193,9 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       String? title;
       
       // Check for internet connection first
-      final isConnected = await ConnectivityService.isConnected;
+      // REMOVED BLOCKING CHECK: Firebase handles connectivity better
+      // final isConnected = await ConnectivityService.isConnected;
+      const isConnected = true; // Assume true and let try/catch handle errors
       
       if (!isConnected) {
         interpretation = t.offlineInterpretation;

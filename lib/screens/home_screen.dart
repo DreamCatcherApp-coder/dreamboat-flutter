@@ -68,62 +68,109 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        title: Row(
-          children: [
-            const Icon(LucideIcons.bell, color: Color(0xFFFBBF24), size: 24),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                t.notifDialogTitle,
-                style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1B35).withOpacity(0.95), // Premium Dark Background
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: const Color(0xFF8B5CF6).withOpacity(0.3)),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF8B5CF6).withOpacity(0.15),
+                blurRadius: 20,
+                spreadRadius: -5,
+              )
+            ]
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFBBF24).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(LucideIcons.bellRing, color: Color(0xFFFBBF24), size: 32),
               ),
-            ),
-          ],
-        ),
-        content: Text(
-          t.notifDialogBody,
-          style: const TextStyle(color: Colors.white70, fontSize: 14, height: 1.5),
-        ),
-        actions: [
-          TextButton(
-            style: TextButton.styleFrom(
-              minimumSize: const Size(48, 48),
-              tapTargetSize: MaterialTapTargetSize.padded,
-            ),
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(t.cancel, style: const TextStyle(color: Colors.grey)),
+              const SizedBox(height: 20),
+              
+              // Title
+              Text(
+                t.notifDialogTitle,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
+              
+              // Body
+              Text(
+                t.notifDialogBody,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.white70, fontSize: 15, height: 1.5),
+              ),
+              const SizedBox(height: 24),
+              
+              // Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                       onPressed: () => Navigator.pop(ctx),
+                       style: TextButton.styleFrom(
+                         padding: const EdgeInsets.symmetric(vertical: 12),
+                       ),
+                       child: Text(t.cancel, style: const TextStyle(color: Colors.white54, fontSize: 16)),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(colors: [Color(0xFFFBBF24), Color(0xFFF59E0B)]),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(color: const Color(0xFFFBBF24).withOpacity(0.3), blurRadius: 8, spreadRadius: 1)
+                        ]
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onPressed: () async {
+                           Navigator.pop(ctx);
+                           // Force request even if previously deemed denied?
+                           // iOS will not show prompt if already denied, but will return false instantly.
+                           final granted = await NotificationService().requestPermissions();
+                           
+                           if (granted == true) {
+                             final localizedMessage = t.notifReminderBody;
+                             await NotificationService().scheduleDailyNotification(const TimeOfDay(hour: 9, minute: 0), message: localizedMessage);
+                             final prefs = await SharedPreferences.getInstance();
+                             await prefs.setBool('notif_enabled', true);
+                             await prefs.setInt('notif_hour', 9);
+                             await prefs.setInt('notif_minute', 0);
+                             await prefs.setString('notif_message', localizedMessage);
+                           } else if (mounted) {
+                             // Only show manual settings prompt if truly denied
+                             _showPermissionDeniedDialog();
+                           }
+                        },
+                        child: Text(t.allow, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFBBF24),
-              foregroundColor: Colors.black,
-              minimumSize: const Size(48, 48),
-              tapTargetSize: MaterialTapTargetSize.padded,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            onPressed: () async {
-              Navigator.pop(ctx);
-              final granted = await NotificationService().requestPermissions();
-              if (granted == true) {
-                // Schedule default 09:00 notification with localized message
-                final localizedMessage = t.notifReminderBody;
-                await NotificationService().scheduleDailyNotification(const TimeOfDay(hour: 9, minute: 0), message: localizedMessage);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('notif_enabled', true);
-                await prefs.setInt('notif_hour', 9);
-                await prefs.setInt('notif_minute', 0);
-                await prefs.setString('notif_message', localizedMessage);
-              } else if (mounted) {
-                // Permission denied - show settings option
-                _showPermissionDeniedDialog();
-              }
-            },
-            child: Text(t.allow, style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-        ],
+        ),
       ),
     );
   }

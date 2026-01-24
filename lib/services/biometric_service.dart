@@ -10,6 +10,13 @@ class BiometricService {
   static const String _journalLockKey = 'journal_lock_enabled';
   static const String _promptShownKey = 'biometric_prompt_shown';
 
+  static DateTime? _lastAuthTime;
+  
+  /// Check if authentication happened very recently (prevents loops)
+  static bool get recentlyAuthenticated => 
+      _lastAuthTime != null && 
+      DateTime.now().difference(_lastAuthTime!) < const Duration(seconds: 3);
+
   /// Check if device has biometric capability
   static Future<bool> isBiometricAvailable() async {
     try {
@@ -29,7 +36,7 @@ class BiometricService {
       final isAvailable = await isBiometricAvailable();
       if (!isAvailable) return false;
 
-      return await _auth.authenticate(
+      final authenticated = await _auth.authenticate(
         localizedReason: localizedReason,
         options: AuthenticationOptions(
           stickyAuth: true,
@@ -38,6 +45,12 @@ class BiometricService {
           biometricOnly: Platform.isIOS,
         ),
       );
+      
+      if (authenticated) {
+        _lastAuthTime = DateTime.now();
+      }
+      
+      return authenticated;
     } catch (e) {
       debugPrint('Authentication error: $e');
       return false;

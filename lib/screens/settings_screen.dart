@@ -199,6 +199,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
+                  // Biometric Lock Toggle (moved to top)
+                  _BiometricSettingItem(
+                    t: t,
+                    isEnabled: _biometricLockEnabled,
+                    isAvailable: _biometricAvailable,
+                    onToggle: _toggleBiometricLock,
+                  ),
                   _SettingItem(
                     icon: LucideIcons.globe,
                     title: t.settingsLanguage,
@@ -263,12 +270,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     onTap: () => _showSupportModal(context),
                   ),
                   // Biometric Lock Toggle (moved to bottom)
-                  _BiometricSettingItem(
-                    t: t,
-                    isEnabled: _biometricLockEnabled,
-                    isAvailable: _biometricAvailable,
-                    onToggle: _toggleBiometricLock,
-                  ),
+
                   // Support ID Item removed and moved to Support Modal
 
                    // DEBUG Toggle for Emulator Testing

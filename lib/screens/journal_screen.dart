@@ -71,8 +71,8 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
   }
   
   Future<void> _checkBiometricOnResume() async {
-    // Prevent repeated auth calls during biometric prompt
-    if (_isAuthenticating) return;
+    // Prevent repeated auth calls during biometric prompt or immediately after success
+    if (_isAuthenticating || BiometricService.recentlyAuthenticated) return;
     
     // Only check if lock is enabled
     if (await BiometricService.isJournalLockEnabled()) {
