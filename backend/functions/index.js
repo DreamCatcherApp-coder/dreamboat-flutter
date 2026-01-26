@@ -104,6 +104,8 @@ ${anchorsJSON}
 - MARKDOWN BOLDING (**) IS STRICTLY FORBIDDEN.
 - MARKDOWN ITALICS (*) IS STRICTLY FORBIDDEN.
 - DO NOT EMPHASIZE WORDS WITH SYMBOLS. JUST WRITE WORDS.
+- **ABSOLUTELY FORBIDDEN:** Do NOT explain symbols in parentheses e.g. "deniz (duygular)", "balık (kısmet)". 
+- Instead, weave the meaning naturally into the flow of the sentence.
 
 ---
 
@@ -139,9 +141,10 @@ ${anchorsJSON}
 1. **MANDATORY MULTI-ANCHOR SYNTHESIS:**
    - Check "Dictionary Anchors". If multiple are present, you **MUST** weave **ALL** of them into Paragraph 1.
    - **DO NOT** cherry-pick just one. **DO NOT** list them (A=X, B=Y).
+   - **DO NOT** use parentheses for meanings. *Bad:* "Deniz (duygular) kabardı." -> *Good:* "Duygularının denizi kabardı..."
    - *Bad:* "Asansör değişimi, anahtar çözümü simgeler." (List).
-   - *Good:* "Yaşadığın bu içsel seviye değişimi (asansör), henüz elinde olmayan bir çözüm aracıyla (anahtar) birleştiğinde, belirsizliğin (sis) aslında bir davet olduğunu gösteriyor."
-   - *Good (Complex):* "Ayaklarının yere basmaması (istikrar kaybı), boğazındaki düğümle (ifade zorluğu) birleşerek, şu an üzerinde hissettiğin baskıdan kaçma isteğini (koşmak) tetikliyor."
+   - *Good:* "Yaşadığın bu içsel seviye değişimi, henüz elinde olmayan bir çözüm aracıyla birleştiğinde, belirsizliğin aslında bir davet olduğunu gösteriyor."
+   - *Good (Complex):* "Ayaklarının yere basmamasıyla yaşadığın istikrar kaybı, boğazındaki ifade düğümüyle birleşerek, şu an üzerinde hissettiğin baskıdan kaçıp uzaklaşma isteğini tetikliyor."
 2. **NO GENERIC FLUFF:** Every sentence must add unique meaning based on the symbols.
 3. **CONTEXTUAL TIMING (WHY NOW?):**
    - Don't just interpret *what* it means, interpret *when* it is happening.
