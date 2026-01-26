@@ -219,19 +219,10 @@
 		<string>de</string>
 	</array>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Rüya günlüğünüzü yalnızca sizin görebilmeniz için Face ID kullanıyoruz.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>DreamBoat needs camera access to attach images to dreams.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>DreamBoat needs microphone access for future voice dream notes.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>DreamBoat needs photo access to attach images to dreams.</string>
+	<string>We use Face ID to keep your dream journal private.</string>
+
 	<key>NSUserNotificationUsageDescription</key>
 	<string>DreamBoat sends reminders to log your dreams.</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
+
 </dict>
 </plist>

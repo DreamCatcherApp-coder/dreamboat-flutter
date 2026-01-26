@@ -16,7 +16,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
   // RevenueCat API Keys
   static const String _androidApiKey = 'goog_LBAhypBGyaAupCMVbaViawqANGq';
-  static const String _iosApiKey = 'appl_place_holder_key_until_setup'; // TODO: Update from RevenueCat Dashboard
+  static const String _iosApiKey = 'appl_oCqKOUZwiohWXshjKvRApPGYzLK';
 
   // Entitlement identifier from RevenueCat dashboard
   static const String _proEntitlement = 'pro';

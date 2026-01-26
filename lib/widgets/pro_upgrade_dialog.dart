@@ -84,6 +84,66 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     }
   }
 
+  Future<void> _handleRestore() async {
+    setState(() => _isLoading = true);
+    final provider = context.read<SubscriptionProvider>();
+    final t = AppLocalizations.of(context)!;
+    
+    try {
+      final result = await provider.restorePurchases();
+      
+      if (!mounted) return;
+      setState(() => _isLoading = false);
+      
+      if (result == 'success') {
+        if (mounted) {
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
+               content: Text(t.restoreSuccess),
+               backgroundColor: Colors.green,
+               behavior: SnackBarBehavior.floating,
+             )
+           );
+           Navigator.pop(context, true);
+        }
+      } else {
+        String message;
+        switch (result) {
+          case 'not_found':
+            message = t.restoreNotFound;
+            break;
+          case 'not_configured':
+          case 'unavailable':
+            message = t.restoreUnavailable;
+            break;
+          default:
+            message = t.restoreError;
+        }
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              backgroundColor: Colors.redAccent,
+              behavior: SnackBarBehavior.floating,
+            )
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Restore error: $e');
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(t.restoreError),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+          )
+        );
+      }
+    }
+  }
+
   void _openLegalUrl(BuildContext context, String type) async {
     final locale = Localizations.localeOf(context).languageCode;
     // Map locale to supported URL paths, default to 'en'
@@ -359,18 +419,30 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                           const SizedBox(height: 12),
                           
                           // Maybe later button
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              minimumSize: const Size(48, 48),
-                              tapTargetSize: MaterialTapTargetSize.padded,
-                            ),
-                            onPressed: () => Navigator.pop(context),
                             child: Text(
                               t.upgradeCancel, 
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.4), 
                                 fontSize: 14,
                                 letterSpacing: 0.5,
+                              ),
+                            ),
+                          ),
+
+                          // Restore Purchase Button
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size(48, 36),
+                              tapTargetSize: MaterialTapTargetSize.padded,
+                              visualDensity: VisualDensity.compact,
+                            ),
+                            onPressed: _handleRestore,
+                            child: Text(
+                              t.settingsRestorePurchases,
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.4),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
