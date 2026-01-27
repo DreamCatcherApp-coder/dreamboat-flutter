@@ -1,13 +1,24 @@
 {
   "de": [
-    "adSkipThisTime"
+    "adSkipThisTime",
+    "analysisLongWait",
+    "newDreamSaveShort"
+  ],
+
+  "en": [
+    "analysisLongWait",
+    "newDreamSaveShort"
   ],
 
   "es": [
-    "adSkipThisTime"
+    "adSkipThisTime",
+    "analysisLongWait",
+    "newDreamSaveShort"
   ],
 
   "pt": [
-    "adSkipThisTime"
+    "adSkipThisTime",
+    "analysisLongWait",
+    "newDreamSaveShort"
   ]
 }

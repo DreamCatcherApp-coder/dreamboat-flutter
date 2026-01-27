@@ -1275,6 +1275,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get analysisStep5 => 'Die Interpretation wird vorbereitet...';
 
   @override
+  String get analysisLongWait => 'Rüyanız detaylı inceleniyor...';
+
+  @override
+  String get newDreamSaveShort => 'Sadece Kaydet';
+
+  @override
   String get supportTechInfoNote =>
       'Die folgenden technischen Informationen helfen uns, Ihr Problem schneller zu lösen. Bitte nicht löschen.';
 

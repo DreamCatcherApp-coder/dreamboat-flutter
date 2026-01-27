@@ -1262,6 +1262,12 @@ class AppLocalizationsTr extends AppLocalizations {
   String get analysisStep5 => 'Yorum hazırlanıyor...';
 
   @override
+  String get analysisLongWait => 'Rüyanız detaylı inceleniyor...';
+
+  @override
+  String get newDreamSaveShort => 'Sadece Kaydet';
+
+  @override
   String get supportTechInfoNote =>
       'Aşağıdaki teknik bilgiler, sorununuzu daha hızlı çözmemize yardımcı olur. Lütfen silmeyiniz.';
 

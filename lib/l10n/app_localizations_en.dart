@@ -1264,6 +1264,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analysisStep5 => 'Interpretation is being prepared...';
 
   @override
+  String get analysisLongWait => 'Rüyanız detaylı inceleniyor...';
+
+  @override
+  String get newDreamSaveShort => 'Sadece Kaydet';
+
+  @override
   String get supportTechInfoNote =>
       'The technical info below helps us resolve your issue faster. Please do not delete.';
 

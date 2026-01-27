@@ -2384,6 +2384,18 @@ abstract class AppLocalizations {
   /// **'Yorum hazırlanıyor...'**
   String get analysisStep5;
 
+  /// No description provided for @analysisLongWait.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyanız detaylı inceleniyor...'**
+  String get analysisLongWait;
+
+  /// No description provided for @newDreamSaveShort.
+  ///
+  /// In tr, this message translates to:
+  /// **'Sadece Kaydet'**
+  String get newDreamSaveShort;
+
   /// No description provided for @supportTechInfoNote.
   ///
   /// In tr, this message translates to:
