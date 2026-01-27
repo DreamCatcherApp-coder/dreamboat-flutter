@@ -502,8 +502,8 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                           loadingText: t.newDreamLoadingText,
                           onPressed: _handleSave,
                           isLoading: _isSaving,
-                          // Show icon only regarding Interpretation eligibility
-                          icon: value.text.length >= 50 ? LucideIcons.sparkles : null,
+                          // Icon removed as per request
+                          icon: null,
                           gradient: const LinearGradient(
                             colors: [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
                             begin: Alignment.topLeft,
