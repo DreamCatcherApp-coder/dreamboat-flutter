@@ -68,11 +68,14 @@ class _DreamAnalysisOverlayState extends State<DreamAnalysisOverlay>
     _stepTimer = Timer.periodic(const Duration(milliseconds: 2500), (timer) {
       if (!mounted) return;
       setState(() {
-        if (_currentStep < _stepCount - 1) {
+        // Steps 0-4 are standard (~12.5s total)
+        // Step 5 is "Long Wait"
+        if (_currentStep < 5) {
           _currentStep++;
         } else {
-          // Loop between the last two steps to show activity continues
-           _currentStep = 3; 
+           // Once we hit "Long Wait" (Step 5), loop between "Synthesizing" (Step 3) and "Long Wait" (Step 5)
+           // to keep it dynamic.
+           _currentStep = _currentStep == 5 ? 3 : 5; 
         }
       });
     });
@@ -98,8 +101,11 @@ class _DreamAnalysisOverlayState extends State<DreamAnalysisOverlay>
       case 3:
         return t.analysisStep4;
       case 4:
-      default:
         return t.analysisStep5;
+      case 5:
+      default:
+        // [NEW] Shown if analysis takes extra long (>15-20s)
+        return t.analysisLongWait;
     }
   }
   

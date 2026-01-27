@@ -40,9 +40,9 @@ class BiometricService {
         localizedReason: localizedReason,
         options: AuthenticationOptions(
           stickyAuth: true,
-          // Android: allow PIN/pattern fallback
-          // iOS: biometric only (Apple policy)
-          biometricOnly: Platform.isIOS,
+          // Allow PIN/Pattern/Passcode fallback on both platforms
+          // This prevents permanent lockout if FaceID/TouchID fails
+          biometricOnly: false,
         ),
       );
       

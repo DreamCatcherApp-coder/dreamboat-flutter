@@ -62,7 +62,7 @@ class OpenAIService {
         'dreamText': dreamText,
         'mood': mood,
         'language': language,
-      });
+      }).timeout(const Duration(seconds: 45));
       
       final data = result.data as Map<String, dynamic>;
       
@@ -125,7 +125,7 @@ class OpenAIService {
       
       final result = await FirebaseFunctions.instance.httpsCallable('generateDailyTip').call({
         'language': language,
-      });
+      }).timeout(const Duration(seconds: 20));
       
       final data = result.data as Map<String, dynamic>;
       
@@ -150,7 +150,7 @@ class OpenAIService {
       final result = await FirebaseFunctions.instance.httpsCallable('analyzeDreams').call({
         'dreams': dreams,
         'language': language,
-      });
+      }).timeout(const Duration(seconds: 60));
       
       final data = result.data as Map<String, dynamic>;
       
@@ -175,7 +175,7 @@ class OpenAIService {
       final result = await FirebaseFunctions.instance.httpsCallable('analyzeMoonSync').call({
         'dreamData': dreamData,
         'language': language,
-      });
+      }).timeout(const Duration(seconds: 60));
       
       final data = result.data as Map<String, dynamic>;
       

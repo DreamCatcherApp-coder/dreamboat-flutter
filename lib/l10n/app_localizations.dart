@@ -1787,7 +1787,7 @@ abstract class AppLocalizations {
   /// No description provided for @moonSyncProcessing.
   ///
   /// In tr, this message translates to:
-  /// **'Kozmik Analiz hazırlanıyor,\nlütfen bekleyiniz.'**
+  /// **'Kozmik Analiz hazırlanıyor,\nlütfen kısa bir süre bekleyiniz.'**
   String get moonSyncProcessing;
 
   /// No description provided for @moonPhaseNewMoon.

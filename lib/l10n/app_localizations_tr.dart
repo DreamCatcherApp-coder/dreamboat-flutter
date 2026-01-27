@@ -939,7 +939,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moonSyncProcessing =>
-      'Kozmik Analiz hazırlanıyor,\nlütfen bekleyiniz.';
+      'Kozmik Analiz hazırlanıyor,\nlütfen kısa bir süre bekleyiniz.';
 
   @override
   String get moonPhaseNewMoon => 'Yeni Ay';

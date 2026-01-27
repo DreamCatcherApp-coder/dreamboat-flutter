@@ -428,6 +428,8 @@
     "analysisStep3": "Arketipsel bağlantılar kuruluyor...",
     "analysisStep4": "Psikolojik derinlik çözümleniyor...",
     "analysisStep5": "Yorum hazırlanıyor...",
+    "analysisLongWait": "Rüyanız detaylı inceleniyor...",
+    "newDreamSaveShort": "Sadece Kaydet",
     "supportTechInfoNote": "Aşağıdaki teknik bilgiler, sorununuzu daha hızlı çözmemize yardımcı olur. Lütfen silmeyiniz.",
 
     "onboardingWelcomeTitle": "Henüz bir rüya görmemiş olabilirsin",

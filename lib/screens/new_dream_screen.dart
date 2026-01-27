@@ -478,31 +478,40 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                   const SizedBox(height: 16),
                   
                   // Save Button (Fixed at bottom, moves up with keyboard)
-                  Container(
-                    margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 10), // Add padding only if keyboard closed
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF8B5CF6).withOpacity(0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                          spreadRadius: 2,
+                  ValueListenableBuilder(
+                    valueListenable: _controller,
+                    builder: (context, TextEditingValue value, child) {
+                      return Container(
+                        margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF8B5CF6).withOpacity(0.4),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: CustomButton(
-                      text: t.newDreamSave, 
-                      loadingText: t.newDreamLoadingText,
-                      onPressed: _handleSave,
-                      isLoading: _isSaving,
-                      icon: null,
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
+                        child: CustomButton(
+                          // [UX IMPROVEMENT] Dynamic Text based on length
+                          text: value.text.length < 50 
+                              ? t.newDreamSaveShort 
+                              : t.newDreamSave, 
+                          loadingText: t.newDreamLoadingText,
+                          onPressed: _handleSave,
+                          isLoading: _isSaving,
+                          // Show icon only regarding Interpretation eligibility
+                          icon: value.text.length >= 50 ? LucideIcons.sparkles : null,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                      );
+                    }
                   ),
                 ],
               ),
