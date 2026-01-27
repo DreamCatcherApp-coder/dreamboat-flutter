@@ -96,10 +96,10 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
             trauma: 'Examples: "Bu deneyim..." (TR) or "This experience..." (EN) (Translate to Dream Language)',
             relationshipRule: 'If cheating/divorce -> Interpret as INTERNAL conflict (Match Dream Language).',
             badExample: '"Asansör değişimi, anahtar çözümü simgeler."',
-            goodExample: '"Yaşadığın bu içsel seviye değişimi, henüz elinde olmayan bir çözüm aracıyla birleştiğinde, belirsizliğin aslında bir davet olduğunu gösteriyor."',
-            complexExample: '"Ayaklarının yere basmamasıyla yaşadığın istikrar kaybı, boğazındaki ifade düğümüyle birleşerek, şu an üzerinde hissettiğin baskıdan kaçıp uzaklaşma isteğini tetikliyor."',
+            goodExample: 'Examples: "Yaşadığın bu içsel seviye değişimi..." (TR) or "This internal level shift..." (EN) (Translate logic to Dream Language)',
+            complexExample: 'Examples: "Ayaklarının yere basmaması..." (TR) or "The loss of stability..." (EN) (Translate logic to Dream Language)',
             closingBan: '"Her şey güzel olacak", "Başaracaksın"',
-            closingWisdom: '"Bazen kapalı kapının önünde durmak, onu açmaktan daha değerlidir." (Translate to Dream Language)',
+            closingWisdom: 'Examples: "Bazen kapalı kapının..." (TR) or "Sometimes standing..." (EN) (Translate to Dream Language)',
             safetyTitle: '"Aldatılma Şüphesi", "Güvensizlik"'
         },
         en: {
