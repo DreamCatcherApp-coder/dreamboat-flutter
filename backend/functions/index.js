@@ -221,7 +221,7 @@ If the dream involves infidelity, cheating (aldatma), or betrayal by a partner (
 
 {
   "title": "Short Poetic Title (3-4 words, based on the mode)",
-  "interpretation": "Paragraph 1 (The Core Message based on Mode Rules) \\n\\n Paragraph 2 (Closing Wisdom/Future Insight)"
+  "interpretation": "Paragraph 1 (The Core Message based on Mode Rules) \\n\\nParagraph 2 (Closing Wisdom/Future Insight)"
 }
 
 *** SAFETY PROTOCOL ***
