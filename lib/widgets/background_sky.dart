@@ -48,14 +48,34 @@ class _NightSkyBackgroundState extends State<NightSkyBackground> with TickerProv
     });
 
     // Delay animation start to let the app render first
-    Future.delayed(const Duration(milliseconds: 500), () {
-      if (mounted) {
-        _nebulaController.repeat(reverse: true);
-        _starController.repeat(reverse: true);
-        _randomizeShootingStar();
-        _shootingStarController.forward();
+    // Note: Actual start logic moved to didChangeDependencies to check for Reduced Motion support
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    // Accessibility: Respect "Reduce Motion" setting
+    final bool reduceMotion = MediaQuery.of(context).disableAnimations;
+    
+    if (reduceMotion) {
+      // Stop all animations if they are running
+      if (_nebulaController.isAnimating) _nebulaController.stop();
+      if (_starController.isAnimating) _starController.stop();
+      if (_shootingStarController.isAnimating) _shootingStarController.stop();
+    } else {
+      // Start animations if not already running
+      if (!_nebulaController.isAnimating) {
+         Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted && !MediaQuery.of(context).disableAnimations) {
+               _nebulaController.repeat(reverse: true);
+               _starController.repeat(reverse: true);
+               _randomizeShootingStar();
+               _shootingStarController.forward();
+            }
+         });
       }
-    });
+    }
   }
 
   void _randomizeShootingStar() {
@@ -143,16 +163,17 @@ class _NightSkyBackgroundState extends State<NightSkyBackground> with TickerProv
           },
         ),
 
-        // 4. Shooting Stars
-        AnimatedBuilder(
-          animation: _shootingStarController,
-          builder: (context, child) {
-            return CustomPaint(
-              painter: ShootingStarPainter(_shootingStarController.value, _startX, _startY),
-              size: MediaQuery.of(context).size,
-            );
-          },
-        ),
+        // 4. Shooting Stars (Hide if Reduced Motion is enabled)
+        if (!MediaQuery.of(context).disableAnimations)
+          AnimatedBuilder(
+            animation: _shootingStarController,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: ShootingStarPainter(_shootingStarController.value, _startX, _startY),
+                size: MediaQuery.of(context).size,
+              );
+            },
+          ),
 
         // 5. Subtle Grain Overlay (Simulated with random noise points if cheap, or skip for performance)
         // Skipping Grain for performance/simplicity, using gradients for atmosphere.
