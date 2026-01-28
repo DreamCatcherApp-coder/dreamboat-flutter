@@ -1271,10 +1271,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get analysisStep5 => 'La interpretación se está preparando...';
 
   @override
-  String get analysisLongWait => 'Rüyanız detaylı inceleniyor...';
+  String get analysisLongWait =>
+      'Tu sueño está siendo analizado detalladamente...';
 
   @override
-  String get newDreamSaveShort => 'Sadece Kaydet';
+  String get newDreamSaveShort => 'Guardar Sueño';
 
   @override
   String get supportTechInfoNote =>

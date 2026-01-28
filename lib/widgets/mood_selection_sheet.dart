@@ -1,6 +1,7 @@
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/widgets/gradient_text.dart';
@@ -99,7 +100,12 @@ class _MoodSelectionSheetState extends State<MoodSelectionSheet> {
                       min: 1, max: 3, divisions: 2,
                       activeColor: const Color(0xFFA78BFA),
                       label: _vividness == 1 ? t.moodVividnessLow : (_vividness == 2 ? t.moodVividnessMedium : t.moodVividnessHigh),
-                      onChanged: (v) => setState(() => _vividness = v.round()),
+                      onChanged: (v) {
+                        if (v.round() != _vividness) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _vividness = v.round());
+                        }
+                      },
                     ),
                   ),
                  Row(
@@ -136,6 +142,7 @@ class _MoodSelectionSheetState extends State<MoodSelectionSheet> {
                         selected: isSelected,
                         child: GestureDetector(
                           onTap: () {
+                            HapticFeedback.selectionClick();
                             setState(() {
                               if (_selectedMood == m['key']) {
                                  // Deselect: tapping the same mood again clears selection
@@ -218,7 +225,12 @@ class _MoodSelectionSheetState extends State<MoodSelectionSheet> {
                           min: 1, max: 3, divisions: 2,
                           activeColor: moods.firstWhere((m) => m['key'] == _selectedMood)['color'] as Color,
                           label: _intensity == 1 ? t.moodIntensityLow : (_intensity == 2 ? t.moodIntensityMedium : t.moodIntensityHigh),
-                          onChanged: (v) => setState(() => _intensity = v.round()),
+                          onChanged: (v) {
+                            if (v.round() != _intensity) {
+                              HapticFeedback.selectionClick();
+                              setState(() => _intensity = v.round());
+                            }
+                          },
                         ),
                       ),
                       Row(

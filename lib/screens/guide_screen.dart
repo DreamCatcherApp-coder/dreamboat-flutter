@@ -211,6 +211,9 @@ class _GuideScreenState extends State<GuideScreen> {
           _scrollController.animateTo(0, duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
        }
        
+       // Success Haptic
+       HapticFeedback.heavyImpact();
+       
        // Trigger review flow on level up
        if (context.mounted) {
          ReviewService.triggerReviewFlow(context);

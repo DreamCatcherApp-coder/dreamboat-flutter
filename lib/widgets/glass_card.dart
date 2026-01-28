@@ -22,6 +22,18 @@ class GlassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const double radius = 24; // Increased from 20 for softer look
     
+    // Check for High Contrast Mode
+    final bool isHighContrast = MediaQuery.of(context).highContrast;
+    
+    // Adjust visual properties based on contrast mode
+    final Color bgColor = isHighContrast 
+        ? const Color(0xFF0F0F23) // Solid opacity for high contrast
+        : const Color(0xFF0F0F23).withOpacity(0.85);
+        
+    final Color borderColor = isHighContrast
+        ? Colors.white.withOpacity(0.6) // Much brighter border
+        : Colors.white.withOpacity(0.1);
+
     Widget cardContent;
     
     if (onTap != null) {
@@ -35,9 +47,9 @@ class GlassCard extends StatelessWidget {
           child: Ink(
             decoration: BoxDecoration(
               // Solid dark background + slight white overlay for glass effect
-              color: const Color(0xFF0F0F23).withOpacity(0.85),
+              color: bgColor,
               borderRadius: BorderRadius.circular(radius),
-              border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+              border: Border.all(color: borderColor, width: isHighContrast ? 2 : 1),
             ),
             child: Padding(
               padding: padding ?? const EdgeInsets.all(20),
@@ -51,9 +63,9 @@ class GlassCard extends StatelessWidget {
         padding: padding ?? const EdgeInsets.all(20),
         decoration: BoxDecoration(
           // Solid dark background + slight white overlay for glass effect
-          color: const Color(0xFF0F0F23).withOpacity(0.85),
+          color: bgColor,
           borderRadius: BorderRadius.circular(radius),
-          border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
+          border: Border.all(color: borderColor, width: isHighContrast ? 2 : 1),
         ),
         child: child,
       );

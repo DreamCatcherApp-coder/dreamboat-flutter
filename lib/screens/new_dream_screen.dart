@@ -112,7 +112,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
 
     if (!isOnline) {
        // [NEW] Offline: Show explicit "No Internet" dialog
-       _showOfflineDialog(mood, secondaryMoods, intensity, vividness);
+       await _showOfflineDialog(mood, secondaryMoods, intensity, vividness);
        return;
     }
 
@@ -209,9 +209,10 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
     // If result is null (back button), do nothing. User is at Mood Sheet.
   }
 
-  void _showOfflineDialog(String mood, List<String> secondaryMoods, int intensity, int vividness) {
+  Future<void> _showOfflineDialog(String mood, List<String> secondaryMoods, int intensity, int vividness) async {
     final t = AppLocalizations.of(context)!;
-    showDialog(
+    
+    final shouldSave = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
@@ -224,24 +225,25 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(context, false), // Return false (Cancel)
             child: Text(t.offlineSaveCancel, style: const TextStyle(color: Colors.white54)),
           ),
           TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close Dialog
-              if (mounted) Navigator.pop(context); // Close Mood Sheet
-              
-              // Proceed to save without interpretation
-              Future.delayed(const Duration(milliseconds: 100), () {
-                 if (mounted) _processDream(mood, secondaryMoods, intensity, vividness);
-              });
-            },
+            onPressed: () => Navigator.pop(context, true), // Return true (Confirm)
             child: Text(t.offlineSaveConfirm, style: const TextStyle(color: AppTheme.primary, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
     );
+
+    if (shouldSave == true) {
+      if (mounted) Navigator.pop(context); // Close Mood Sheet
+      
+      // Proceed to save without interpretation
+      if (mounted) {
+        await _processDream(mood, secondaryMoods, intensity, vividness);
+      }
+    }
   }
 
   Future<void> _processDream(String mood, List<String> secondaryMoods, int intensity, int vividness, {bool isFirstDream = false}) async {
@@ -329,6 +331,9 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       
       print("MyDream: Dream Saved: ${dreamEntry.id}");
 
+      // Success Haptic
+      HapticFeedback.mediumImpact();
+
       if (mounted) {
          // Navigate to Journal
          Navigator.pushReplacement(
@@ -364,18 +369,25 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
-                onPressed: () => Navigator.pop(context),
+              leading: Semantics(
+                label: t.close,
+                button: true,
+                child: IconButton(
+                  icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
+                  onPressed: () => Navigator.pop(context),
+                ),
               ),
               centerTitle: true,
-              title: GradientText(
-                t.newDreamTitle,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                gradient: const LinearGradient(
-                  colors: [Colors.white, Color(0xFFF3E8FF)],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+              title: Semantics(
+                header: true,
+                child: GradientText(
+                  t.newDreamTitle,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  gradient: const LinearGradient(
+                    colors: [Colors.white, Color(0xFFF3E8FF)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
                 ),
               ),
             ),
@@ -481,6 +493,10 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                   ValueListenableBuilder(
                     valueListenable: _controller,
                     builder: (context, TextEditingValue value, child) {
+                      final buttonText = value.text.length < 50 
+                              ? t.newDreamSaveShort 
+                              : t.newDreamSave;
+                              
                       return Container(
                         margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom > 0 ? 0 : 10),
                         decoration: BoxDecoration(
@@ -494,20 +510,23 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                             ),
                           ],
                         ),
-                        child: CustomButton(
-                          // [UX IMPROVEMENT] Dynamic Text based on length
-                          text: value.text.length < 50 
-                              ? t.newDreamSaveShort 
-                              : t.newDreamSave, 
-                          loadingText: t.newDreamLoadingText,
-                          onPressed: _handleSave,
-                          isLoading: _isSaving,
-                          // Icon removed as per request
-                          icon: null,
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                        child: Semantics(
+                          button: true,
+                          enabled: !_isSaving,
+                          label: _isSaving ? t.newDreamLoadingText : buttonText,
+                          child: CustomButton(
+                            // [UX IMPROVEMENT] Dynamic Text based on length
+                            text: buttonText, 
+                            loadingText: t.newDreamLoadingText,
+                            onPressed: _handleSave,
+                            isLoading: _isSaving,
+                            // Icon removed as per request
+                            icon: null,
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF3B82F6), Color(0xFF8B5CF6)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                           ),
                         ),
                       );

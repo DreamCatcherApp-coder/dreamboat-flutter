@@ -411,6 +411,8 @@
     "analysisStep3": "Connecting archetypes...",
     "analysisStep4": "Analyzing psychological depth...",
     "analysisStep5": "Interpretation is being prepared...",
+    "analysisLongWait": "Your dream is being analyzed in detail...",
+    "newDreamSaveShort": "Save Dream",
     "supportTechInfoNote": "The technical info below helps us resolve your issue faster. Please do not delete.",
 
     "onboardingWelcomeTitle": "You might not have a dream yet",

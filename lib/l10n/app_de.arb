@@ -409,6 +409,8 @@
     "analysisStep3": "Archetypen werden verbunden...",
     "analysisStep4": "Psychologische Tiefe wird analysiert...",
     "analysisStep5": "Die Interpretation wird vorbereitet...",
+    "analysisLongWait": "Dein Traum wird detailliert analysiert...",
+    "newDreamSaveShort": "Traum Speichern",
     "supportTechInfoNote": "Die folgenden technischen Informationen helfen uns, Ihr Problem schneller zu lösen. Bitte nicht löschen.",
 
     "onboardingWelcomeTitle": "Du hast vielleicht noch nicht geträumt",

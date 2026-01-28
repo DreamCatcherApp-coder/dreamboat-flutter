@@ -408,6 +408,8 @@
     "analysisStep3": "Conectando arquétipos...",
     "analysisStep4": "Analisando profundidade psicológica...",
     "analysisStep5": "A interpretação está sendo preparada...",
+    "analysisLongWait": "Seu sonho está sendo analisado detalhadamente...",
+    "newDreamSaveShort": "Salvar Sonho",
     "supportTechInfoNote": "As informações técnicas abaixo ajudam-nos a resolver o seu problema mais rapidamente. Por favor, não apague.",
 
     "onboardingWelcomeTitle": "Você pode não ter sonhado ainda",

@@ -2393,7 +2393,7 @@ abstract class AppLocalizations {
   /// No description provided for @newDreamSaveShort.
   ///
   /// In tr, this message translates to:
-  /// **'Sadece Kaydet'**
+  /// **'Rüyayı Kaydet'**
   String get newDreamSaveShort;
 
   /// No description provided for @supportTechInfoNote.
