@@ -335,6 +335,9 @@
     
     "freeTrialDays": "Days Free Trial",
     "freeTrialBadge": "First 7 days free",
+    "priceLoading": "Loading...",
+    "priceLoadError": "Price unavailable",
+    "priceRetryButton": "Retry",
     "then": "Then",
 
     "reviewSatisfactionTitle": "Enjoying DreamBoat?",
@@ -489,5 +492,36 @@
     "offlineSaveConfirm": "Save Without Interpretation",
     "offlineSaveCancel": "Cancel",
     "errorNoInternet": "No internet connection.",
-    "errorGeneric": "An unexpected error occurred."
+    "errorNoInternet": "No internet connection.",
+    "errorGeneric": "An unexpected error occurred.",
+    "dreamSavedNoInterpretation": "Dream saved to journal.",
+    "watchAdForInterpretation": "Upgrade to PRO or watch ad for AI interpretation.",
+    "interpretationSkipped": "Ad was not watched, dream saved without interpretation.",
+    "weeklyLimitLeft": "{count} free interpretations left this week",
+    "@weeklyLimitLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "specialOffer": "🔥 SPECIAL OFFER",
+    "welcomeOfferFirstTime": "First-time subscriber offer",
+    "welcomeOfferExpires": "Offer expires in: {time}",
+    "@welcomeOfferExpires": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "streakDays": "{count} days in a row",
+    "@streakDays": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "streakSubtitle": "Your dream journey continues"
 }

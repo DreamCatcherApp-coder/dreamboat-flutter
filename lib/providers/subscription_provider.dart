@@ -11,6 +11,7 @@ class SubscriptionProvider extends ChangeNotifier {
   bool _isRestoring = false;
   bool _isConfigured = false;  // Track if RevenueCat is configured
   bool _isConfiguring = false; // Track if RevenueCat is currently being configured
+  bool _offeringsLoadFailed = false; // Track if offerings failed to load
   CustomerInfo? _customerInfo;
   Offerings? _offerings;
 
@@ -26,6 +27,7 @@ class SubscriptionProvider extends ChangeNotifier {
   bool get isRestoring => _isRestoring;
   bool get isConfigured => _isConfigured; // Exposed for UI to check
   bool get isConfiguring => _isConfiguring; // Exposed for UI to show loading
+  bool get offeringsLoadFailed => _offeringsLoadFailed; // Exposed for UI to show error
   Offerings? get offerings => _offerings;
   CustomerInfo? get customerInfo => _customerInfo;
 
@@ -100,10 +102,13 @@ class SubscriptionProvider extends ChangeNotifier {
       try {
         _offerings = await Purchases.getOfferings()
             .timeout(const Duration(seconds: 5));
+        _offeringsLoadFailed = false;
         debugPrint('Offerings loaded: ${_offerings?.current?.identifier ?? "none"}');
         notifyListeners();
       } catch (e) {
         debugPrint('Offerings error: $e');
+        _offeringsLoadFailed = true;
+        notifyListeners();
       }
       
       // Listen for customer info updates
@@ -117,6 +122,7 @@ class SubscriptionProvider extends ChangeNotifier {
       debugPrint('RevenueCat initialization error: $e');
       debugPrint('Stack: $stackTrace');
       _isConfiguring = false;
+      _offeringsLoadFailed = true;
       notifyListeners();
       // Keep cached status on error (fail-open)
     }
@@ -181,6 +187,36 @@ class SubscriptionProvider extends ChangeNotifier {
   /// Get yearly package from current offering
   Package? get yearlyPackage {
     return currentOffering?.annual;
+  }
+
+  /// Retry loading offerings after a failure
+  Future<void> retryLoadOfferings() async {
+    if (_isConfiguring) return; // Already loading
+    
+    _offeringsLoadFailed = false;
+    notifyListeners();
+    
+    if (!_isConfigured) {
+      // Need to configure first
+      await _configureRevenueCat();
+    } else {
+      // Just reload offerings
+      _isConfiguring = true;
+      notifyListeners();
+      
+      try {
+        _offerings = await Purchases.getOfferings()
+            .timeout(const Duration(seconds: 5));
+        _offeringsLoadFailed = false;
+        debugPrint('Offerings reloaded: ${_offerings?.current?.identifier ?? "none"}');
+      } catch (e) {
+        debugPrint('Offerings reload error: $e');
+        _offeringsLoadFailed = true;
+      }
+      
+      _isConfiguring = false;
+      notifyListeners();
+    }
   }
 
   /// Purchase a specific package

@@ -219,7 +219,7 @@ const dictionary = {
     "bath": "Surrender, soaking in emotion.",
     "perfume": "Impression, memory, or essence.",
     "soap": "Boundaries, cleaning a situation.",
-    "fish": "Fortune, unconscious insights.",
+    "fish": "Opportunity, a valuable chance to seize, prosperity from the unconscious depths.",
     "whale": "Deep truth, the ancient unconscious.",
     "shark": "Predatory fear, danger from the deep.",
     "snake": "Transformation, healing, and shedding the old.",

@@ -352,6 +352,9 @@
     
     "freeTrialDays": "Gün Ücretsiz Dene",
     "freeTrialBadge": "İlk 7 gün ücretsiz dene",
+    "priceLoading": "Yükleniyor...",
+    "priceLoadError": "Fiyat yüklenemedi",
+    "priceRetryButton": "Tekrar Dene",
     "then": "Sonra",
 
     "reviewSatisfactionTitle": "DreamBoat'u sevdin mi?",
@@ -506,5 +509,35 @@
     "offlineSaveConfirm": "Yorumsuz Kaydet",
     "offlineSaveCancel": "Vazgeç",
     "errorNoInternet": "İnternet bağlantısı yok.",
-    "errorGeneric": "Beklenmedik bir hata oluştu."
+    "errorGeneric": "Beklenmedik bir hata oluştu.",
+    "dreamSavedNoInterpretation": "Rüya günlüğe kaydedildi.",
+    "watchAdForInterpretation": "AI yorumu için PRO'ya geç veya reklam izle.",
+    "interpretationSkipped": "Reklam izlenmediği için rüya yorumsuz kaydedildi.",
+    "weeklyLimitLeft": "Bu hafta {count} ücretsiz rüya yorumu hakkın kaldı",
+    "@weeklyLimitLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "specialOffer": "🔥 ÖZEL TEKLİF",
+    "welcomeOfferFirstTime": "İlk abone özel teklifi",
+    "welcomeOfferExpires": "Teklifin bitmesine: {time}",
+    "@welcomeOfferExpires": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "streakDays": "{count} gün üst üste",
+    "@streakDays": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "streakSubtitle": "Rüya yolculuğun devam ediyor"
 }

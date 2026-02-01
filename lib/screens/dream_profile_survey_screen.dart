@@ -6,6 +6,7 @@ import 'package:dream_boat_mobile/screens/home_screen.dart';
 import 'package:dream_boat_mobile/widgets/custom_button.dart';
 import 'package:dream_boat_mobile/widgets/mystic_orb.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart';
 import 'dart:math';
 
 class DreamProfileSurveyScreen extends StatefulWidget {
@@ -109,13 +110,28 @@ class _DreamProfileSurveyScreenState extends State<DreamProfileSurveyScreen> {
   }
 
   void _completeOnboarding() {
-    Navigator.of(context).pushReplacement(
-      PageRouteBuilder(
-        pageBuilder: (_, __, ___) => const HomeScreen(),
-        transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
-        transitionDuration: const Duration(milliseconds: 800),
-      ),
-    );
+    // [GROWTH] Intercept navigation to show Paywall
+    final isPro = false; // We can't access Provider here easily due to stateless mixin or just context read.
+    // Actually we can use context.read if we import provider.
+    // However, for onboarding, we generally assume they are NOT pro yet (fresh install).
+    // Let's just show it. If they restore, good.
+    
+    showDialog(
+      context: context,
+      barrierDismissible: true, // Let them skip if they really want
+      builder: (context) => const ProUpgradeDialog(),
+    ).then((_) {
+      // Regardless of purchase or skip, go to Home
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => const HomeScreen(),
+            transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+            transitionDuration: const Duration(milliseconds: 800),
+          ),
+        );
+      }
+    });
   }
 
   @override

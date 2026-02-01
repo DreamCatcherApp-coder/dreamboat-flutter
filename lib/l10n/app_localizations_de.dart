@@ -1055,6 +1055,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get freeTrialBadge => 'Erste 7 Tage kostenlos';
 
   @override
+  String get priceLoading => 'Laden...';
+
+  @override
+  String get priceLoadError => 'Preis nicht verfügbar';
+
+  @override
+  String get priceRetryButton => 'Erneut versuchen';
+
+  @override
   String get then => 'Danach';
 
   @override
@@ -1487,4 +1496,39 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Ein unerwarteter Fehler ist aufgetreten.';
+
+  @override
+  String get dreamSavedNoInterpretation => 'Traum im Tagebuch gespeichert.';
+
+  @override
+  String get watchAdForInterpretation =>
+      'Werde PRO oder sieh dir Werbung an für die AI-Deutung.';
+
+  @override
+  String get interpretationSkipped =>
+      'Werbung nicht angesehen, Traum ohne Deutung gespeichert.';
+
+  @override
+  String weeklyLimitLeft(int count) {
+    return 'Noch $count kostenlose Traumdeutungen diese Woche';
+  }
+
+  @override
+  String get specialOffer => '🔥 SONDERANGEBOT';
+
+  @override
+  String get welcomeOfferFirstTime => 'Erstabonnenten-Angebot';
+
+  @override
+  String welcomeOfferExpires(String time) {
+    return 'Angebot endet in: $time';
+  }
+
+  @override
+  String streakDays(int count) {
+    return '$count Tage am Stück';
+  }
+
+  @override
+  String get streakSubtitle => 'Deine Traumreise geht weiter';
 }

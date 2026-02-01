@@ -11,6 +11,7 @@ import 'package:dream_boat_mobile/widgets/custom_button.dart';
 import 'package:dream_boat_mobile/widgets/mood_selection_sheet.dart';
 import 'package:dream_boat_mobile/widgets/ad_consent_dialog.dart'; // [NEW]
 import 'package:dream_boat_mobile/widgets/dream_analysis_overlay.dart'; // [NEW]
+import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart'; // [NEW] For Pro flow
 
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/services/openai_service.dart';
@@ -42,10 +43,18 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   int? _rateLimitMinutes; // [NEW] Rate limit countdown minutes
   bool _showAnalysisOverlay = false; // [NEW] Analysis overlay visibility
   bool _preparingAd = false; // [NEW] Transition state for ad loading
+  int _weeklyUsage = 0; // [NEW] For UI display
 
   @override
   void initState() {
     super.initState();
+    _loadUsage();
+  }
+
+  Future<void> _loadUsage() async {
+    final service = DreamService();
+    final usage = await service.getWeeklyUsage();
+    if (mounted) setState(() => _weeklyUsage = usage);
   }
 
   @override
@@ -133,17 +142,40 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       return;
     }
 
-    // 3. Ad Flow for Standard Users
+    // 3. Check Weekly Limit (NEW) - Enforce Cap
+    final weeklyUsage = await dreamService.getWeeklyUsage();
+    if (weeklyUsage >= DreamService.weeklyFreeLimit) {
+      if (mounted) Navigator.pop(context); // Close Mood Sheet
+      
+      // Limit Reached: Show Paywall directly
+      await showDialog(
+         context: context, 
+         builder: (context) => const ProUpgradeDialog()
+       );
+       
+       if (!mounted) return;
+       final isNowPro = context.read<SubscriptionProvider>().isPro;
+       
+       // If still not pro, Skip Interpretation
+       await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: !isNowPro);
+       return;
+    }
+
+    // 4. Ad Flow for Standard Users
     if (!mounted) return;
     
-    // [FIX] Frictionless Fallback:
-    // If Ad is NOT ready, do NOT show the error dialog "Ad Load Failed".
-    // Instead, just bypass the ad flow and let the user save their dream.
-    // This solves the issue where users get stuck in the error dialog.
+    // [FIX] Strict Monetization:
+    // If Ad is NOT ready, we must NOT give free interpretation.
+    // Instead, we skip the ad flow but also SKIP the interpretation.
     if (!AdManager.instance.isAdLoaded) {
-       debugPrint('Ad not ready. Skipping ad flow gracefully.');
+       debugPrint('Ad not ready. Skipping ad flow & interpretation.');
        if (mounted) Navigator.pop(context); // Close Mood Sheet
-       await _processDream(mood, secondaryMoods, intensity, vividness);
+       
+       // Process WITHOUT interpretation (Strict)
+       await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: true);
+       
+       // Show specific feedback for this case if needed (Optional, but _processDream shows generic "Saved" snackbar)
+       // We can rely on _processDream to show "Dream saved without interpretation".
        return;
     }
 
@@ -161,7 +193,19 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
 
     if (result == 'pro') {
        if (mounted) Navigator.pop(context); // Close Mood Sheet
-       await _processDream(mood, secondaryMoods, intensity, vividness);
+       
+       // Show Paywall
+       await showDialog(
+         context: context, 
+         builder: (context) => const ProUpgradeDialog()
+       );
+       
+       if (!mounted) return;
+       // Re-check PRO status after return
+       final isNowPro = context.read<SubscriptionProvider>().isPro;
+       
+       // Proceed: If PRO, interpret. If NOT PRO, save without interpret (Skip).
+       await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: !isNowPro);
        return;
     }
 
@@ -186,15 +230,18 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
               setState(() => _preparingAd = false); // Hide transition screen
            }
 
-           // Whether shown or not, we proceed. Use the result 'shown' if needed for analytics.
-           if (mounted) await _processDream(mood, secondaryMoods, intensity, vividness);
+           // If shown, process (Standard). 
+           // If NOT shown (failed/timeout), we MUST skip interpretation to prevent leak.
+           if (mounted) {
+             await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: !shown);
+           }
            
          } catch (e) {
            debugPrint("Ad Show Critical Error: $e");
-           // FAILS PREDICATE: Proceed to save anyway
+           // FAILS PREDICATE: Proceed to save anyway, but SKIP INTERPRETATION
            if (mounted) {
              setState(() => _preparingAd = false);
-             await _processDream(mood, secondaryMoods, intensity, vividness);
+             await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: true);
            }
          }
     } else if (result == 'retry') {
@@ -204,7 +251,8 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
         });
     } else if (result == 'skip') {
         if (mounted) Navigator.pop(context); // Close Mood Sheet
-        if (mounted) _processDream(mood, secondaryMoods, intensity, vividness);
+        // [FIX] Skip Interpretation if user explicitly skips ad
+        if (mounted) await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: true);
     }
     // If result is null (back button), do nothing. User is at Mood Sheet.
   }
@@ -241,12 +289,12 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       
       // Proceed to save without interpretation
       if (mounted) {
-        await _processDream(mood, secondaryMoods, intensity, vividness);
+        await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: true);
       }
     }
   }
 
-  Future<void> _processDream(String mood, List<String> secondaryMoods, int intensity, int vividness, {bool isFirstDream = false}) async {
+  Future<void> _processDream(String mood, List<String> secondaryMoods, int intensity, int vividness, {bool isFirstDream = false, bool skipInterpretation = false}) async {
     setState(() {
       _isSaving = true;
       _showAnalysisOverlay = true; // Show overlay
@@ -274,6 +322,10 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       } else if (_controller.text.length < 50) {
         // Skip AI for short dreams
         interpretation = t.dreamTooShort;
+        title = null;
+      } else if (skipInterpretation) {
+        // [FIX] Explicit Skip Validation
+        interpretation = t.interpretationSkipped;
         title = null;
       } else {
         final result = await openAIService.interpretDream(_controller.text, mood, locale);
@@ -324,6 +376,16 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       // Increment daily usage (Abuse check mainly)
       await dreamService.incrementDailyUsage();
       
+      // [NEW] Increment Weekly Usage if interpretation was provided (and not Pro)
+      // Only check if we successfully got interpretation (not skipped, not offline error, not short)
+      final bool gotInterpretation = !skipInterpretation && 
+                                     interpretation != t.offlineInterpretation && 
+                                     interpretation != t.dreamTooShort;
+                                     
+      if (gotInterpretation && !context.read<SubscriptionProvider>().isPro) {
+          await dreamService.incrementWeeklyUsage();
+      }
+      
       // Mark first dream as used if applicable
       if (isFirstDream) {
         await dreamService.setFirstDreamUsed();
@@ -335,6 +397,22 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       HapticFeedback.mediumImpact();
 
       if (mounted) {
+         // [FIX] Show Feedback if Skipped
+         if (skipInterpretation && isConnected && _controller.text.length >= 50) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "${t.dreamSavedNoInterpretation}\n${t.watchAdForInterpretation}",
+                  textAlign: TextAlign.center,
+                ),
+                duration: const Duration(seconds: 4),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppTheme.bgMid,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              )
+            );
+         }
+
          // Navigate to Journal
          Navigator.pushReplacement(
            context, 
@@ -406,6 +484,26 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: AppTheme.textMuted, fontStyle: FontStyle.italic, fontSize: 14),
                   ),
+                  
+                  // [NEW] Weekly Limit Indicator (Only for Non-Pro)
+                  if (!isPro) ...[
+                    const SizedBox(height: 6),
+                    Builder(
+                      builder: (context) {
+                         final remaining = (DreamService.weeklyFreeLimit - _weeklyUsage).clamp(0, DreamService.weeklyFreeLimit);
+                           return Text(
+                           t.weeklyLimitLeft(remaining), 
+                           textAlign: TextAlign.center,
+                           style: TextStyle(
+                             color: remaining > 0 ? Colors.greenAccent.withOpacity(0.8) : Colors.redAccent.withOpacity(0.8), 
+                             fontSize: 12, 
+                             fontWeight: FontWeight.w600
+                           ),
+                         );
+                      }
+                    ),
+                  ],
+
                   const SizedBox(height: 16),
                   
                   // Main Input Area (Expanded to fill space)

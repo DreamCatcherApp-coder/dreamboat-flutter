@@ -403,13 +403,26 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
     final dateStr = DateFormat('dd MMM yyyy • HH:mm', locale).format(date).toUpperCase();
     
     // Use AI-generated title if available, otherwise fallback
+    // But if interpretation was skipped, don't show a fallback title
     String generateFallbackTitle(String text) {
       if (text.length <= 40) return text;
       final firstSentence = text.split(RegExp(r'[.!?]')).first;
       if (firstSentence.length <= 50) return "$firstSentence...";
       return "${text.substring(0, 40)}...";
     }
-    final title = dream.title ?? generateFallbackTitle(dream.text);
+    
+    // Detect if interpretation was skipped (contains known skip messages)
+    final isInterpretationSkipped = dream.interpretation.contains('yorumsuz') || 
+                                     dream.interpretation.contains('without interpretation') ||
+                                     dream.interpretation.contains('sin interpretación') ||
+                                     dream.interpretation.contains('ohne Deutung') ||
+                                     dream.interpretation.contains('sem interpretação') ||
+                                     dream.interpretation == t.interpretationSkipped ||
+                                     dream.interpretation == t.offlineInterpretation ||
+                                     dream.interpretation == t.dreamTooShort;
+    
+    // If interpretation was skipped, don't show fallback title
+    final title = dream.title ?? (isInterpretationSkipped ? null : generateFallbackTitle(dream.text));
 
     // Helper to get localized phase name
     String getLocalizedMoonPhase() {
@@ -488,14 +501,34 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                               ),
                               Row(
                                  children: [
-                                   Icon(LucideIcons.moon, size: 14, color: Colors.white.withOpacity(0.5)),
+                                   // [MODIFIED] Moonstone Glow Effect
+                                   Icon(
+                                     LucideIcons.moon, 
+                                     size: 14, 
+                                     color: const Color(0xFFE0F7FA).withOpacity(0.9), // Brighter icon
+                                     shadows: [
+                                       Shadow(
+                                         blurRadius: 8.0,
+                                         color: const Color(0xFF4DD0E1).withOpacity(0.5), // Soft glow
+                                         offset: const Offset(0, 0),
+                                       ),
+                                     ],
+                                   ),
                                    const SizedBox(width: 6),
                                    Text(
                                      "${t.moonPhaseLabel} ${getLocalizedMoonPhase()}",
                                      style: TextStyle(
-                                       color: Colors.white.withOpacity(0.5),
+                                       color: const Color(0xFFE0F7FA), // Moonstone Tint
                                        fontSize: 12,
                                        fontStyle: FontStyle.italic,
+                                       fontWeight: FontWeight.w500,
+                                       shadows: [
+                                         Shadow(
+                                            blurRadius: 12.0,
+                                            color: const Color(0xFF4DD0E1).withOpacity(0.6), // Cyan/Moonstone Glow
+                                            offset: const Offset(0, 0),
+                                         ),
+                                       ],
                                      ),
                                    ),
                                  ],
@@ -505,18 +538,20 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                           
                           const SizedBox(height: 16),
                           
-                          // Title (AI Summary)
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              height: 1.3,
+                          // Title (AI Summary) - only show if title exists
+                          if (title != null) ...[
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                height: 1.3,
+                              ),
                             ),
-                          ),
-                          
-                          const SizedBox(height: 24),
+                            const SizedBox(height: 24),
+                          ] else
+                            const SizedBox(height: 8), // Smaller gap when no title
                           
                           // Dream Text
                           Text(

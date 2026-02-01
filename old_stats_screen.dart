@@ -7,7 +7,6 @@ import 'package:dream_boat_mobile/theme/app_theme.dart';
 import 'package:dream_boat_mobile/widgets/background_sky.dart';
 import 'package:dream_boat_mobile/widgets/glass_card.dart';
 import 'package:dream_boat_mobile/widgets/custom_button.dart';
-import 'package:dream_boat_mobile/widgets/platform_widgets.dart';
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/services/openai_service.dart';
 import 'package:dream_boat_mobile/services/dream_service.dart';
@@ -203,9 +202,18 @@ class _StatsScreenState extends State<StatsScreen> {
 
   // FLOW: 1. User taps button -> 2. Show Dialog -> 3. Show Ad -> 4. Run Analysis
   Future<void> _handleAnalysisTap() async {
-      // REMOVED: ConnectivityService pre-check - iOS unreliable
-      // Let the actual API call fail naturally if offline
-      
+      // Check connectivity first
+      final isConnected = await ConnectivityService.isConnected;
+      if (!isConnected) {
+        if (mounted) {
+           final t = AppLocalizations.of(context)!;
+           ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(content: Text(t.statsOffline), backgroundColor: Colors.redAccent)
+           );
+        }
+        return;
+      }
+
       // Check limit again just in case
       // Check limit again just in case
       if (_lastAnalysisDate != null) {
@@ -307,18 +315,6 @@ class _StatsScreenState extends State<StatsScreen> {
 
 
   Future<void> _runAnalysis() async {
-    // [FIX] 1. Check Connectivity First
-    final isConnected = await ConnectivityService.isConnected;
-    if (!isConnected) {
-       final t = AppLocalizations.of(context)!;
-       if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text(t.errorNoInternet)),
-          );
-       }
-       return;
-    }
-
     setState(() => _isLoading = true);
 
     try {
@@ -332,26 +328,19 @@ class _StatsScreenState extends State<StatsScreen> {
       final locale = Localizations.localeOf(context).languageCode;
       final result = await _openAIService.analyzeDreams(recentDreams, locale);
 
-      // [FIX] 2. Critical Check: Only save if result is valid
-      if (result.isNotEmpty && !result.toLowerCase().contains('error')) {
-         final prefs = await SharedPreferences.getInstance();
-         await prefs.setString('last_analysis_result', result);
-         await prefs.setString('last_analysis_date', DateTime.now().toIso8601String());
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_analysis_result', result);
+      await prefs.setString('last_analysis_date', DateTime.now().toIso8601String());
 
-         if (mounted) {
-           setState(() {
-             _analysisResult = result;
-             _lastAnalysisDate = DateTime.now();
-           });
-         }
-      } else {
-         // Service returned empty/error string (handled gracefully in service but we shouldn't lock user)
-         throw Exception("Analysis service returned empty result (likely offline or timeout).");
+      if (mounted) {
+        setState(() {
+          _analysisResult = result;
+          _lastAnalysisDate = DateTime.now();
+        });
       }
     } catch (e) {
       if (mounted) {
-        final t = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.errorGeneric)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) {
@@ -363,19 +352,6 @@ class _StatsScreenState extends State<StatsScreen> {
   // Moon Sync Analysis (30-day cooldown)
   Future<void> _runMoonSyncAnalysis() async {
     if (_isMoonSyncLoading) return;
-    
-    // [FIX] 1. Check Connectivity First
-    final isConnected = await ConnectivityService.isConnected;
-    if (!isConnected) {
-       final t = AppLocalizations.of(context)!;
-       if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text(t.errorNoInternet)),
-          );
-       }
-       return;
-    }
-
     if (!mounted) return;
     
     setState(() => _isMoonSyncLoading = true);
@@ -395,9 +371,6 @@ class _StatsScreenState extends State<StatsScreen> {
         return {
           'text': d.text,
           'mood': d.mood,
-          'moodIntensity': d.moodIntensity,
-          'vividness': d.vividness,
-          'astronomicalEvents': d.astronomicalEvents,
           'date': d.date.toIso8601String(),
           'wordCount': d.text.split(' ').length,
           'moonPhase': moonPhaseService.getPhaseNameEn(phase),
@@ -408,50 +381,24 @@ class _StatsScreenState extends State<StatsScreen> {
       final locale = Localizations.localeOf(context).languageCode;
       final result = await _openAIService.analyzeMoonSync(dreamData, locale);
       
-      // [FIX] 2. Critical Check: Only save if result is valid
-      if (result.isNotEmpty && !result.toLowerCase().contains('error')) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('last_moon_sync_result', result);
-          await prefs.setString('last_moon_sync_date', DateTime.now().toIso8601String());
-          
-          if (mounted) {
-            setState(() {
-              _moonSyncResult = result;
-              _lastMoonSyncDate = DateTime.now();
-            });
-          }
-      } else {
-         // Service returned empty/error string
-         throw Exception("Moon Sync service returned empty result (likely offline or timeout).");
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('last_moon_sync_result', result);
+      await prefs.setString('last_moon_sync_date', DateTime.now().toIso8601String());
+      
+      if (mounted) {
+        setState(() {
+          _moonSyncResult = result;
+          _lastMoonSyncDate = DateTime.now();
+        });
       }
     } catch (e) {
       if (mounted) {
-        final t = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.errorGeneric)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) {
         setState(() => _isMoonSyncLoading = false);
       }
-    }
-  }
-
-  // Helper for Soft Aesthetic Colors
-  Color _getMoodColor(String mood) {
-    switch (mood) {
-      case 'love': return const Color(0xFFF24C9A);      // Canlı Pembe
-      case 'happy': return const Color(0xFFFFFF00);     // Mutluluk (güncellendi)
-      case 'sad': return const Color(0xFF5B9BD5);       // Mavi
-      case 'scared': return const Color(0xFF6D4BC3);    // Koyu Mor
-      case 'anger': return const Color(0xFFE05555);     // Kırmızı
-      case 'neutral': return const Color(0xFF9CA3AF);   // Gri
-      case 'awe': return const Color(0xFF8E67B2);       // Lila / Mor (Şaşkınlık)
-      case 'peace': return const Color(0xFF4ADE80);     // Açık Yeşil
-      case 'anxiety': return const Color(0xFFB38E1E);   // Kaygı
-      case 'confusion': return const Color(0xFF2FB9B3); // Turkuaz
-      case 'empowered': return const Color(0xFFF24C9A); // Same as Love
-      case 'longing': return const Color(0xFF5BBDE8);   // Açık Mavi
-      default: return const Color(0xFF9CA3AF);
     }
   }
 
@@ -470,56 +417,40 @@ class _StatsScreenState extends State<StatsScreen> {
           title: '',
           radius: 80,
         ));
-        legendItems.add(
-          Container(
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: Text(
-              t.statsNoData, 
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70)
-            ),
-          )
-        );
+        legendItems.add(Text(t.statsNoData, style: const TextStyle(color: Colors.white70)));
     } else {
         final total = _moodStats.values.fold(0, (sum, item) => sum + item.count);
         
         // 1. Chart Sections (Original Order - Unsorted)
         _moodStats.forEach((key, stat) {
              String label = t.moodNeutral;
-             // Use new soft color palette
-             Color baseColor = _getMoodColor(key);
+            Color baseColor = const Color(0xFF9CA3AF);
             
             switch(key) {
-              case 'love': label = t.moodLove; break;
-              case 'happy': label = t.moodHappy; break;
-              case 'sad': label = t.moodSad; break;
-              case 'scared': label = t.moodScared; break;
-              case 'anger': label = t.moodAnger; break;
-              case 'neutral': label = t.moodNeutral; break;
-              case 'awe': label = t.moodAwe; break;
-              case 'peace': label = t.moodPeace; break;
-              case 'anxiety': label = t.moodAnxiety; break;
-              case 'confusion': label = t.moodConfusion; break;
-              case 'empowered': label = t.moodEmpowered; break;
-              case 'longing': label = t.moodLonging; break;
+              case 'love': label = t.moodLove; baseColor = const Color(0xFFEC4899); break;
+              case 'happy': label = t.moodHappy; baseColor = const Color(0xFFFBBF24); break;
+              case 'sad': label = t.moodSad; baseColor = const Color(0xFF60A5FA); break;
+              case 'scared': label = t.moodScared; baseColor = const Color(0xFF8B5CF6); break;
+              case 'anger': label = t.moodAnger; baseColor = const Color(0xFFEF4444); break;
+              case 'neutral': label = t.moodNeutral; baseColor = const Color(0xFF9CA3AF); break;
+              case 'awe': label = t.moodAwe; baseColor = const Color(0xFFC084FC); break;
+              case 'peace': label = t.moodPeace; baseColor = const Color(0xFF4ADE80); break;
+              case 'anxiety': label = t.moodAnxiety; baseColor = const Color(0xFFFB923C); break;
+              case 'confusion': label = t.moodConfusion; baseColor = const Color(0xFF2DD4BF); break;
+              case 'empowered': label = t.moodEmpowered; baseColor = const Color(0xFFF43F5E); break;
+              case 'longing': label = t.moodLonging; baseColor = const Color(0xFF38BDF8); break;
             }
             
             // Calculate Average Intensity
             double avgIntensity = stat.totalIntensity / stat.count;
             Color finalColor = baseColor;
             
-            // [LOGIC] Intensity Visual Feedback
-            // High Intensity (>2.3) -> Full Vivid Color (Canlı)
-            // Low Intensity (<1.4)  -> Faded/Pale (Silik)
-            // Medium Intensity      -> Slightly Reduced Opacity (Normal)
-            
             if (avgIntensity <= 1.4) {
-               finalColor = baseColor.withOpacity(0.4); // Hafif: Çok daha silik (0.4)
+               finalColor = baseColor.withOpacity(0.6); 
             } else if (avgIntensity >= 2.3) {
-                finalColor = baseColor; // Şiddetli: Tam Canlı
+                finalColor = Color.lerp(baseColor, Colors.black, 0.3)!;
             } else {
-               finalColor = baseColor.withOpacity(0.8); // Orta: Normal
+               finalColor = baseColor; 
             }
             
             final percent = (stat.count / total * 100).round();
@@ -543,22 +474,21 @@ class _StatsScreenState extends State<StatsScreen> {
             final stat = entry.value;
 
             String label = t.moodNeutral;
-            // Use new soft color palette
-            Color baseColor = _getMoodColor(key);
+            Color baseColor = const Color(0xFF9CA3AF);
             
             switch(key) {
-              case 'love': label = t.moodLove; break;
-              case 'happy': label = t.moodHappy; break;
-              case 'sad': label = t.moodSad; break;
-              case 'scared': label = t.moodScared; break;
-              case 'anger': label = t.moodAnger; break;
-              case 'neutral': label = t.moodNeutral; break;
-              case 'awe': label = t.moodAwe; break;
-              case 'peace': label = t.moodPeace; break;
-              case 'anxiety': label = t.moodAnxiety; break;
-              case 'confusion': label = t.moodConfusion; break;
-              case 'empowered': label = t.moodEmpowered; break;
-              case 'longing': label = t.moodLonging; break;
+              case 'love': label = t.moodLove; baseColor = const Color(0xFFEC4899); break;
+              case 'happy': label = t.moodHappy; baseColor = const Color(0xFFFBBF24); break;
+              case 'sad': label = t.moodSad; baseColor = const Color(0xFF60A5FA); break;
+              case 'scared': label = t.moodScared; baseColor = const Color(0xFF8B5CF6); break;
+              case 'anger': label = t.moodAnger; baseColor = const Color(0xFFEF4444); break;
+              case 'neutral': label = t.moodNeutral; baseColor = const Color(0xFF9CA3AF); break;
+              case 'awe': label = t.moodAwe; baseColor = const Color(0xFFC084FC); break;
+              case 'peace': label = t.moodPeace; baseColor = const Color(0xFF4ADE80); break;
+              case 'anxiety': label = t.moodAnxiety; baseColor = const Color(0xFFFB923C); break;
+              case 'confusion': label = t.moodConfusion; baseColor = const Color(0xFF2DD4BF); break;
+              case 'empowered': label = t.moodEmpowered; baseColor = const Color(0xFFF43F5E); break;
+              case 'longing': label = t.moodLonging; baseColor = const Color(0xFF38BDF8); break;
             }
             
             double avgIntensity = stat.totalIntensity / stat.count;
@@ -566,14 +496,14 @@ class _StatsScreenState extends State<StatsScreen> {
             Color finalColor = baseColor;
             
             if (avgIntensity <= 1.4) {
+               finalColor = baseColor.withOpacity(0.6); 
                intensityText = t.intensityFeltLight;
-               finalColor = baseColor.withOpacity(0.4); // Hafif: Çok daha silik (0.4)
             } else if (avgIntensity >= 2.3) {
+                finalColor = Color.lerp(baseColor, Colors.black, 0.3)!;
                 intensityText = t.intensityFeltIntense;
-                finalColor = baseColor; // Şiddetli: Tam Canlı
             } else {
+               finalColor = baseColor; 
                intensityText = t.intensityFeltMedium;
-               finalColor = baseColor.withOpacity(0.8); // Orta
             }
             
             final percent = (stat.count / total * 100).round();
@@ -607,15 +537,14 @@ class _StatsScreenState extends State<StatsScreen> {
                              children: [
                                 Text(
                                   "$label (%$percent)",
-                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 11),
-                                  softWrap: true,
-                                  maxLines: 2,
+                                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 13),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 const SizedBox(height: 2),
                                 Text(
                                   intensityText,
                                   style: const TextStyle(fontSize: 11, color: Colors.white54, height: 1.1),
-                                  softWrap: true,
+                                  overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                              ],
@@ -685,7 +614,7 @@ class _StatsScreenState extends State<StatsScreen> {
                     ),
                     const SizedBox(height: 12),
                     if (_isTipLoading)
-                      Center(child: PlatformWidgets.activityIndicator(color: Colors.amber, radius: 10, strokeWidth: 2))
+                      const Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.amber)))
                     else
                       Text(
                         _dailyTip.isNotEmpty ? _dailyTip : t.statsTipContent, // Fallback to localized default if empty
@@ -702,19 +631,26 @@ class _StatsScreenState extends State<StatsScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            t.statsAnalysisTitle, 
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Color(0xFFFBBF24), fontSize: 16, fontWeight: FontWeight.bold)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 2.0),
+                            child: Icon(LucideIcons.pieChart, color: Color(0xFFFBBF24), size: 20),
                           ),
-                          const SizedBox(height: 2),
-                          Text(
-                            t.statsRecordedDreams(_totalDreamsCount),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.white54, fontSize: 12)
+                          const SizedBox(width: 8),
+                          Expanded(
+                             child: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                  Text(t.statsAnalysisTitle, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    t.statsRecordedDreams(_totalDreamsCount),
+                                    style: const TextStyle(color: Colors.white54, fontSize: 12)
+                                  ),
+                               ],
+                             )
                           ),
                         ],
                       ),
@@ -723,30 +659,15 @@ class _StatsScreenState extends State<StatsScreen> {
                       Column(
                         children: [
                           // Chart (Center)
-                          Container(
+                          SizedBox(
                             height: 140, // Reduced height
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white.withOpacity(0.1), // Soft white glow
-                                  blurRadius: 20,
-                                  spreadRadius: 5,
-                                ),
-                                BoxShadow(
-                                  color: const Color(0xFF8B5CF6).withOpacity(0.2), // Purple mystical glow
-                                  blurRadius: 40,
-                                  spreadRadius: 10,
-                                ),
-                              ],
-                            ),
                             child: PieChart(
                               PieChartData(
                                 sectionsSpace: 2, // Small gap between slices
                                 centerSpaceRadius: 0, // Full Pie
                                 sections: chartSections.map((s) => s.copyWith(
                                    radius: 70, // Full radius
-                                   showTitle: false, // [MODIFIED] Remove labels
+                                   titleStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white), // Ensure text is visible
                                 )).toList(), 
                                 borderData: FlBorderData(show: false),
                               ),
@@ -832,7 +753,7 @@ class _StatsScreenState extends State<StatsScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PlatformWidgets.activityIndicator(color: const Color(0xFFFBBF24), radius: 16),
+            const CircularProgressIndicator(color: Color(0xFFFBBF24)),
             const SizedBox(height: 20),
             Text(t.statsProcessing, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 16)),
           ],
@@ -862,37 +783,23 @@ class _StatsScreenState extends State<StatsScreen> {
               const Icon(LucideIcons.brainCircuit, color: Color(0xFFA78BFA), size: 24),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            t.statsAnalysisIntroTitle, 
-                            style: TextStyle(
-                              color: isPro ? const Color(0xFFFBBF24) : const Color(0xFFA78BFA), 
-                              fontSize: 18, 
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
+                    Flexible(
+                      child: Text(
+                        t.statsAnalysisIntroTitle, 
+                        style: TextStyle(
+                          color: isPro ? const Color(0xFFFBBF24) : const Color(0xFFA78BFA), 
+                          fontSize: 18, 
+                          fontWeight: FontWeight.bold
                         ),
-                        const SizedBox(width: 8),
-                        if (!isPro)
-                          const ProBadge(),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      t.statsAnalysisIntroSubtitle,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
                       ),
                     ),
+                    const SizedBox(width: 8),
+                    if (!isPro)
+                      const ProBadge(),
                   ],
                 ),
               ),
@@ -982,23 +889,9 @@ class _StatsScreenState extends State<StatsScreen> {
               const Icon(LucideIcons.brainCircuit, color: Color(0xFFA78BFA), size: 24),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      t.statsAnalysisIntroTitle, 
-                      style: const TextStyle(color: Color(0xFFA78BFA), fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      t.statsAnalysisIntroSubtitle,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  t.statsAnalysisIntroTitle, 
+                  style: const TextStyle(color: Color(0xFFA78BFA), fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -1065,7 +958,7 @@ class _StatsScreenState extends State<StatsScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PlatformWidgets.activityIndicator(color: const Color(0xFF60A5FA), radius: 16),
+            const CircularProgressIndicator(color: Color(0xFF60A5FA)),
             const SizedBox(height: 20),
             Text(t.moonSyncProcessing, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontSize: 16)),
           ],
@@ -1095,37 +988,23 @@ class _StatsScreenState extends State<StatsScreen> {
               const Icon(LucideIcons.moon, color: Color(0xFF60A5FA), size: 24),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            t.moonSyncTitle, 
-                            style: TextStyle(
-                              color: isPro ? const Color(0xFFFBBF24) : const Color(0xFF60A5FA), 
-                              fontSize: 18, 
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
+                    Flexible(
+                      child: Text(
+                        t.moonSyncTitle, 
+                        style: TextStyle(
+                          color: isPro ? const Color(0xFFFBBF24) : const Color(0xFF60A5FA), 
+                          fontSize: 18, 
+                          fontWeight: FontWeight.bold
                         ),
-                        const SizedBox(width: 8),
-                        if (!isPro)
-                          const ProBadge(),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      t.moonSyncSubtitle,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
                       ),
                     ),
+                    const SizedBox(width: 8),
+                    if (!isPro)
+                      const ProBadge(),
                   ],
                 ),
               ),
@@ -1144,8 +1023,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   : null,
                isLoading: _isMoonSyncLoading,
                gradient: _totalDreamsCount >= 5 
-                  // [MODIFIED] Matched to Dream Pattern Analysis Golden Gradient
-                  ? const LinearGradient(colors: [Color(0xFFFBBF24), Color(0xFFD97706)]) 
+                  ? const LinearGradient(colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)])
                   : LinearGradient(colors: [Colors.grey.withOpacity(0.5), Colors.grey.withOpacity(0.5)]),
              )
           else
@@ -1213,23 +1091,9 @@ class _StatsScreenState extends State<StatsScreen> {
               const Icon(LucideIcons.moon, color: Color(0xFF60A5FA), size: 24),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      t.moonSyncTitle, 
-                      style: const TextStyle(color: Color(0xFF60A5FA), fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      t.moonSyncSubtitle,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.6),
-                        fontSize: 13,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  t.moonSyncTitle, 
+                  style: const TextStyle(color: Color(0xFF60A5FA), fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],

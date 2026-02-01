@@ -264,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     
-                    const SizedBox(height: 81), // Reduced by 12 to compensate for header spacing
+                    const SizedBox(height: 81), // Original spacing
                     
                     // GRID LAYOUT (V3 Specification)
                     

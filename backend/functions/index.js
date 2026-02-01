@@ -81,10 +81,9 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
     const hasCandidates = Object.keys(matchedDefinitions).length > 0;
 
     // Limit anchors to preventing token overflow and "listing" behavior.
-    // We take the top 5 candidates. Using a smaller number forces the AI to synthesize 
-    // rather than list. "Less is More".
+    // We take the top 7 candidates - balanced between coverage and synthesis.
     const limitedDefinitions = {};
-    Object.keys(matchedDefinitions).slice(0, 5).forEach(key => {
+    Object.keys(matchedDefinitions).slice(0, 7).forEach(key => {
         limitedDefinitions[key] = matchedDefinitions[key];
     });
 
@@ -97,18 +96,18 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
     */
     const PROMPT_FRAGMENTS = {
         tr: {
-            opening: "Rüya sahibiyle 'Bilge Dost' tonunda konuş. ASLA 'Anahtar özgürlük demektir. Ayna yüzleşmedir.' gibi kopuk cümleler kurma. Tüm sembolleri TEK BİR hikaye akışında birleştir.",
-            safety: "Aldatma/İhanet rüyalarını HER ZAMAN kişinin kendi içsel çatışması (yetersizlik hissi, korku) olarak yorumla. ASLA 'ilişkin bitiyor' deme.",
-            closing: "Klişelerden uzak dur. 'Her şey düzelecek' deme. Kişiye, şu anki ruh haline uygun derin bir farkındalık sorusu veya düşüncesi bırak.",
-            length: "ÖNEMLİ: Yanıtı MUTLAKA iki (2) ayrı paragraf olarak ver. İlk paragraf sembol sentezi, ikinci paragraf kapanış bilgeligi olsun. Toplam sınır: 120 kelime.",
-            title_safety: '"Aldatılma Şüphesi" veya "Güvensizlik" gibi başlıklar YASAKTIR. "İçsel Denge" veya "Öz Değer" gibi başlıklar kullan.'
+            opening: "Rüya sahibiyle 'Bilge Dost' yerine 'Yansıtıcı Ayna' (Reflective Mirror) tonunda konuş. ASLA 'iyileşme süreci', 'yolculuk', 'ilerleme', 'gelişim' veya 'sonraki adım' gibi süreç bildiren ifadeler kullanma. Sadece mevcut durumu ve temaları betimle.",
+            safety: "Aldatma/İhanet rüyalarını HER ZAMAN kişinin kendi içsel çatışması (yetersizlik hissi, korku) olarak sembolik açıdan yorumla. ASLA 'ilişkin bitiyor' deme veya ne yapması gerektiğini söyleme.",
+            closing: "Sonuçlar tamamen açık uçlu ve sembolik kalmalıdır. 'Zamanla düzelecek' veya 'başaracaksın' gibi gelecek vaatlerinden kaçın. Sadece şu anki duygu durumunu yansıt.",
+            length: "ÖNEMLİ: Yanıtı MUTLAKA iki (2) ayrı paragraf olarak ver. İlk paragraf sembol sentezi, ikinci paragraf açık uçlu bir yansıtma (reflection) olsun. Toplam sınır: 120 kelime.",
+            titles: '"Aldatılma Şüphesi" veya "Güvensizlik" gibi yargılayıcı başlıklar YASAKTIR. "İçsel Denge" veya "Öz Değer" gibi sembolik başlıklar kullan.'
         },
         en: {
-            opening: "Speak like a 'Wise Friend'. NEVER use disjointed sentences like 'The key means freedom. The mirror means truth.' Synthesize ALL symbols into ONE fluid narrative.",
-            safety: "Interpret infidelity/betrayal strictly as INTERNAL conflict (insecurity, self-doubt). NEVER imply the relationship is doomed.",
-            closing: "Avoid clichés like 'It will be fine'. Leave the user with a deep, awareness-provoking question or thought grounded in the present.",
-            length: "IMPORTANT: Output MUST be separated into two (2) distinct paragraphs. Para 1: Symbol synthesis. Para 2: Closing wisdom. Total Limit: 120 words.",
-            title_safety: 'Do NOT use titles like "Suspicion" or "Insecurity". Use titles like "Inner Balance" or "Self Worth".'
+            opening: "Speak like a 'Reflective Mirror' rather than a guide. Interpretations must PURELY describe themes. AVOID framing experiences as 'processes', 'progress', 'improvement', 'healing', or 'journeys'. Do NOT imply advancement or next steps.",
+            safety: "Interpret infidelity/betrayal strictly as INTERNAL conflict (insecurity, self-doubt). NEVER imply the relationship is doomed or suggest actions.",
+            closing: "All conclusions must remain open-ended and symbolic. Avoid definitive statements about the future, outcomes, or positive/negative results.",
+            length: "IMPORTANT: Output MUST be separated into two (2) distinct paragraphs. Para 1: Symbol synthesis. Para 2: Open-ended reflection. Total Limit: 120 words.",
+            titles: 'Do NOT use titles like "Suspicion" or "Insecurity". Use titles like "Inner Balance" or "Self Worth".'
         }
     };
 
@@ -138,20 +137,46 @@ Adjust your voice based on Mood (${mood}):
 - **ANXIOUS:** Grounding, protective, strong (The Protector).
 - **BIZARRE:** Analytical, curious (The Riddle Solver).
 
-*** ANCHOR SELECTION RULE (STRICT) ***
-Anchors (Max 5 provided): 
+*** DREAM SYMBOL DICTIONARY (MANDATORY - ZERO TOLERANCE) ***
+You are provided with a curated Dream Symbol Dictionary below. These definitions are the ABSOLUTE SOURCE OF TRUTH.
+
+STRICT RULES:
+1. IDENTIFY all symbols in the dream (objects, animals, places, actions).
+2. For each symbol, TRANSLATE to English if needed (e.g., "balık" = "fish", "deniz" = "ocean").
+3. CHECK if the English symbol exists in the DICTIONARY ANCHORS below.
+4. If YES: You MUST use the dictionary meaning. DO NOT use your own interpretation.
+5. If NO: You may use your own knowledge.
+
+EXAMPLE (CORRECT):
+- Dream: "Balık tuttum ama kaçırdım" (I caught a fish but it escaped)
+- Dictionary says: fish = "Opportunity, a valuable chance to seize"
+- Interpretation MUST include: The fish represents an opportunity that slipped away...
+
+EXAMPLE (WRONG - BANNED):
+- Interpreting fish as "emotions" or "unconscious" when dictionary says "Opportunity"
+- Ignoring the dictionary definition
+
+DICTIONARY ANCHORS (USE THESE EXACT MEANINGS):
 ${anchorsJSON}
 
 **CRITICAL SYNTHESIS RULE:** 
 - **DO NOT** address symbols one-by-one (Sentence 1 = Key, Sentence 2 = Mirror). **THIS IS BANNED.**
-- **MUST** blend them into a single emotional arc. 
+- **MUST** blend dictionary meanings into a single emotional arc. 
 - *Bad:* "The sea represents emotions. The boat represents safety."
-- *Good:* "As you navigate the rising tides of your emotion, the boat acts as your sanctuary..."
+- *Good:* "As you navigate the rising tides of your emotion, the opportunity (fish) that slipped away reflects..."
+
+*** VOICE & STYLE (APPLE EDITORIAL) ***
+- Use contextual grounding phrases: "Lately", "in your life", "in your inner world", "at this time", "these days".
+- Language must be: simple, poetic, yet crystal clear. No jargon, no clinical terms.
+- Short paragraphs. Calm, premium, understated tone. Like a whisper, not a lecture.
+- NEVER give advice, direction, or decision suggestions. Describe, don't prescribe.
+- Write as if crafting a premium app's microcopy: elegant, minimal, human.
 
 *** WRITING, SAFETY & STRUCTURE ***
 - **STYLE:** ${fragment.opening}
 - **SAFETY:** ${fragment.safety}
-- **TITLE:** ${fragment.title_safety}
+- **TITLE:** ${fragment.titles}
+- **SOFT GUIDANCE RULE:** DO NOT give advice, instructions, or predictions. KEEP IT REFLECTIVE.
 - **STRUCTURE:** ${fragment.length} 
 - **FORMAT:** PLAIN TEXT only. No bold/italics.
 
@@ -250,7 +275,10 @@ It should feel supportive, reflective, and related to dream awareness, emotional
 RULES:
 - Keep the tone warm, calm, and inspirational.
 - The tip must fit into 1–3 sentences.
-- Do NOT include mystical claims or predictions.
+- **STRICT BAN:** Do NOT use words like "healing", "journey", "process", "improvement", "step", or "grow".
+- **SOFT GUIDANCE ONLY:** Do NOT give specific advice, instruction, diagnosis, or predictions.
+- Do NOT use language that implies what the user *should* do, become, or change.
+- Keep the suggestion as an open-ended invitation (e.g., "You might reflect on...", "Notice how...").
 - Do NOT interpret dreams.
 - Keep the suggestion actionable but light (e.g., journaling, reflection, breathing, noticing emotions).
 - Avoid therapy-like or medical advice.
@@ -314,9 +342,9 @@ For safe weekly dream sets:
 - Describe emotional progression (how feelings shift from one dream to another).
 - Highlight subconscious tendencies or repeating behaviors.
 - Note any symbolic clusters that appear in multiple dreams.
-- Keep your tone analytical, warm, and reflective.
-- Do NOT provide psychological, medical, or therapeutic advice.
-- Do NOT use mystical or supernatural language.
+- Keep your tone analytical, warm, and reflective. Move away from "progress" narratives.
+- **STRICTLY FORBIDDEN:** Do NOT provide advice, instruction, prediction, or diagnosis.
+- **OPEN-ENDED:** All observations must be descriptive (e.g., "This pattern suggests a focus on...") rather than prescriptive (e.g., "You need to...").
 - Your analysis must feel personal, thoughtful, and unique.
 
 CRITICAL WRITING RULES:

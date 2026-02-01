@@ -1044,6 +1044,15 @@ class AppLocalizationsTr extends AppLocalizations {
   String get freeTrialBadge => 'İlk 7 gün ücretsiz dene';
 
   @override
+  String get priceLoading => 'Yükleniyor...';
+
+  @override
+  String get priceLoadError => 'Fiyat yüklenemedi';
+
+  @override
+  String get priceRetryButton => 'Tekrar Dene';
+
+  @override
   String get then => 'Sonra';
 
   @override
@@ -1471,4 +1480,39 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Beklenmedik bir hata oluştu.';
+
+  @override
+  String get dreamSavedNoInterpretation => 'Rüya günlüğe kaydedildi.';
+
+  @override
+  String get watchAdForInterpretation =>
+      'AI yorumu için PRO\'ya geç veya reklam izle.';
+
+  @override
+  String get interpretationSkipped =>
+      'Reklam izlenmediği için rüya yorumsuz kaydedildi.';
+
+  @override
+  String weeklyLimitLeft(int count) {
+    return 'Bu hafta $count ücretsiz rüya yorumu hakkın kaldı';
+  }
+
+  @override
+  String get specialOffer => '🔥 ÖZEL TEKLİF';
+
+  @override
+  String get welcomeOfferFirstTime => 'İlk abone özel teklifi';
+
+  @override
+  String welcomeOfferExpires(String time) {
+    return 'Teklifin bitmesine: $time';
+  }
+
+  @override
+  String streakDays(int count) {
+    return '$count gün üst üste';
+  }
+
+  @override
+  String get streakSubtitle => 'Rüya yolculuğun devam ediyor';
 }

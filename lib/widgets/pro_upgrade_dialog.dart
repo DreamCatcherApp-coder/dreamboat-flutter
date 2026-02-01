@@ -10,6 +10,9 @@ import 'package:dream_boat_mobile/services/connectivity_service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
+import 'dart:async';
+import 'dart:io' show Platform;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProUpgradeDialog extends StatefulWidget {
   const ProUpgradeDialog({super.key});
@@ -22,6 +25,16 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
   bool _isLoading = false;
   bool _isYearlySelected = true; // Default to yearly (better value)
   late AnimationController _shimmerController;
+
+  // =============================================================
+  // WELCOME OFFER BEHAVIOR TABLE (KİLİT)
+  // =============================================================
+  // Platform | Intro Var mı? | Label                        | Timer
+  // ---------+---------------+------------------------------+------
+  // iOS      | introDiscount | "İlk abone özel teklifi"     | ❌
+  // iOS      | null          | ❌ Hiçbir offer (standart)   | ❌
+  // Android  | N/A           | Standart PRO ekranı          | ❌
+  // =============================================================
 
   @override
   void initState() {
@@ -166,9 +179,34 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     final t = AppLocalizations.of(context)!;
     final provider = context.watch<SubscriptionProvider>();
     
-    // Get prices and trial info from RevenueCat offerings
-    final monthlyPrice = provider.monthlyPackage?.storeProduct.priceString ?? '---';
-    final yearlyPrice = provider.yearlyPackage?.storeProduct.priceString ?? '---';
+    // Determine price display state
+    final bool isLoadingPrices = provider.isConfiguring || 
+        (!provider.isConfigured && !provider.offeringsLoadFailed);
+    final bool pricesLoadFailed = provider.offeringsLoadFailed;
+    
+    // Get prices and trial info from RevenueCat offerings with smart fallback
+    String monthlyPrice;
+    String yearlyPrice;
+    
+    if (provider.monthlyPackage != null) {
+      monthlyPrice = provider.monthlyPackage!.storeProduct.priceString;
+    } else if (isLoadingPrices) {
+      monthlyPrice = t.priceLoading;
+    } else if (pricesLoadFailed) {
+      monthlyPrice = t.priceLoadError;
+    } else {
+      monthlyPrice = t.priceLoading; // Fallback
+    }
+    
+    if (provider.yearlyPackage != null) {
+      yearlyPrice = provider.yearlyPackage!.storeProduct.priceString;
+    } else if (isLoadingPrices) {
+      yearlyPrice = t.priceLoading;
+    } else if (pricesLoadFailed) {
+      yearlyPrice = t.priceLoadError;
+    } else {
+      yearlyPrice = t.priceLoading; // Fallback
+    }
     
     // Check for free trial (introductory offer)
     final yearlyIntro = provider.yearlyPackage?.storeProduct.introductoryPrice;
@@ -333,7 +371,11 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                       billingInfo: t.billingAnnual,
                                       isPopular: true,
                                       popularLabel: t.mostPopular,
-                                      discountLabel: t.discountPercent,
+                                      // iOS: Only show intro label if RC has introductory discount
+                                      // Android: Standard PRO screen (no special offer)
+                                      discountLabel: Platform.isIOS
+                                          ? (yearlyIntro != null ? t.welcomeOfferFirstTime : t.discountPercent)
+                                          : t.discountPercent,
                                       isSelected: _isYearlySelected,
                                       onTap: () => setState(() => _isYearlySelected = true),
                                       onSubscribe: () => _handlePurchase(true),
@@ -347,30 +389,75 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                           
                           const SizedBox(height: 28),
                           
-                          // Free Trial Badge - subtle, smaller than main badges
-                          Center(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                              decoration: BoxDecoration(
-                                // Subtle glass effect
-                                color: const Color(0xFF3EE6C4).withOpacity(0.08),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: const Color(0xFF3EE6C4).withOpacity(0.30),
-                                  width: 0.5,
+                          // Show Retry button if prices failed, otherwise show Free Trial Badge
+                          if (pricesLoadFailed)
+                            Center(
+                              child: TextButton.icon(
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();
+                                  provider.retryLoadOfferings();
+                                },
+                                icon: Icon(
+                                  LucideIcons.refreshCw,
+                                  size: 16,
+                                  color: const Color(0xFFFBBF24).withOpacity(0.8),
+                                ),
+                                label: Text(
+                                  t.priceRetryButton,
+                                  style: TextStyle(
+                                    color: const Color(0xFFFBBF24).withOpacity(0.8),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                  backgroundColor: const Color(0xFFFBBF24).withOpacity(0.1),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    side: BorderSide(
+                                      color: const Color(0xFFFBBF24).withOpacity(0.3),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: Text(
-                                t.freeTrialBadge,
-                                style: TextStyle(
-                                  color: const Color(0xFF3EE6C4).withOpacity(0.85),
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 0.2,
+                            )
+                          else if (isLoadingPrices)
+                            Center(
+                              child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: PlatformWidgets.activityIndicator(
+                                  color: const Color(0xFF3EE6C4).withOpacity(0.7),
+                                  radius: 10,
+                                ),
+                              ),
+                            )
+                          else
+                            // Free Trial Badge - subtle, smaller than main badges
+                            Center(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                                decoration: BoxDecoration(
+                                  // Subtle glass effect
+                                  color: const Color(0xFF3EE6C4).withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: const Color(0xFF3EE6C4).withOpacity(0.30),
+                                    width: 0.5,
+                                  ),
+                                ),
+                                child: Text(
+                                  t.freeTrialBadge,
+                                  style: TextStyle(
+                                    color: const Color(0xFF3EE6C4).withOpacity(0.85),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 0.2,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                           
                           const SizedBox(height: 18),
 
@@ -634,6 +721,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                 // Price
                 Text(
                   price,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: isSelected ? const Color(0xFFFBBF24) : Colors.white.withOpacity(0.5),
                     fontWeight: FontWeight.bold,
@@ -778,6 +866,53 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     final price = isYearly ? yearlyPrice : monthlyPrice;
     final subscribeText = isYearly ? t.subscribeYearly : t.subscribeMonthly;
     
+    // Check if price is an error state
+    final bool isPriceError = price == t.priceLoadError || price == t.priceLoading;
+    
+    // Android-specific: Always show trial format when price is valid
+    // Use 7 days default if no trial info from RevenueCat
+    if (Platform.isAndroid && !isPriceError) {
+      final displayTrialDays = trialDays > 0 ? trialDays : 7;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '$displayTrialDays ${t.freeTrialDays}',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '${t.then} ',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black.withOpacity(0.8),
+                ),
+              ),
+              Text(
+                price,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+    
+    // iOS or when trialDays > 0 (original behavior)
     if (trialDays > 0) {
       // Show trial info with strikethrough price
       return Column(
@@ -818,9 +953,10 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
         ],
       );
     } else {
-      // No trial - show regular text
+      // No trial - show regular text (iOS only, or error states)
+      // If price failed to load, show only the error message (not combined with subscribe text)
       return Text(
-        '$subscribeText $price',
+        isPriceError ? price : '$subscribeText $price',
         style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,

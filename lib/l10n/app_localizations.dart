@@ -1982,6 +1982,24 @@ abstract class AppLocalizations {
   /// **'İlk 7 gün ücretsiz dene'**
   String get freeTrialBadge;
 
+  /// No description provided for @priceLoading.
+  ///
+  /// In tr, this message translates to:
+  /// **'Yükleniyor...'**
+  String get priceLoading;
+
+  /// No description provided for @priceLoadError.
+  ///
+  /// In tr, this message translates to:
+  /// **'Fiyat yüklenemedi'**
+  String get priceLoadError;
+
+  /// No description provided for @priceRetryButton.
+  ///
+  /// In tr, this message translates to:
+  /// **'Tekrar Dene'**
+  String get priceRetryButton;
+
   /// No description provided for @then.
   ///
   /// In tr, this message translates to:
@@ -2773,6 +2791,60 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Beklenmedik bir hata oluştu.'**
   String get errorGeneric;
+
+  /// No description provided for @dreamSavedNoInterpretation.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya günlüğe kaydedildi.'**
+  String get dreamSavedNoInterpretation;
+
+  /// No description provided for @watchAdForInterpretation.
+  ///
+  /// In tr, this message translates to:
+  /// **'AI yorumu için PRO\'ya geç veya reklam izle.'**
+  String get watchAdForInterpretation;
+
+  /// No description provided for @interpretationSkipped.
+  ///
+  /// In tr, this message translates to:
+  /// **'Reklam izlenmediği için rüya yorumsuz kaydedildi.'**
+  String get interpretationSkipped;
+
+  /// No description provided for @weeklyLimitLeft.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu hafta {count} ücretsiz rüya yorumu hakkın kaldı'**
+  String weeklyLimitLeft(int count);
+
+  /// No description provided for @specialOffer.
+  ///
+  /// In tr, this message translates to:
+  /// **'🔥 ÖZEL TEKLİF'**
+  String get specialOffer;
+
+  /// No description provided for @welcomeOfferFirstTime.
+  ///
+  /// In tr, this message translates to:
+  /// **'İlk abone özel teklifi'**
+  String get welcomeOfferFirstTime;
+
+  /// No description provided for @welcomeOfferExpires.
+  ///
+  /// In tr, this message translates to:
+  /// **'Teklifin bitmesine: {time}'**
+  String welcomeOfferExpires(String time);
+
+  /// No description provided for @streakDays.
+  ///
+  /// In tr, this message translates to:
+  /// **'{count} gün üst üste'**
+  String streakDays(int count);
+
+  /// No description provided for @streakSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya yolculuğun devam ediyor'**
+  String get streakSubtitle;
 }
 
 class _AppLocalizationsDelegate

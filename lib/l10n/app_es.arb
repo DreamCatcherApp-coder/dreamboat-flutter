@@ -335,6 +335,9 @@
     
     "freeTrialDays": "Días de Prueba Gratis",
     "freeTrialBadge": "Primeros 7 días gratis",
+    "priceLoading": "Cargando...",
+    "priceLoadError": "Precio no disponible",
+    "priceRetryButton": "Reintentar",
     "then": "Luego",
 
     "reviewSatisfactionTitle": "¿Te gusta DreamBoat?",
@@ -488,5 +491,28 @@
     "offlineSaveConfirm": "Guardar Sin Interpretación",
     "offlineSaveCancel": "Cancelar",
     "errorNoInternet": "No hay conexión a internet.",
-    "errorGeneric": "Ocurrió un error inesperado."
+    "errorGeneric": "Ocurrió un error inesperado.",
+    "dreamSavedNoInterpretation": "Sueño guardado en el diario.",
+    "watchAdForInterpretation": "Mejora a PRO o mira un anuncio para la interpretación de IA.",
+    "interpretationSkipped": "El anuncio no fue visto, sueño guardado sin interpretación.",
+    "weeklyLimitLeft": "Te quedan {count} interpretaciones gratuitas esta semana",
+    "specialOffer": "🔥 OFERTA ESPECIAL",
+    "welcomeOfferFirstTime": "Oferta para nuevos suscriptores",
+    "welcomeOfferExpires": "Oferta expira en: {time}",
+    "@welcomeOfferExpires": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "streakDays": "{count} días seguidos",
+    "@streakDays": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "streakSubtitle": "Tu viaje de sueños continúa"
 }

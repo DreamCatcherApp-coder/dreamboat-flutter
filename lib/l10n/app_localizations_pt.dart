@@ -1050,6 +1050,15 @@ class AppLocalizationsPt extends AppLocalizations {
   String get freeTrialBadge => 'Primeiros 7 dias grátis';
 
   @override
+  String get priceLoading => 'Carregando...';
+
+  @override
+  String get priceLoadError => 'Preço indisponível';
+
+  @override
+  String get priceRetryButton => 'Tentar Novamente';
+
+  @override
   String get then => 'Depois';
 
   @override
@@ -1484,4 +1493,39 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Ocorreu um erro inesperado.';
+
+  @override
+  String get dreamSavedNoInterpretation => 'Sonho salvo no diário.';
+
+  @override
+  String get watchAdForInterpretation =>
+      'Torne-se PRO ou assista a um anúncio para a interpretação de IA.';
+
+  @override
+  String get interpretationSkipped =>
+      'Anúncio não assistido, sonho salvo sem interpretação.';
+
+  @override
+  String weeklyLimitLeft(int count) {
+    return 'Restam $count interpretações gratuitas esta semana';
+  }
+
+  @override
+  String get specialOffer => '🔥 OFERTA ESPECIAL';
+
+  @override
+  String get welcomeOfferFirstTime => 'Oferta para novos assinantes';
+
+  @override
+  String welcomeOfferExpires(String time) {
+    return 'Oferta expira em: $time';
+  }
+
+  @override
+  String streakDays(int count) {
+    return '$count dias seguidos';
+  }
+
+  @override
+  String get streakSubtitle => 'Sua jornada de sonhos continua';
 }

@@ -109,12 +109,17 @@ class AdManager {
 
     _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) {
-        debugPrint('AdManager: Ad dismissed.');
+        debugPrint('AdManager: Ad dismissed. Completing with TRUE.');
         ad.dispose();
         _interstitialAd = null;
         _isAdLoaded = false;
         
-        if (!completer.isCompleted) completer.complete(true);
+        if (!completer.isCompleted) {
+          debugPrint('AdManager: Completing completer with true.');
+          completer.complete(true);
+        } else {
+          debugPrint('AdManager: Completer already completed (race condition?).');
+        }
         
         // Preload next
         _retryCount = 0;
@@ -132,17 +137,17 @@ class AdManager {
         _loadInterstitialAd();
       },
       onAdShowedFullScreenContent: (ad) {
-        debugPrint('AdManager: Ad showed.');
+        debugPrint('AdManager: Ad showed full screen content.');
       },
     );
 
     await _interstitialAd!.show();
     
-    // [FIX] Add timeout to prevent app freeze if SDK callback never fires
+    // [FIX] Increase timeout to 60s - emulator ads can be slow
     return completer.future.timeout(
-      const Duration(seconds: 5), 
+      const Duration(seconds: 60), 
       onTimeout: () {
-        debugPrint('AdManager: Show timeout (5s). Unfreezing UI.');
+        debugPrint('AdManager: Show timeout (60s). Unfreezing UI.');
         _isAdLoaded = false; // Reset state
         _interstitialAd = null;
         return false; // Treat as failed

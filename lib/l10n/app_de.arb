@@ -335,6 +335,9 @@
     
     "freeTrialDays": "Tage Kostenlos Testen",
     "freeTrialBadge": "Erste 7 Tage kostenlos",
+    "priceLoading": "Laden...",
+    "priceLoadError": "Preis nicht verfügbar",
+    "priceRetryButton": "Erneut versuchen",
     "then": "Danach",
 
     "reviewSatisfactionTitle": "Gefällt dir DreamBoat?",
@@ -487,5 +490,28 @@
     "offlineSaveConfirm": "Ohne Deutung Speichern",
     "offlineSaveCancel": "Abbrechen",
     "errorNoInternet": "Keine Internetverbindung.",
-    "errorGeneric": "Ein unerwarteter Fehler ist aufgetreten."
+    "errorGeneric": "Ein unerwarteter Fehler ist aufgetreten.",
+    "dreamSavedNoInterpretation": "Traum im Tagebuch gespeichert.",
+    "watchAdForInterpretation": "Werde PRO oder sieh dir Werbung an für die AI-Deutung.",
+    "interpretationSkipped": "Werbung nicht angesehen, Traum ohne Deutung gespeichert.",
+    "weeklyLimitLeft": "Noch {count} kostenlose Traumdeutungen diese Woche",
+    "specialOffer": "🔥 SONDERANGEBOT",
+    "welcomeOfferFirstTime": "Erstabonnenten-Angebot",
+    "welcomeOfferExpires": "Angebot endet in: {time}",
+    "@welcomeOfferExpires": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "streakDays": "{count} Tage am Stück",
+    "@streakDays": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "streakSubtitle": "Deine Traumreise geht weiter"
 }
