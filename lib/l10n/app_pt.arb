@@ -275,6 +275,11 @@
     "notifOpenSettingsHint": "Você precisa ativar as notificações nas configurações.",
     "allow": "Permitir",
     "notifReminderBody": "Não se esqueça de registrar seu sonho! 📝",
+    "notifReminder1": "O que o universo sussurrou para você esta noite? ✨",
+    "notifReminder2": "Capture seus sonhos antes que desapareçam! 📓",
+    "notifReminder3": "Seu subconsciente deixou uma mensagem para você... 🌙",
+    "notifReminder4": "Não está curioso sobre o que aqueles símbolos significam? 🔮",
+    "notifReminder5": "Seu diário de sonhos está esperando ✍️",
     "pressBackToExit": "Pressione voltar novamente para sair",
     
     "moonSyncTitle": "Sincronização Mensal de Lua e Planeta",
@@ -302,6 +307,7 @@
     "moonPhaseThirdQuarter": "Quarto Minguante",
     "moonPhaseWaningCrescent": "Lua Minguante",
     "actionShareInterpretation": "Compartilhar\nInterpretação",
+    "shareImage": "Compartilhar\nImagem",
     "sharePrivacyHint": "Nota: O botão Compartilhar Interpretação apenas compartilha a interpretação. Seus sonhos pertencem a você e nunca são compartilhados com terceiros.",
     "moonPhaseLabel": "Fase Lunar:",
     "readMore": "Ler mais...",
@@ -512,5 +518,19 @@
             }
         }
     },
-    "streakSubtitle": "Sua jornada de sonhos continua"
+    "streakSubtitle": "Sua jornada de sonhos continua",
+    "proFeatureImageGenTitle": "Gerar Imagem de Sonho Diária",
+    "proFeatureImageGenSubtitle": "Visualize seus sonhos com IA. 1 imagem vívida por dia.",
+    "visualizeDream": "Visualizar Sonho",
+    "visualizingDream": "Visualizando...",
+    "imageGenLimitReached": "Limite Diário Atingido",
+    "imageGenLimitDesc": "Você pode gerar 1 imagem de sonho por dia. Volte amanhã!",
+    "imageGenLimitTrial": "Limite de Teste Atingido",
+    "imageGenLimitTrialDesc": "O teste inclui 1 imagem grátis. Faça upgrade para PRO para imagens diárias.",
+    "shareVisualizedBy": "Visualizado com DreamBoat App",
+    "offlineImageGenTitle": "Erro de Conexão",
+    "offlineImageGenContent": "Não foi possível gerar imagem. Verifique sua conexão. O limite não foi consumido.",
+    "limitReachedTitle": "Limite Atingido",
+    "trialImageLimitReached": "Você usou sua visualização de teste gratuita. Após o período de teste, você pode criar uma nova imagem diária com PRO!",
+    "dailyImageLimitReached": "Você usou sua visualização diária. Volte amanhã para uma nova imagem!"
 }

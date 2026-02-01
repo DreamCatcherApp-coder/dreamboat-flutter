@@ -1730,6 +1730,36 @@ abstract class AppLocalizations {
   /// **'Rüyanızı kaydetmeyi unutmayın! 📝'**
   String get notifReminderBody;
 
+  /// No description provided for @notifReminder1.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu gece evren sana ne fısıldadı? ✨'**
+  String get notifReminder1;
+
+  /// No description provided for @notifReminder2.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyaların silinmeden onları yakala! 📓'**
+  String get notifReminder2;
+
+  /// No description provided for @notifReminder3.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bilinçaltın sana bir mesaj bıraktı... 🌙'**
+  String get notifReminder3;
+
+  /// No description provided for @notifReminder4.
+  ///
+  /// In tr, this message translates to:
+  /// **'Gördüğün sembollerin anlamını merak etmiyor musun? 🔮'**
+  String get notifReminder4;
+
+  /// No description provided for @notifReminder5.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya günlüğün seni bekliyor ✍️'**
+  String get notifReminder5;
+
   /// No description provided for @pressBackToExit.
   ///
   /// In tr, this message translates to:
@@ -1843,6 +1873,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Yorumu\nPaylaş'**
   String get actionShareInterpretation;
+
+  /// No description provided for @shareImage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görseli\nPaylaş'**
+  String get shareImage;
 
   /// No description provided for @sharePrivacyHint.
   ///
@@ -2845,6 +2881,90 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Rüya yolculuğun devam ediyor'**
   String get streakSubtitle;
+
+  /// No description provided for @proFeatureImageGenTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Günlük Rüya Görseli Oluştur'**
+  String get proFeatureImageGenTitle;
+
+  /// No description provided for @proFeatureImageGenSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyanı AI ile görselleştir. Günde 1 canlı görsel.'**
+  String get proFeatureImageGenSubtitle;
+
+  /// No description provided for @visualizeDream.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüyayı Görselleştir'**
+  String get visualizeDream;
+
+  /// No description provided for @visualizingDream.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görselleştiriliyor...'**
+  String get visualizingDream;
+
+  /// No description provided for @imageGenLimitReached.
+  ///
+  /// In tr, this message translates to:
+  /// **'Günlük Limit Doldu'**
+  String get imageGenLimitReached;
+
+  /// No description provided for @imageGenLimitDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Günde 1 rüya görseli oluşturabilirsin. Yarın görüşürüz!'**
+  String get imageGenLimitDesc;
+
+  /// No description provided for @imageGenLimitTrial.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deneme Sürümü Limiti'**
+  String get imageGenLimitTrial;
+
+  /// No description provided for @imageGenLimitTrialDesc.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deneme süresi 1 ücretsiz görsel içerir. Her gün görsel için PRO\'ya geç.'**
+  String get imageGenLimitTrialDesc;
+
+  /// No description provided for @shareVisualizedBy.
+  ///
+  /// In tr, this message translates to:
+  /// **'DreamBoat ile Görselleştirildi'**
+  String get shareVisualizedBy;
+
+  /// No description provided for @offlineImageGenTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bağlantı Hatası'**
+  String get offlineImageGenTitle;
+
+  /// No description provided for @offlineImageGenContent.
+  ///
+  /// In tr, this message translates to:
+  /// **'Görsel oluşturulamadı. İnternet bağlantını kontrol et. Limitinden düşülmedi.'**
+  String get offlineImageGenContent;
+
+  /// No description provided for @limitReachedTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Limit Doldu'**
+  String get limitReachedTitle;
+
+  /// No description provided for @trialImageLimitReached.
+  ///
+  /// In tr, this message translates to:
+  /// **'Deneme sürümündeki ücretsiz görselleştirme hakkınızı kullandınız. Trial sona erdiğinde PRO ile her gün yeni görsel oluşturabilirsiniz.'**
+  String get trialImageLimitReached;
+
+  /// No description provided for @dailyImageLimitReached.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bugünkü görselleştirme hakkınızı kullandınız. Yarın yeni bir görsel oluşturabilirsiniz.'**
+  String get dailyImageLimitReached;
 }
 
 class _AppLocalizationsDelegate

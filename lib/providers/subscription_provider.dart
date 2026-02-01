@@ -28,6 +28,13 @@ class SubscriptionProvider extends ChangeNotifier {
   bool get isConfigured => _isConfigured; // Exposed for UI to check
   bool get isConfiguring => _isConfiguring; // Exposed for UI to show loading
   bool get offeringsLoadFailed => _offeringsLoadFailed; // Exposed for UI to show error
+  
+  /// Check if the user is currently in a Free Trial period
+  bool get isTrial {
+    final entitlement = _customerInfo?.entitlements.active[_proEntitlement];
+    return entitlement?.periodType == PeriodType.trial;
+  }
+
   Offerings? get offerings => _offerings;
   CustomerInfo? get customerInfo => _customerInfo;
 

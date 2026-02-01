@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dream_boat_mobile/models/dream_entry.dart';
+import 'package:dream_boat_mobile/services/openai_service.dart'; // Reuse init logic if possible
 
 class DreamService {
   static const String _boxName = 'dreams';
@@ -81,10 +83,13 @@ class DreamService {
     await prefs.setInt(_dailyUsageCountKey, count + 1);
   }
 
-  // --- Weekly Usage Logic (For Free Limit) ---
+  // --- Weekly Usage Logic (Tracking Only - Limit Enforcement DISABLED) ---
+  // Unit economics: Video ad revenue ($0.003-0.008) >> API cost ($0.0006) = 5-13x margin
+  // Tracking preserved for analytics; limit enforcement removed from new_dream_screen.dart
   static const String _weeklyUsageStartKey = 'weekly_usage_start';
   static const String _weeklyUsageCountKey = 'weekly_usage_count';
-  static const int weeklyFreeLimit = 3;
+  @Deprecated('Limit enforcement disabled. Constant kept for reference.')
+  static const int weeklyFreeLimit = 3; // No longer enforced
 
   /// Returns the number of interpretations used in the active 7-day period.
   Future<int> getWeeklyUsage() async {
@@ -114,5 +119,41 @@ class DreamService {
      final prefs = await SharedPreferences.getInstance();
      final count = prefs.getInt(_weeklyUsageCountKey) ?? 0;
      await prefs.setInt(_weeklyUsageCountKey, count + 1);
+  }
+
+  // --- Image Generation ---
+  Future<String> generateImage({
+    required String dreamId,
+    required String dreamText,
+    required bool isTrial,
+  }) async {
+    try {
+      // 1. Ensure Firebase/Auth (OpenAIService has helper, but we call direct here)
+      // We assume user is authenticated if they are in the app
+      
+      final result = await FirebaseFunctions.instance.httpsCallable('generateDreamImage').call({
+        'dreamText': dreamText,
+        'dreamId': dreamId,
+        'isTrial': isTrial,
+      }).timeout(const Duration(seconds: 60)); // DALL-E takes ~15s
+      
+      final data = result.data as Map<String, dynamic>;
+      final imageUrl = data['imageUrl'] as String;
+
+      // 2. Save to Local Storage (Hive)
+      final dream = _box.get(dreamId);
+      if (dream != null) {
+        final updatedDream = dream.copyWith(imageUrl: imageUrl);
+        await updateDream(updatedDream);
+      }
+      
+      return imageUrl;
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('Cloud Function Error: ${e.code} - ${e.message}');
+      throw e; // Rethrow to show UI dialog
+    } catch (e) {
+      debugPrint('Generator Error: $e');
+      throw e;
+    }
   }
 }

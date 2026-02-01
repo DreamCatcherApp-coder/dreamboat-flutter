@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart'; // for kDebugMode
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:dream_boat_mobile/services/firebase_ready_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -97,7 +98,6 @@ Future<void> _initFirebase() async {
 Future<void> _initNotifications() async {
    await _initNotificationsInBackground(); // Reuse existing function
 }
-
 // Background Firebase initialization - does not block app startup
 Future<void> _initFirebaseInBackground() async {
   try {
@@ -105,6 +105,10 @@ Future<void> _initFirebaseInBackground() async {
     await Firebase.initializeApp();
     debugPrint('=== Background: Firebase initialized ===');
     
+    // Authenticate Anonymously for Cloud Functions & Storage Security
+    final userCredential = await FirebaseAuth.instance.signInAnonymously();
+    debugPrint('=== Background: Signed in anonymously UID: ${userCredential.user?.uid} ===');
+
     // Initialize App Check (Security)
     await FirebaseAppCheck.instance.activate(
       androidProvider: kDebugMode 

@@ -276,6 +276,11 @@
     "notifOpenSettingsHint": "Du musst Benachrichtigungen in den Einstellungen aktivieren.",
     "allow": "Erlauben",
     "notifReminderBody": "Vergiss nicht, deinen Traum aufzuzeichnen! 📝",
+    "notifReminder1": "Was hat dir das Universum heute Nacht zugeflüstert? ✨",
+    "notifReminder2": "Fang deine Träume ein, bevor sie verblassen! 📓",
+    "notifReminder3": "Dein Unterbewusstsein hat dir eine Nachricht hinterlassen... 🌙",
+    "notifReminder4": "Bist du nicht neugierig, was diese Symbole bedeuten? 🔮",
+    "notifReminder5": "Dein Traumtagebuch wartet auf dich ✍️",
     "pressBackToExit": "Drücke erneut zurück zum Beenden",
     
     "moonSyncTitle": "Monatliche Mond- & Planetensynchronisation",
@@ -303,6 +308,7 @@
     "moonPhaseThirdQuarter": "Letztes Viertel",
     "moonPhaseWaningCrescent": "Abnehmende Sichel",
     "actionShareInterpretation": "Deutung\nteilen",
+    "shareImage": "Bild\nteilen",
     "sharePrivacyHint": "Hinweis: Der Button Deutung teilen teilt nur die Traumdeutung. Ihre Träume gehören Ihnen und werden niemals mit Dritten geteilt.",
     "moonPhaseLabel": "Mondphase:",
     "readMore": "Mehr lesen...",
@@ -513,5 +519,19 @@
             }
         }
     },
-    "streakSubtitle": "Deine Traumreise geht weiter"
+    "streakSubtitle": "Deine Traumreise geht weiter",
+    "proFeatureImageGenTitle": "Täglich Traumbilder generieren",
+    "proFeatureImageGenSubtitle": "Visualisiere deine Träume mit KI. 1 Bild pro Tag.",
+    "visualizeDream": "Traum visualisieren",
+    "visualizingDream": "Wird visualisiert...",
+    "imageGenLimitReached": "Tageslimit erreicht",
+    "imageGenLimitDesc": "Du kannst 1 Traumbild pro Tag erstellen. Komm morgen wieder!",
+    "imageGenLimitTrial": "Testlimit erreicht",
+    "imageGenLimitTrialDesc": "Testversion enthält 1 kostenloses Bild. Upgrade auf PRO für tägliche Bilder.",
+    "shareVisualizedBy": "Visualisiert mit DreamBoat App",
+    "offlineImageGenTitle": "Verbindungsfehler",
+    "offlineImageGenContent": "Bild konnte nicht erstellt werden. Prüfe deine Verbindung. Limit wurde nicht verbraucht.",
+    "limitReachedTitle": "Limit Erreicht",
+    "trialImageLimitReached": "Du hast deine kostenlose Testvisualisierung verwendet. Nach Ablauf der Testversion kannst du mit PRO täglich ein neues Bild erstellen!",
+    "dailyImageLimitReached": "Du hast deine tägliche Visualisierung verwendet. Komm morgen für ein neues Bild zurück!"
 }

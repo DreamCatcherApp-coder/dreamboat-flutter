@@ -907,6 +907,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notifReminderBody => 'Rüyanızı kaydetmeyi unutmayın! 📝';
 
   @override
+  String get notifReminder1 => 'Bu gece evren sana ne fısıldadı? ✨';
+
+  @override
+  String get notifReminder2 => 'Rüyaların silinmeden onları yakala! 📓';
+
+  @override
+  String get notifReminder3 => 'Bilinçaltın sana bir mesaj bıraktı... 🌙';
+
+  @override
+  String get notifReminder4 =>
+      'Gördüğün sembollerin anlamını merak etmiyor musun? 🔮';
+
+  @override
+  String get notifReminder5 => 'Rüya günlüğün seni bekliyor ✍️';
+
+  @override
   String get pressBackToExit => 'Çıkmak için tekrar geri tuşuna basın';
 
   @override
@@ -967,6 +983,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get actionShareInterpretation => 'Yorumu\nPaylaş';
+
+  @override
+  String get shareImage => 'Görseli\nPaylaş';
 
   @override
   String get sharePrivacyHint =>
@@ -1515,4 +1534,52 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get streakSubtitle => 'Rüya yolculuğun devam ediyor';
+
+  @override
+  String get proFeatureImageGenTitle => 'Günlük Rüya Görseli Oluştur';
+
+  @override
+  String get proFeatureImageGenSubtitle =>
+      'Rüyanı AI ile görselleştir. Günde 1 canlı görsel.';
+
+  @override
+  String get visualizeDream => 'Rüyayı Görselleştir';
+
+  @override
+  String get visualizingDream => 'Görselleştiriliyor...';
+
+  @override
+  String get imageGenLimitReached => 'Günlük Limit Doldu';
+
+  @override
+  String get imageGenLimitDesc =>
+      'Günde 1 rüya görseli oluşturabilirsin. Yarın görüşürüz!';
+
+  @override
+  String get imageGenLimitTrial => 'Deneme Sürümü Limiti';
+
+  @override
+  String get imageGenLimitTrialDesc =>
+      'Deneme süresi 1 ücretsiz görsel içerir. Her gün görsel için PRO\'ya geç.';
+
+  @override
+  String get shareVisualizedBy => 'DreamBoat ile Görselleştirildi';
+
+  @override
+  String get offlineImageGenTitle => 'Bağlantı Hatası';
+
+  @override
+  String get offlineImageGenContent =>
+      'Görsel oluşturulamadı. İnternet bağlantını kontrol et. Limitinden düşülmedi.';
+
+  @override
+  String get limitReachedTitle => 'Limit Doldu';
+
+  @override
+  String get trialImageLimitReached =>
+      'Deneme sürümündeki ücretsiz görselleştirme hakkınızı kullandınız. Trial sona erdiğinde PRO ile her gün yeni görsel oluşturabilirsiniz.';
+
+  @override
+  String get dailyImageLimitReached =>
+      'Bugünkü görselleştirme hakkınızı kullandınız. Yarın yeni bir görsel oluşturabilirsiniz.';
 }

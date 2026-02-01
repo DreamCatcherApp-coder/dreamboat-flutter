@@ -29,6 +29,8 @@ class DreamEntry {
   final List<String>? astronomicalEvents; // List of cosmic events (e.g., "Super Moon", "Solar Eclipse")
   @HiveField(11)
   final int? guideStage; // Lucid guide stage when dream was recorded (0: MILD, 1: WBTB, 2: WILD, etc.)
+  @HiveField(12)
+  final String? imageUrl; // DALL-E 3 Image (Firebase Storage URL)
 
   DreamEntry({
     required this.id,
@@ -43,6 +45,7 @@ class DreamEntry {
     this.isFavorite = false,
     this.astronomicalEvents,
     this.guideStage,
+    this.imageUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -59,6 +62,7 @@ class DreamEntry {
       'isFavorite': isFavorite,
       'astronomicalEvents': astronomicalEvents,
       'guideStage': guideStage,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -84,6 +88,7 @@ class DreamEntry {
       isFavorite: json['isFavorite'] as bool? ?? false,
       astronomicalEvents: (json['astronomicalEvents'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
       guideStage: json['guideStage'] as int?,
+      imageUrl: json['imageUrl']?.toString(),
     );
   }
 
@@ -100,6 +105,7 @@ class DreamEntry {
     bool? isFavorite,
     List<String>? astronomicalEvents,
     int? guideStage,
+    String? imageUrl,
   }) {
     return DreamEntry(
       id: id ?? this.id,
@@ -114,6 +120,7 @@ class DreamEntry {
       isFavorite: isFavorite ?? this.isFavorite,
       astronomicalEvents: astronomicalEvents ?? this.astronomicalEvents,
       guideStage: guideStage ?? this.guideStage,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 }

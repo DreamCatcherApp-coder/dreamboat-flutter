@@ -43,19 +43,14 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
   int? _rateLimitMinutes; // [NEW] Rate limit countdown minutes
   bool _showAnalysisOverlay = false; // [NEW] Analysis overlay visibility
   bool _preparingAd = false; // [NEW] Transition state for ad loading
-  int _weeklyUsage = 0; // [NEW] For UI display
+  // [REMOVED] _weeklyUsage - Weekly limit disabled for unlimited free interpretations
 
   @override
   void initState() {
     super.initState();
-    _loadUsage();
+    // [REMOVED] _loadUsage() - Weekly limit disabled
   }
 
-  Future<void> _loadUsage() async {
-    final service = DreamService();
-    final usage = await service.getWeeklyUsage();
-    if (mounted) setState(() => _weeklyUsage = usage);
-  }
 
   @override
   void dispose() {
@@ -142,24 +137,11 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
       return;
     }
 
-    // 3. Check Weekly Limit (NEW) - Enforce Cap
-    final weeklyUsage = await dreamService.getWeeklyUsage();
-    if (weeklyUsage >= DreamService.weeklyFreeLimit) {
-      if (mounted) Navigator.pop(context); // Close Mood Sheet
-      
-      // Limit Reached: Show Paywall directly
-      await showDialog(
-         context: context, 
-         builder: (context) => const ProUpgradeDialog()
-       );
-       
-       if (!mounted) return;
-       final isNowPro = context.read<SubscriptionProvider>().isPro;
-       
-       // If still not pro, Skip Interpretation
-       await _processDream(mood, secondaryMoods, intensity, vividness, skipInterpretation: !isNowPro);
-       return;
-    }
+    // 3. [REMOVED] Weekly Limit Check - Disabled for unlimited free interpretations
+    // Unit economics: Ad revenue ($0.003-0.008) >> API cost ($0.0006) = 5-13x margin
+    // Weekly usage tracking preserved for analytics only
+    // final weeklyUsage = await dreamService.getWeeklyUsage();
+    // if (weeklyUsage >= DreamService.weeklyFreeLimit) { ... }
 
     // 4. Ad Flow for Standard Users
     if (!mounted) return;
@@ -485,24 +467,9 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                     style: TextStyle(color: AppTheme.textMuted, fontStyle: FontStyle.italic, fontSize: 14),
                   ),
                   
-                  // [NEW] Weekly Limit Indicator (Only for Non-Pro)
-                  if (!isPro) ...[
-                    const SizedBox(height: 6),
-                    Builder(
-                      builder: (context) {
-                         final remaining = (DreamService.weeklyFreeLimit - _weeklyUsage).clamp(0, DreamService.weeklyFreeLimit);
-                           return Text(
-                           t.weeklyLimitLeft(remaining), 
-                           textAlign: TextAlign.center,
-                           style: TextStyle(
-                             color: remaining > 0 ? Colors.greenAccent.withOpacity(0.8) : Colors.redAccent.withOpacity(0.8), 
-                             fontSize: 12, 
-                             fontWeight: FontWeight.w600
-                           ),
-                         );
-                      }
-                    ),
-                  ],
+                  // [REMOVED] Weekly Limit Indicator - Unlimited free interpretations
+                  // Keeping this commented for potential future A/B testing
+                  // if (!isPro) ...[...weekly limit UI...],
 
                   const SizedBox(height: 16),
                   

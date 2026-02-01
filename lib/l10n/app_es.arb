@@ -276,6 +276,11 @@
     "notifOpenSettingsHint": "Debes activar las notificaciones en los ajustes.",
     "allow": "Permitir",
     "notifReminderBody": "¡No olvides registrar tu sueño! 📝",
+    "notifReminder1": "¿Qué te susurró el universo esta noche? ✨",
+    "notifReminder2": "¡Atrapa tus sueños antes de que se desvanezcan! 📓",
+    "notifReminder3": "Tu subconsciente te dejó un mensaje... 🌙",
+    "notifReminder4": "¿No tienes curiosidad por lo que significan esos símbolos? 🔮",
+    "notifReminder5": "Tu diario de sueños te espera ✍️",
     "pressBackToExit": "Pulsa atrás de nuevo para salir",
     
     "moonSyncTitle": "Sincronización Mensual de Luna y Planeta",
@@ -303,6 +308,7 @@
     "moonPhaseThirdQuarter": "Cuarto Menguante",
     "moonPhaseWaningCrescent": "Luna Menguante",
     "actionShareInterpretation": "Compartir\nInterpretación",
+    "shareImage": "Compartir\nImagen",
     "sharePrivacyHint": "Nota: El botón Compartir Interpretación solo comparte la interpretación. Tus sueños te pertenecen y nunca se comparten con terceros.",
     "moonPhaseLabel": "Fase Lunar:",
     "readMore": "Leer más...",
@@ -514,5 +520,19 @@
             }
         }
     },
-    "streakSubtitle": "Tu viaje de sueños continúa"
+    "streakSubtitle": "Tu viaje de sueños continúa",
+    "proFeatureImageGenTitle": "Generar Imagen de Sueño Diaria",
+    "proFeatureImageGenSubtitle": "Visualiza tus sueños con IA. 1 imagen vívida al día.",
+    "visualizeDream": "Visualizar Sueño",
+    "visualizingDream": "Visualizando...",
+    "imageGenLimitReached": "Límite Diario Alcanzado",
+    "imageGenLimitDesc": "Puedes generar 1 imagen de sueño al día. ¡Vuelve mañana!",
+    "imageGenLimitTrial": "Límite de Prueba Alcanzado",
+    "imageGenLimitTrialDesc": "La prueba incluye 1 imagen gratis. Mejora a PRO para imágenes diarias.",
+    "shareVisualizedBy": "Visualizado con DreamBoat App",
+    "offlineImageGenTitle": "Error de Conexión",
+    "offlineImageGenContent": "No se pudo generar la imagen. Verifica tu conexión. No se consumió el límite.",
+    "limitReachedTitle": "Límite Alcanzado",
+    "trialImageLimitReached": "Has usado tu visualización de prueba gratuita. Después del período de prueba, puedes crear una imagen nueva diaria con PRO!",
+    "dailyImageLimitReached": "Has usado tu visualización diaria. ¡Vuelve mañana para una nueva imagen!"
 }

@@ -293,6 +293,11 @@
     "notifOpenSettingsHint": "Bildirimleri etkinleştirmek için ayarlardan izin vermeniz gerekiyor.",
     "allow": "İzin Ver",
     "notifReminderBody": "Rüyanızı kaydetmeyi unutmayın! 📝",
+    "notifReminder1": "Bu gece evren sana ne fısıldadı? ✨",
+    "notifReminder2": "Rüyaların silinmeden onları yakala! 📓",
+    "notifReminder3": "Bilinçaltın sana bir mesaj bıraktı... 🌙",
+    "notifReminder4": "Gördüğün sembollerin anlamını merak etmiyor musun? 🔮",
+    "notifReminder5": "Rüya günlüğün seni bekliyor ✍️",
     "pressBackToExit": "Çıkmak için tekrar geri tuşuna basın",
     
     "moonSyncTitle": "Aylık Ay ve Gezegen Senkronizasyonu",
@@ -320,6 +325,7 @@
     "moonPhaseThirdQuarter": "Son Dördün",
     "moonPhaseWaningCrescent": "Hilal (Küçülen)",
     "actionShareInterpretation": "Yorumu\nPaylaş",
+    "shareImage": "Görseli\nPaylaş",
     "sharePrivacyHint": "Not: Yorumu paylaş butonu yalnızca rüya yorumunuzu paylaşır. Rüyalarınız size aittir ve herhangi bir şekilde üçüncü şahıslara gösterilmez.",
     "moonPhaseLabel": "Ay Evresi:",
     "readMore": "Devamını Oku...",
@@ -539,5 +545,19 @@
             }
         }
     },
-    "streakSubtitle": "Rüya yolculuğun devam ediyor"
+    "streakSubtitle": "Rüya yolculuğun devam ediyor",
+    "proFeatureImageGenTitle": "Günlük Rüya Görseli Oluştur",
+    "proFeatureImageGenSubtitle": "Rüyanı AI ile görselleştir. Günde 1 canlı görsel.",
+    "visualizeDream": "Rüyayı Görselleştir",
+    "visualizingDream": "Görselleştiriliyor...",
+    "imageGenLimitReached": "Günlük Limit Doldu",
+    "imageGenLimitDesc": "Günde 1 rüya görseli oluşturabilirsin. Yarın görüşürüz!",
+    "imageGenLimitTrial": "Deneme Sürümü Limiti",
+    "imageGenLimitTrialDesc": "Deneme süresi 1 ücretsiz görsel içerir. Her gün görsel için PRO'ya geç.",
+    "shareVisualizedBy": "DreamBoat ile Görselleştirildi",
+    "offlineImageGenTitle": "Bağlantı Hatası",
+    "offlineImageGenContent": "Görsel oluşturulamadı. İnternet bağlantını kontrol et. Limitinden düşülmedi.",
+    "limitReachedTitle": "Limit Doldu",
+    "trialImageLimitReached": "Deneme sürümündeki ücretsiz görselleştirme hakkınızı kullandınız. Trial sona erdiğinde PRO ile her gün yeni görsel oluşturabilirsiniz.",
+    "dailyImageLimitReached": "Bugünkü görselleştirme hakkınızı kullandınız. Yarın yeni bir görsel oluşturabilirsiniz."
 }

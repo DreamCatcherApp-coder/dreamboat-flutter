@@ -918,6 +918,25 @@ class AppLocalizationsDe extends AppLocalizations {
       'Vergiss nicht, deinen Traum aufzuzeichnen! 📝';
 
   @override
+  String get notifReminder1 =>
+      'Was hat dir das Universum heute Nacht zugeflüstert? ✨';
+
+  @override
+  String get notifReminder2 =>
+      'Fang deine Träume ein, bevor sie verblassen! 📓';
+
+  @override
+  String get notifReminder3 =>
+      'Dein Unterbewusstsein hat dir eine Nachricht hinterlassen... 🌙';
+
+  @override
+  String get notifReminder4 =>
+      'Bist du nicht neugierig, was diese Symbole bedeuten? 🔮';
+
+  @override
+  String get notifReminder5 => 'Dein Traumtagebuch wartet auf dich ✍️';
+
+  @override
   String get pressBackToExit => 'Drücke erneut zurück zum Beenden';
 
   @override
@@ -979,6 +998,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get actionShareInterpretation => 'Deutung\nteilen';
+
+  @override
+  String get shareImage => 'Bild\nteilen';
 
   @override
   String get sharePrivacyHint =>
@@ -1531,4 +1553,52 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get streakSubtitle => 'Deine Traumreise geht weiter';
+
+  @override
+  String get proFeatureImageGenTitle => 'Täglich Traumbilder generieren';
+
+  @override
+  String get proFeatureImageGenSubtitle =>
+      'Visualisiere deine Träume mit KI. 1 Bild pro Tag.';
+
+  @override
+  String get visualizeDream => 'Traum visualisieren';
+
+  @override
+  String get visualizingDream => 'Wird visualisiert...';
+
+  @override
+  String get imageGenLimitReached => 'Tageslimit erreicht';
+
+  @override
+  String get imageGenLimitDesc =>
+      'Du kannst 1 Traumbild pro Tag erstellen. Komm morgen wieder!';
+
+  @override
+  String get imageGenLimitTrial => 'Testlimit erreicht';
+
+  @override
+  String get imageGenLimitTrialDesc =>
+      'Testversion enthält 1 kostenloses Bild. Upgrade auf PRO für tägliche Bilder.';
+
+  @override
+  String get shareVisualizedBy => 'Visualisiert mit DreamBoat App';
+
+  @override
+  String get offlineImageGenTitle => 'Verbindungsfehler';
+
+  @override
+  String get offlineImageGenContent =>
+      'Bild konnte nicht erstellt werden. Prüfe deine Verbindung. Limit wurde nicht verbraucht.';
+
+  @override
+  String get limitReachedTitle => 'Limit Erreicht';
+
+  @override
+  String get trialImageLimitReached =>
+      'Du hast deine kostenlose Testvisualisierung verwendet. Nach Ablauf der Testversion kannst du mit PRO täglich ein neues Bild erstellen!';
+
+  @override
+  String get dailyImageLimitReached =>
+      'Du hast deine tägliche Visualisierung verwendet. Komm morgen für ein neues Bild zurück!';
 }

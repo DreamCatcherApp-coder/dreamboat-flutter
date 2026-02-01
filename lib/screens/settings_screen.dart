@@ -34,7 +34,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   // Notificaton State
   bool _notifEnabled = false;
-  TimeOfDay _notifTime = const TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay _notifTime = const TimeOfDay(hour: 7, minute: 30);
   bool _use24HourFormat = true;
   String _debugTimeZone = '';
   String _version = '';
@@ -109,8 +109,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await prefs.setInt('notif_hour', _notifTime.hour);
     await prefs.setInt('notif_minute', _notifTime.minute);
     
-    // Save localized message for app restart restoration
-    final localizedMessage = t.notifReminderBody;
+    // Pick a random motivational message from 5 variants
+    final messages = [
+      t.notifReminder1,
+      t.notifReminder2,
+      t.notifReminder3,
+      t.notifReminder4,
+      t.notifReminder5,
+    ];
+    final randomIndex = DateTime.now().day % messages.length; // Deterministic daily rotation
+    final localizedMessage = messages[randomIndex];
     await prefs.setString('notif_message', localizedMessage);
 
     if (_notifEnabled) {

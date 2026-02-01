@@ -7,6 +7,12 @@ import 'package:dream_boat_mobile/theme/app_theme.dart';
 import 'package:dream_boat_mobile/widgets/background_sky.dart';
 import 'package:dream_boat_mobile/widgets/glass_card.dart';
 import 'package:dream_boat_mobile/widgets/platform_widgets.dart';
+import 'dart:ui'; // For ImageFilter
+import 'package:dream_boat_mobile/widgets/pro_badge.dart'; // For ProBadge
+import 'package:dream_boat_mobile/widgets/dream_image_widget.dart'; // [NEW]
+import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart'; // [NEW]
+import 'package:cloud_functions/cloud_functions.dart'; // [NEW]
+import 'dart:io'; // [NEW]
 
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/models/dream_entry.dart';
@@ -446,6 +452,7 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
       builder: (context) {
         // Initialize mutable state with the dream passed to the function
         var currentDream = dream;
+        bool isGeneratingImage = false; // [NEW] Local state for loading
         
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -612,7 +619,279 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                               ),
                             ),
                           
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 32),
+
+                          // [NEW] Dream Image Section (Visualize Button or Image)
+                          // Only show if interpretation exists (don't visualize errors/shorts)
+                          if (!isInterpretationSkipped && currentDream.imageUrl != null)
+                             DreamImageWidget(
+                               imageUrl: currentDream.imageUrl!,
+                               // Removed auto-share on tap - use dedicated button instead
+                             )
+                          else if (!isInterpretationSkipped && currentDream.imageUrl == null)
+                             Center(
+                               child: isGeneratingImage
+                                ? Column(
+                                    children: [
+                                      PlatformWidgets.activityIndicator(color: const Color(0xFFE0F7FA), radius: 14),
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        t.visualizingDream, 
+                                        style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13, fontStyle: FontStyle.italic),
+                                      )
+                                    ],
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0xFFFBBF24).withOpacity(0.2),
+                                          blurRadius: 16,
+                                          spreadRadius: 1,
+                                        )
+                                      ]
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        onTap: () async {
+                                           // 1. Check PRO / Entitlement
+                                           final provider = context.read<SubscriptionProvider>();
+                                           final isPro = provider.isPro;
+                                           final isTrial = provider.isTrial;
+                                           
+                                           if (!isPro) {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (_) => const ProUpgradeDialog()
+                                              );
+                                              if (context.mounted) {
+                                                 setModalState((){}); 
+                                              }
+                                               return;
+                                            }
+
+                                            // 2. Connectivity Check
+                                            try {
+                                               final result = await InternetAddress.lookup('firebase.google.com');
+                                               if (result.isEmpty || result[0].rawAddress.isEmpty) {
+                                                  throw SocketException('No Internet');
+                                               }
+                                            } on SocketException catch (_) {
+                                               if (context.mounted) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (ctx) => AlertDialog(
+                                                      backgroundColor: const Color(0xFF1E1B35),
+                                                      title: Text(t.offlineImageGenTitle, style: const TextStyle(color: Colors.white)),
+                                                      content: Text(t.offlineImageGenContent, style: const TextStyle(color: Colors.white70)),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () => Navigator.pop(ctx),
+                                                          child: const Text('OK', style: TextStyle(color: Color(0xFFFBBF24))),
+                                                        )
+                                                      ],
+                                                    )
+                                                  );
+                                               }
+                                               return;
+                                            }
+
+                                            // 3. Start Generation
+                                            setModalState(() => isGeneratingImage = true);
+
+                                            try {
+                                              final newUrl = await DreamService().generateImage(
+                                                dreamId: currentDream.id, 
+                                                dreamText: currentDream.text, 
+                                                isTrial: isTrial, 
+                                              );
+
+                                              if (mounted) {
+                                                // Update currentDream with new imageUrl
+                                                final updatedDream = currentDream.copyWith(imageUrl: newUrl);
+                                                await DreamService().updateDream(updatedDream);
+                                                
+                                                setModalState(() {
+                                                   currentDream = updatedDream;
+                                                   isGeneratingImage = false;
+                                                });
+                                                _loadDreams(); // Refresh list
+                                              }
+                                            } catch (e) {
+                                              if (mounted) {
+                                                setModalState(() => isGeneratingImage = false);
+                                                
+                                                // Check for quota limit error
+                                                final errorStr = e.toString().toLowerCase();
+                                                if (errorStr.contains('resource-exhausted') || 
+                                                    errorStr.contains('daily limit') ||
+                                                    errorStr.contains('trial limit')) {
+                                                  // Friendly quota limit dialog - Dreamy Night Sky Theme
+                                                  final bool isTrial = context.read<SubscriptionProvider>().isTrial;
+                                                  showDialog(
+                                                    context: context,
+                                                    barrierColor: Colors.black54,
+                                                    builder: (ctx) => Dialog(
+                                                      backgroundColor: Colors.transparent,
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(24),
+                                                        child: BackdropFilter(
+                                                          filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                                                          child: Container(
+                                                            padding: const EdgeInsets.all(28),
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(24),
+                                                              gradient: LinearGradient(
+                                                                begin: Alignment.topLeft,
+                                                                end: Alignment.bottomRight,
+                                                                colors: [
+                                                                  const Color(0xFF1E1B35).withOpacity(0.9),
+                                                                  const Color(0xFF0D1B2A).withOpacity(0.85),
+                                                                ],
+                                                              ),
+                                                              border: Border.all(
+                                                                color: Colors.white.withOpacity(0.1),
+                                                                width: 1,
+                                                              ),
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: const Color(0xFF3EE6C4).withOpacity(0.1),
+                                                                  blurRadius: 30,
+                                                                  spreadRadius: 2,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: [
+                                                                // Title
+                                                                Text(
+                                                                  t.limitReachedTitle,
+                                                                  style: const TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20,
+                                                                    fontWeight: FontWeight.w600,
+                                                                    letterSpacing: 0.5,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(height: 20),
+                                                                // Content
+                                                                Text(
+                                                                  isTrial ? t.trialImageLimitReached : t.dailyImageLimitReached,
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white.withOpacity(0.8),
+                                                                    fontSize: 15,
+                                                                    height: 1.6,
+                                                                  ),
+                                                                ),
+                                                                const SizedBox(height: 28),
+                                                                // Glassmorphic Button - Centered
+                                                                Center(
+                                                                  child: Material(
+                                                                    color: Colors.transparent,
+                                                                    child: InkWell(
+                                                                      onTap: () => Navigator.pop(ctx),
+                                                                      borderRadius: BorderRadius.circular(14),
+                                                                      child: Container(
+                                                                        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14),
+                                                                        decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.circular(14),
+                                                                          color: Colors.white.withOpacity(0.1),
+                                                                          border: Border.all(
+                                                                            color: const Color(0xFF3EE6C4).withOpacity(0.4),
+                                                                            width: 1,
+                                                                          ),
+                                                                        ),
+                                                                        child: Text(
+                                                                          'Tamam',
+                                                                          style: const TextStyle(
+                                                                            color: Color(0xFF3EE6C4),
+                                                                            fontSize: 15,
+                                                                            fontWeight: FontWeight.w600,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  // Generic error snackbar for other errors
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    SnackBar(
+                                                      content: Text('Bir hata oluştu. Lütfen tekrar deneyin.'), 
+                                                      backgroundColor: Colors.red.withOpacity(0.8)
+                                                    )
+                                                  );
+                                                }
+                                              }
+                                            }
+                                        },
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFFFBBF24).withOpacity(0.15),
+                                                blurRadius: 20,
+                                                spreadRadius: 1
+                                              )
+                                            ]
+                                          ),
+                                          foregroundDecoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(16),
+                                            border: Border.all(
+                                              color: const Color(0xFFFBBF24).withOpacity(0.5), 
+                                              width: 1
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(16),
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                              child: Container(
+                                                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                                                  decoration: BoxDecoration(
+                                                    color: const Color(0xFFFBBF24).withOpacity(0.1),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      const Icon(Icons.auto_awesome, color: Color(0xFFFBBF24), size: 22),
+                                                      const SizedBox(width: 12),
+                                                      Text(
+                                                        t.visualizeDream,
+                                                        style: const TextStyle(
+                                                          color: Color(0xFFFBBF24),
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                          letterSpacing: 0.5
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 12),
+                                                      const ProBadge() 
+                                                    ],
+                                                  ),
+                                                ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ), // End Container
+                             ), // End Center,
+                          
+                          const SizedBox(height: 32),
                           
                           // Action Buttons (inside scroll, not fixed)
                           Row(
@@ -666,6 +945,22 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                     }
                                   },
                               ),
+                              
+                              // Görseli Paylaş (only visible when imageUrl exists)
+                              if (currentDream.imageUrl != null)
+                                _ActionButton(
+                                  icon: LucideIcons.image,
+                                  label: t.shareImage,
+                                  iconColor: const Color(0xFFFBBF24), // Gold PRO color
+                                  onTap: () async {
+                                    HapticFeedback.lightImpact();
+                                    await ShareService.shareDreamImage(
+                                      context, 
+                                      currentDream.imageUrl!, 
+                                      t.shareVisualizedBy,
+                                    );
+                                  },
+                                ),
                               
                               // Sil
                               _ActionButton(

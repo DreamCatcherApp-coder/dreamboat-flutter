@@ -913,6 +913,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String get notifReminderBody => 'Não se esqueça de registrar seu sonho! 📝';
 
   @override
+  String get notifReminder1 =>
+      'O que o universo sussurrou para você esta noite? ✨';
+
+  @override
+  String get notifReminder2 => 'Capture seus sonhos antes que desapareçam! 📓';
+
+  @override
+  String get notifReminder3 =>
+      'Seu subconsciente deixou uma mensagem para você... 🌙';
+
+  @override
+  String get notifReminder4 =>
+      'Não está curioso sobre o que aqueles símbolos significam? 🔮';
+
+  @override
+  String get notifReminder5 => 'Seu diário de sonhos está esperando ✍️';
+
+  @override
   String get pressBackToExit => 'Pressione voltar novamente para sair';
 
   @override
@@ -973,6 +991,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get actionShareInterpretation => 'Compartilhar\nInterpretação';
+
+  @override
+  String get shareImage => 'Compartilhar\nImagem';
 
   @override
   String get sharePrivacyHint =>
@@ -1528,4 +1549,52 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get streakSubtitle => 'Sua jornada de sonhos continua';
+
+  @override
+  String get proFeatureImageGenTitle => 'Gerar Imagem de Sonho Diária';
+
+  @override
+  String get proFeatureImageGenSubtitle =>
+      'Visualize seus sonhos com IA. 1 imagem vívida por dia.';
+
+  @override
+  String get visualizeDream => 'Visualizar Sonho';
+
+  @override
+  String get visualizingDream => 'Visualizando...';
+
+  @override
+  String get imageGenLimitReached => 'Limite Diário Atingido';
+
+  @override
+  String get imageGenLimitDesc =>
+      'Você pode gerar 1 imagem de sonho por dia. Volte amanhã!';
+
+  @override
+  String get imageGenLimitTrial => 'Limite de Teste Atingido';
+
+  @override
+  String get imageGenLimitTrialDesc =>
+      'O teste inclui 1 imagem grátis. Faça upgrade para PRO para imagens diárias.';
+
+  @override
+  String get shareVisualizedBy => 'Visualizado com DreamBoat App';
+
+  @override
+  String get offlineImageGenTitle => 'Erro de Conexão';
+
+  @override
+  String get offlineImageGenContent =>
+      'Não foi possível gerar imagem. Verifique sua conexão. O limite não foi consumido.';
+
+  @override
+  String get limitReachedTitle => 'Limite Atingido';
+
+  @override
+  String get trialImageLimitReached =>
+      'Você usou sua visualização de teste gratuita. Após o período de teste, você pode criar uma nova imagem diária com PRO!';
+
+  @override
+  String get dailyImageLimitReached =>
+      'Você usou sua visualização diária. Volte amanhã para uma nova imagem!';
 }

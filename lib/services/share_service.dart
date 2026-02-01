@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:dream_boat_mobile/widgets/dream_share_card.dart';
+import 'package:dream_boat_mobile/widgets/dream_image_share_card.dart'; // [NEW]
 import 'package:dream_boat_mobile/services/review_service.dart';
 
 /// Service for creating and sharing dream interpretation cards.
@@ -91,5 +92,62 @@ class ShareService {
       debugPrint('ShareService: Error sharing interpretation: $e');
       debugPrint('ShareService: Stack trace: $stackTrace');
     }
+  }
+
+  /// Shares the generated dream image with a watermark footer.
+  static Future<void> shareDreamImage(
+    BuildContext context,
+    String imageUrl,
+    String watermarkText,
+  ) async {
+     try {
+      debugPrint('ShareService: Starting image share process...');
+      
+      // Create the branding card
+      final card = DreamImageShareCard(
+        imageUrl: imageUrl, 
+        watermarkText: watermarkText
+      );
+      
+      // Capture
+      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
+        card,
+        delay: const Duration(milliseconds: 500), // Give network image time to load/render
+        pixelRatio: 2.0,
+        context: context,
+      );
+
+       if (imageBytes == null || imageBytes.isEmpty) {
+        debugPrint('ShareService: Failed to capture image widget');
+        return;
+      }
+
+      // Save to temp
+      final tempDir = await getTemporaryDirectory();
+      final filePath = '${tempDir.path}/dream_visual_${DateTime.now().millisecondsSinceEpoch}.png';
+      final file = File(filePath);
+      await file.writeAsBytes(imageBytes);
+
+      // Share
+      final box = context.findRenderObject() as RenderBox?;
+      final result = await Share.shareXFiles(
+        [XFile(filePath)],
+        subject: 'My Dream Visualization',
+         sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+      );
+
+       // Review Prompt
+       if (context.mounted) {
+        ReviewService.triggerReviewFlow(context);
+      }
+      
+       // Cleanup
+      Future.delayed(const Duration(minutes: 5), () {
+        if (file.existsSync()) file.deleteSync();
+      });
+
+     } catch (e) {
+       debugPrint('ShareService: Error sharing image: $e');
+     }
   }
 }

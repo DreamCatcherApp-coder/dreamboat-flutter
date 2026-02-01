@@ -1,12 +1,12 @@
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
-const { initializeApp } = require("firebase-admin/app");
+const admin = require("firebase-admin");
 const { OpenAI } = require("openai");
 const { enforceRateLimit } = require("./rateLimiter");
 const { dictionary, aliases } = require("./data/dream_dictionary"); // Import Dictionary
 
-// Initialize Firebase Admin
-initializeApp();
+// Initialize Firebase Admin (Required for Storage/Firestore access)
+admin.initializeApp();
 
 // Güvenli API Key - Firebase Secrets ile saklanır
 // Deploy öncesi: firebase functions:secrets:set OPENAI_API_KEY
@@ -512,6 +512,139 @@ TONE & STYLE:
         };
     } catch (error) {
         console.error("Error moon sync:", error);
+        throw new HttpsError('internal', error.message);
+    }
+});
+// Image Generation Feature
+exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request) => {
+    // Rate limit check (Generic)
+    await enforceRateLimit('generateDreamImage', request);
+
+    // ** AUTHENTICATION CHECK **
+    if (!request.auth || !request.auth.uid) {
+        console.error("generateDreamImage: No authenticated user");
+        throw new HttpsError('unauthenticated', 'User must be authenticated to generate images.');
+    }
+
+    const openai = new OpenAI({ apiKey: openaiApiKey.value() });
+    const { dreamText, dreamId, isTrial } = request.data;
+    const uid = request.auth.uid;
+
+    console.log(`generateDreamImage called. uid=${uid}, dreamId=${dreamId}, isTrial=${isTrial}`);
+
+    if (!dreamText || !dreamId) {
+        throw new HttpsError('invalid-argument', 'Missing dreamText or dreamId');
+    }
+
+    // Get Storage bucket (explicit bucket name for Firebase project)
+    // [PRE-FLIGHT CHECK] Validate storage BEFORE expensive OpenAI calls
+    let bucket;
+    try {
+        bucket = admin.storage().bucket('dream-boat-app.firebasestorage.app');
+        console.log(`Storage bucket initialized: ${bucket.name}`);
+
+        // Verify bucket is accessible (prevents wasted API costs)
+        const [bucketExists] = await bucket.exists();
+        if (!bucketExists) {
+            console.error("Storage bucket does not exist or is not accessible");
+            throw new HttpsError('failed-precondition', 'Storage not available. Please try again later.');
+        }
+        console.log("Storage bucket verified accessible");
+    } catch (storageErr) {
+        console.error("Storage initialization error:", storageErr);
+        if (storageErr instanceof HttpsError) throw storageErr;
+        throw new HttpsError('internal', 'Storage initialization failed: ' + storageErr.message);
+    }
+
+    const filePath = `dream_images/${uid}/${dreamId}.png`;
+    const file = bucket.file(filePath);
+
+    // [IDEMPOTENCY CHECK]
+    // If image exists, return it immediately. Do NOT consume limit.
+    try {
+        const [exists] = await file.exists();
+        if (exists) {
+            console.log(`Image already exists for dream ${dreamId}. Returning cached result.`);
+            return {
+                imageUrl: file.publicUrl(),
+                prompt: "Refined prompt not available (Cached Request)"
+            };
+        }
+    } catch (existsErr) {
+        console.error("File exists check error:", existsErr);
+        // Continue anyway - might be a transient error
+    }
+
+    // 1. Strict Date-Based Rate Limiting (YYYY-MM-DD)
+    const db = admin.firestore();
+    const userStatsRef = db.doc(`users/${uid}/stats/limits`);
+
+    // Get current UTC Date Key
+    const now = new Date();
+    const dateKey = now.toISOString().split('T')[0]; // "2026-02-01"
+
+    const statsSnap = await userStatsRef.get();
+    const stats = statsSnap.data() || {};
+
+    if (isTrial) {
+        // TRIAL Logic: Max 1 image EVER
+        if (stats.totalImagesGenerated && stats.totalImagesGenerated >= 1) {
+            throw new HttpsError('resource-exhausted', 'Trial limit reached: 1 image total.');
+        }
+    } else {
+        // PAID Logic: Max 1 image PER DAY
+        if (stats.lastImageGenDate === dateKey) {
+            throw new HttpsError('resource-exhausted', 'Daily limit reached: 1 image per day.');
+        }
+    }
+
+    try {
+        // 2. Prompt Refinement (Styles Anchor)
+        // Convert user's raw dream text into a DALL-E optimized prompt
+        const refinement = await openai.chat.completions.create({
+            messages: [
+                { role: "system", content: "You are an AI Art Director. Convert the user's dream description into a single, vivid DALL-E 3 prompt. \n\nSTYLE ANCHORS (Mandatory): Surreal, cinematic lighting, soft ethereal atmosphere, dreamlike quality, highly detailed, masterwork oil painting style. \n\nOutput ONLY the prompt text." },
+                { role: "user", content: `Dream: ${dreamText}` }
+            ],
+            model: "gpt-4o-mini",
+            max_tokens: 100,
+        });
+        const finalPrompt = refinement.choices[0].message.content;
+
+        // 3. Generate Image (DALL-E 3)
+        const imageResponse = await openai.images.generate({
+            model: "dall-e-3",
+            prompt: finalPrompt,
+            n: 1,
+            size: "1024x1024",
+            response_format: "b64_json", // Get buffer directly to upload
+        });
+
+        const imageBuffer = Buffer.from(imageResponse.data[0].b64_json, 'base64');
+
+        // 4. Save File (Already defined)
+        await file.save(imageBuffer, {
+            metadata: { contentType: 'image/png' },
+            public: true, // Make public for easy loading
+        });
+
+        // 5. Update Limits in Firestore
+        await userStatsRef.set({
+            lastImageGenDate: dateKey,
+            totalImagesGenerated: admin.firestore.FieldValue.increment(1),
+            lastImagePrompt: finalPrompt // Audit
+        }, { merge: true });
+
+        // 6. Return Public URL
+        const publicUrl = file.publicUrl();
+
+        return {
+            imageUrl: publicUrl,
+            prompt: finalPrompt
+        };
+
+    } catch (error) {
+        console.error("Error generating image:", error);
         throw new HttpsError('internal', error.message);
     }
 });
