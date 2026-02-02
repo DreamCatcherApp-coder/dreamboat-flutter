@@ -15,15 +15,17 @@ const openaiApiKey = defineSecret("OPENAI_API_KEY");
 
 
 
+const { dreamDictionary } = require("./data/dream_dictionary_new");
+
 exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => {
     // Rate limit check
     await enforceRateLimit('interpretDream', request);
 
     const openai = new OpenAI({ apiKey: openaiApiKey.value() });
-
     const { dreamText, mood, language } = request.data;
-    if (!dreamText || !mood) {
-        throw new HttpsError('invalid-argument', 'Missing dreamText or mood');
+
+    if (!dreamText) {
+        throw new HttpsError('invalid-argument', 'Missing dreamText');
     }
 
     // Determine target language (default to English)
@@ -37,92 +39,117 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
     };
     const targetLanguage = langMap[lang] || 'English';
 
-    // Jungian Analyst Persona Prompt
-    const systemPrompt = `
-You are an expert Jungian Dream Analyst and Compassionate Guide.
-Your goal is to interpret the user's dream with profound psychological depth, focusing on archetypes, emotional truth, and symbolic meaning.
-
-*** CORE INSTRUCTION ***
-1. DETECT the language of the user's dream text.
-2. REPLY in the EXACT SAME LANGUAGE as the user's dream text.
-   - Example: User writes in Turkish -> You reply in Turkish.
-   - Example: User writes in English -> You reply in English.
-
-*** ANALYST PERSONA ***
-- You are NOT a fortune teller. Do not predict the future.
-- You are NOT a doctor. Do not give medical advice.
-- You ARE a mirror to the subconscious. Use phrases like "This might suggest...", "The symbol of X often represents...", "It seems your inner self is exploring...".
-- **TONE:** Deep, empathetic, mystical but grounded, professional yet warm.
-- **DEPTH:** Go beyond surface-level events. If the user dreams of a dog in mud, don't just say "You saw a dirty dog." Say "The dog, representing loyalty and instinct, being sullied by mud suggests a conflict where your pure instincts feels weighed down by emotional confusion."
-
-*** OUTPUT STRUCTURE (JSON ONLY) ***
-Return a JSON object with a 'title' and an 'interpretation'.
-
-**CRITICAL FORMATTING RULES:**
-1. **NO HEADERS/LISTS:** Write a single, flowing paragraph.
-2. **NO CAPITALS:** Do NOT capitalize symbols. Use natural sentence case.
-3. **LENGTH LIMIT:** MAXIMUM 60 words. It must fit in a small card. Be extremely concise and poetic.
-
-**DEPTH INSTRUCTION:**
-- Avoid "brainless" 1:1 metaphors (e.g., "rain means sadness", "bath means cleansing").
-- Focus on the *nuance* of the action. (e.g., Washing the dog isn't just cleaning; it's an act of care/restoring the bond despite the mess).
-- Go deeper. Why did the dog fall? What is the *feeling* of the mud?
-
-*** EXAMPLE OUTPUT (Turkish) ***
-{
-  "title": "Sadakatin Arınması",
-  "interpretation": "Köpeğinizin çamura düşmesi, en saf niyetlerinizin veya sadık bağlarınızın dış etkenlerle gölgelendiği anları yansıtıyor olabilir. Ancak onu yıkama çabanız, sadece bir temizlik değil; karışıklığa rağmen değer verdiğiniz şeylere sahip çıkma ve onları onarma gücünüzü simgeliyor. Bu özen, içsel dengenizi yeniden kurmanın anahtarıdır."
-}
-
-*** RESTRICTIONS ***
-- If the dream contains EXPLICIT sexual violence or self-harm encouragement, return: {"title": "Restricted Content", "interpretation": "Safety guidelines prevent interpretation."}
-`;
-
     try {
-        const completion = await openai.chat.completions.create({
-            messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: `Here is the dream input to interpret:\n<dream_input>\n${dreamText}\n</dream_input>` },
-            ],
+        // --- PASS 1: SYMBOL EXTRACTION (Lightweight) ---
+        // Goal: Identify key symbols to look up in our 500-item dictionary
+        const extractionPrompt = `
+        EXTRACT 3-5 dominant symbols from the dream text.
+        Output ONLY a JSON array of strings.
+        Example: ["DOG", "MUD", "PARK"]
+        `;
+
+        const extractionCompletion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
-            temperature: 0.7,
-            max_tokens: 500, // Increased for deeper analysis
-            response_format: { type: "json_object" }
+            messages: [
+                { role: "system", content: extractionPrompt },
+                { role: "user", content: dreamText }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.3, // Low temperature for factual extraction
         });
 
-        // Parse the JSON response
-        const responseText = completion.choices[0].message.content;
-        let parsed;
-
-        // Dynamic Fallback Title
-        const fallbackTitles = {
-            'tr': "Rüya Yorumu",
-            'en': "Dream Interpretation",
-            'es': "Interpretación de Sueños",
-            'de': "Traumdeutung",
-            'pt': "Interpretação dos Sonhos"
-        };
-        const defaultTitle = fallbackTitles[lang] || "Dream Interpretation";
-
+        let symbols = [];
         try {
-            parsed = JSON.parse(responseText);
+            const extractionRaw = JSON.parse(extractionCompletion.choices[0].message.content);
+            // Handle various likely JSON keys (symbols, keywords, or just the array if generic)
+            symbols = extractionRaw.symbols || extractionRaw.keywords || [];
+            if (!Array.isArray(symbols)) symbols = [];
         } catch (e) {
-            parsed = { title: defaultTitle, interpretation: responseText };
+            console.warn("Symbol extraction parsing failed", e);
         }
 
-        // Clean up formatting: ensure consistent newlines
-        if (parsed.interpretation) {
-            parsed.interpretation = parsed.interpretation.trim();
-        }
+        console.log("Extracted Symbols:", symbols);
 
-        return {
-            title: parsed.title || defaultTitle,
-            interpretation: parsed.interpretation || responseText,
-            usage: completion.usage
-        };
+        // --- INTERMEDIATE: DICTIONARY LOOKUP ---
+        // Lookup derived from the 500-item dictionary
+        const retrievedDefinitions = symbols.map(key => {
+            const upperKey = key.toUpperCase();
+            // Direct match or partial match in associations? 
+            // Our dict keys are UPPERCASE.
+            // Let's try direct lookup first, then scan associations if needed.
+
+            let entry = dreamDictionary[upperKey];
+
+            // If not found, try to find a key that *contains* this word (e.g. "TEETH" -> "TEETH FALLING OUT")
+            if (!entry) {
+                const foundKey = Object.keys(dreamDictionary).find(k => k.includes(upperKey) || upperKey.includes(k));
+                if (foundKey) entry = dreamDictionary[foundKey];
+            }
+
+            if (entry) {
+                return `• ${upperKey}: ${entry.meaning} (Associations: ${entry.associations.join(', ')})`;
+            }
+            return null;
+        }).filter(Boolean).join("\n");
+
+        const dictionaryContext = retrievedDefinitions.length > 0
+            ? `\nRELEVANT ARCHETYPES (Use these for symbolic depth):\n${retrievedDefinitions}`
+            : "";
+
+        console.log("Dictionary Context:", dictionaryContext);
+
+        // --- PASS 2: INTERPRETATION (User-Defined Jungian Persona) ---
+        const systemPrompt = `
+    You are a Jungian dream interpretation expert.
+    You interpret dreams with psychological depth emotional sensitivity and symbolic awareness.
+
+    You approach every dream as an inner experience of the dreamer.
+    All people places and events in dreams are treated as parts of the dreamer’s psyche not as external individuals or real world situations.
+
+    You speak with empathy and emotional awareness.
+    You never judge the dreamer and never give advice or instructions.
+    You do not suggest actions decisions conversations or changes in real life.
+    You do not comment on relationships career family or social behavior.
+
+    You do not predict the future and do not use fate destiny warning or prophecy language.
+    You treat death loss and fear symbols as inner transformation and psychological processes.
+
+    Your interpretations aim to offer insight not direction.
+    Your tone is calm grounded and humane.
+    You help the dreamer feel understood not guided.
+
+    CONTEXT:
+    DREAM TEXT: "${dreamText}"
+    USER MOOD: "${mood}"
+    ${dictionaryContext}
+
+    OUTPUT FORMAT RULES:
+    1. Output MUST be a valid JSON object with keys: "title", "interpretation".
+    2. "title": An intriguing, tangible title (e.g., 'The Hidden Door', 'The Falling Teeth'). Avoid abstract philosophical terms. Use ${targetLanguage}.
+    3. "interpretation": A comprehensive analysis. It MUST be AT LEAST 2 paragraphs (max 120 words total). Separate paragraphs with DOUBLE NEWLINES (\n\n).
+    4. Language: EXCLUSIVE USE of ${targetLanguage}.
+    5. Do not output markdown, just the JSON.
+        `;
+
+        const completion = await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: systemPrompt },
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.7,
+        });
+
+        const responseContent = JSON.parse(completion.choices[0].message.content);
+
+        // Robust fallback
+        const title = responseContent.title || "Dream Analysis";
+        let interpretation = responseContent.interpretation || responseContent.analysis || "Interpretation unavailable.";
+
+        return { title, interpretation };
     } catch (error) {
         console.error("Error interpretation:", error);
-        throw new HttpsError('internal', error.message);
+        throw new HttpsError('internal', "Interpretation failed.");
     }
 });
 
