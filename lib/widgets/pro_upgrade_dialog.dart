@@ -977,46 +977,42 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     required String title,
     required String subtitle,
   }) {
-    // Fixed height for consistent card sizing
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: SizedBox(
-        height: 125, // Fixed height for ALL cards
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            color: Colors.white.withOpacity(0.05),
-            border: Border.all(
-              color: const Color(0xFFFBBF24).withOpacity(0.3), // Gold border
-              width: 1,
+      child: Container(
+        width: double.infinity, // Ensure all cards stretch to full width
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: Colors.white.withOpacity(0.05),
+          border: Border.all(
+            color: const Color(0xFFFBBF24).withOpacity(0.3), // Gold border
+            width: 1,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title, 
+              style: const TextStyle(
+                color: Color(0xFFFBBF24), 
+                fontWeight: FontWeight.w600, 
+                fontSize: 15,
+              ),
             ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title, 
-                style: const TextStyle(
-                  color: Color(0xFFFBBF24), 
-                  fontWeight: FontWeight.w600, 
-                  fontSize: 15,
-                ),
+            const SizedBox(height: 6),
+            Text(
+              subtitle, 
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.6), 
+                fontSize: 12,
+                height: 1.4,
               ),
-              const SizedBox(height: 6),
-              Text(
-                subtitle, 
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.6), 
-                  fontSize: 12,
-                  height: 1.4,
-                ),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ),
     );

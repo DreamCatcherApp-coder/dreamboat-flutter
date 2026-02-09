@@ -81,7 +81,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get statsProcessing =>
-      'Rüya Deseniniz hazırlanıyor,\nlütfen kısa bir süre bekleyiniz.';
+      'Rüya Deseni hazırlanıyor, lütfen kısa bir süre bekleyin.';
 
   @override
   String get guideTitle => 'Lucid Rüya Rehberi';
@@ -962,7 +962,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moonSyncProcessing =>
-      'Kozmik Analiz hazırlanıyor,\nlütfen bekleyiniz.';
+      'Kozmik Analiz hazırlanıyor, lütfen kısa bir süre bekleyin.';
 
   @override
   String get moonPhaseNewMoon => 'Yeni Ay';
@@ -1553,7 +1553,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get visualizeDream => 'Rüyayı Görselleştir';
 
   @override
-  String get visualizingDream => 'Görselleştiriliyor...';
+  String get visualizingDream =>
+      'Yapay zeka rüyanı eşsiz bir sanat eserine dönüştürüyor... Bu işlem yaklaşık 30-45 saniye sürebilir.';
 
   @override
   String get imageGenLimitReached => 'Günlük Limit Doldu';
@@ -1601,4 +1602,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get unlockProConnection => 'Tamamını Gör';
+
+  @override
+  String dreamMoonPhasePrefix(Object phase) {
+    return '(Rüyanızı Gördüğünüz Ay Evresi: $phase)';
+  }
 }

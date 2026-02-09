@@ -80,7 +80,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get statsProcessing =>
-      'Your Dream Pattern is being prepared,\nplease wait a moment.';
+      'Dream Pattern is being prepared, please wait a moment.';
 
   @override
   String get guideTitle => 'Lucid Dream Guide';
@@ -965,7 +965,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moonSyncProcessing =>
-      'Cosmic Analysis is being prepared,\nplease wait.';
+      'Cosmic Analysis is being prepared, please wait a moment.';
 
   @override
   String get moonPhaseNewMoon => 'New Moon';
@@ -1557,7 +1557,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get visualizeDream => 'Visualize Dream';
 
   @override
-  String get visualizingDream => 'Visualizing Dream...';
+  String get visualizingDream =>
+      'AI is turning your dream into a unique piece of art... This process may take about 30-45 seconds.';
 
   @override
   String get imageGenLimitReached => 'Daily Limit Reached';
@@ -1606,4 +1607,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unlockProConnection => 'See Full';
+
+  @override
+  String dreamMoonPhasePrefix(Object phase) {
+    return '(Moon Phase of Your Dream: $phase)';
+  }
 }

@@ -23,7 +23,7 @@
     "statsAnalyzing": "Analysiere...",
     "statsOffline": "Internet erforderlich",
     "statsNoData": "Nicht genügend Daten",
-    "statsProcessing": "Dein Traummuster wird vorbereitet,\nbitte warte einen Moment.",
+    "statsProcessing": "Traummuster wird vorbereitet, bitte warten Sie einen Moment.",
     "moodLove": "Liebe",
     "moodHappy": "Freude",
     "moodSad": "Traurigkeit",
@@ -300,7 +300,7 @@
     },
     "moonSyncMinDreams": "Mindestens 5 aufgezeichnete Träume erforderlich",
     "moonSyncDone": "Monatliche Kosmische Analyse Abgeschlossen",
-    "moonSyncProcessing": "Kosmische Analyse wird vorbereitet,\nbitte warten.",
+    "moonSyncProcessing": "Kosmische Analyse wird vorbereitet, bitte warten Sie einen Moment.",
     "moonPhaseNewMoon": "Neumond",
     "moonPhaseWaxingCrescent": "Zunehmende Sichel",
     "moonPhaseFirstQuarter": "Erstes Viertel",
@@ -538,5 +538,8 @@
     "dailyImageLimitReached": "Du hast deine tägliche Visualisierung verwendet. Komm morgen für ein neues Bild zurück!",
     "visualizeDreamSubtitle": "Visuelle Interpretation deines Traums mit KI",
     "cosmicConnectionTitle": "Kosmische Verbindung",
-    "unlockProConnection": "Alles Sehen"
+    "unlockProConnection": "Alles Sehen",
+    "dreamMoonPhasePrefix": "(Mondphase Ihres Traums: {phase})",
+    "visualizeDream": "Traum visualisieren",
+    "visualizingDream": "KI verwandelt Ihren Traum in ein einzigartiges Kunstwerk... Dieser Vorgang kann etwa 30-45 Sekunden dauern."
 }

@@ -82,7 +82,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get statsProcessing =>
-      'Dein Traummuster wird vorbereitet,\nbitte warte einen Moment.';
+      'Traummuster wird vorbereitet, bitte warten Sie einen Moment.';
 
   @override
   String get guideTitle => 'Klartraum-Leitfaden';
@@ -977,7 +977,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get moonSyncProcessing =>
-      'Kosmische Analyse wird vorbereitet,\nbitte warten.';
+      'Kosmische Analyse wird vorbereitet, bitte warten Sie einen Moment.';
 
   @override
   String get moonPhaseNewMoon => 'Neumond';
@@ -1572,7 +1572,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get visualizeDream => 'Traum visualisieren';
 
   @override
-  String get visualizingDream => 'Wird visualisiert...';
+  String get visualizingDream =>
+      'KI verwandelt Ihren Traum in ein einzigartiges Kunstwerk... Dieser Vorgang kann etwa 30-45 Sekunden dauern.';
 
   @override
   String get imageGenLimitReached => 'Tageslimit erreicht';
@@ -1621,4 +1622,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get unlockProConnection => 'Alles Sehen';
+
+  @override
+  String dreamMoonPhasePrefix(Object phase) {
+    return '(Mondphase Ihres Traums: $phase)';
+  }
 }

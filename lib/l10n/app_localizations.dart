@@ -239,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @statsProcessing.
   ///
   /// In tr, this message translates to:
-  /// **'Rüya Deseniniz hazırlanıyor,\nlütfen kısa bir süre bekleyiniz.'**
+  /// **'Rüya Deseni hazırlanıyor, lütfen kısa bir süre bekleyin.'**
   String get statsProcessing;
 
   /// No description provided for @guideTitle.
@@ -1829,7 +1829,7 @@ abstract class AppLocalizations {
   /// No description provided for @moonSyncProcessing.
   ///
   /// In tr, this message translates to:
-  /// **'Kozmik Analiz hazırlanıyor,\nlütfen bekleyiniz.'**
+  /// **'Kozmik Analiz hazırlanıyor, lütfen kısa bir süre bekleyin.'**
   String get moonSyncProcessing;
 
   /// No description provided for @moonPhaseNewMoon.
@@ -2915,7 +2915,7 @@ abstract class AppLocalizations {
   /// No description provided for @visualizingDream.
   ///
   /// In tr, this message translates to:
-  /// **'Görselleştiriliyor...'**
+  /// **'Yapay zeka rüyanı eşsiz bir sanat eserine dönüştürüyor... Bu işlem yaklaşık 30-45 saniye sürebilir.'**
   String get visualizingDream;
 
   /// No description provided for @imageGenLimitReached.
@@ -3001,6 +3001,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tamamını Gör'**
   String get unlockProConnection;
+
+  /// No description provided for @dreamMoonPhasePrefix.
+  ///
+  /// In tr, this message translates to:
+  /// **'(Rüyanızı Gördüğünüz Ay Evresi: {phase})'**
+  String dreamMoonPhasePrefix(Object phase);
 }
 
 class _AppLocalizationsDelegate

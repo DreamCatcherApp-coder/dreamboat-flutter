@@ -23,7 +23,7 @@
     "statsAnalyzing": "Analyzing...",
     "statsOffline": "Internet required",
     "statsNoData": "Not enough data",
-    "statsProcessing": "Your Dream Pattern is being prepared,\nplease wait a moment.",
+    "statsProcessing": "Dream Pattern is being prepared, please wait a moment.",
     "moodLove": "Love",
     "moodHappy": "Happiness",
     "moodSad": "Sadness",
@@ -300,7 +300,7 @@
     },
     "moonSyncMinDreams": "At Least 5 Recorded Dreams Required",
     "moonSyncDone": "Monthly Cosmic Analysis Done",
-    "moonSyncProcessing": "Cosmic Analysis is being prepared,\nplease wait.",
+    "moonSyncProcessing": "Cosmic Analysis is being prepared, please wait a moment.",
     "moonPhaseNewMoon": "New Moon",
     "moonPhaseWaxingCrescent": "Waxing Crescent",
     "moonPhaseFirstQuarter": "First Quarter",
@@ -549,5 +549,8 @@
     "dailyImageLimitReached": "You've used your daily visualization. Come back tomorrow for a new image!",
     "visualizeDreamSubtitle": "Visual interpretation of your dream with AI",
     "cosmicConnectionTitle": "Cosmic Connection",
-    "unlockProConnection": "See Full"
+    "unlockProConnection": "See Full",
+    "dreamMoonPhasePrefix": "(Moon Phase of Your Dream: {phase})",
+    "visualizeDream": "Visualize Dream",
+    "visualizingDream": "AI is turning your dream into a unique piece of art... This process may take about 30-45 seconds."
 }

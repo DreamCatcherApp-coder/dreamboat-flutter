@@ -606,7 +606,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
     const { dreamText, dreamId, isTrial, isDebug } = request.data;
     const uid = request.auth.uid;
 
-    console.log(`generateDreamImage called.uid =\${ uid }, dreamId =\${ dreamId }, isTrial =\${ isTrial }, isDebug =\${ isDebug } `);
+    console.log(`generateDreamImage called. uid=${uid}, dreamId=${dreamId}, isTrial=${isTrial}, isDebug=${isDebug}`);
 
     if (!dreamText || !dreamId) {
         throw new HttpsError('invalid-argument', 'Missing dreamText or dreamId');
@@ -617,7 +617,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
     let bucket;
     try {
         bucket = admin.storage().bucket('dream-boat-app.firebasestorage.app');
-        console.log(`Storage bucket initialized: \${ bucket.name } `);
+        console.log(`Storage bucket initialized: ${bucket.name}`);
 
         // Verify bucket is accessible (prevents wasted API costs)
         const [bucketExists] = await bucket.exists();
@@ -632,7 +632,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
         throw new HttpsError('internal', 'Storage initialization failed: ' + storageErr.message);
     }
 
-    const filePath = `dream_images /\${ uid }/\${dreamId}.png`;
+    const filePath = `dream_images/${uid}/${dreamId}.png`;
     const file = bucket.file(filePath);
 
     // [IDEMPOTENCY CHECK]
@@ -640,7 +640,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
     try {
         const [exists] = await file.exists();
         if (exists) {
-            console.log(`Image already exists for dream \${dreamId}. Returning cached result.`);
+            console.log(`Image already exists for dream ${dreamId}. Returning cached result.`);
             return {
                 imageUrl: file.publicUrl(),
                 prompt: "Refined prompt not available (Cached Request)"
@@ -653,7 +653,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
 
     // 1. Strict Date-Based Rate Limiting (YYYY-MM-DD)
     const db = admin.firestore();
-    const userStatsRef = db.doc(`users/\${uid}/stats/limits`);
+    const userStatsRef = db.doc(`users/${uid}/stats/limits`);
 
     // Get current UTC Date Key
     const now = new Date();
@@ -664,7 +664,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
 
     // [DEBUG BYPASS]
     if (isDebug === true) {
-        console.log(`[DEBUG BYPASS] Skipping rate limits for user \${uid}`);
+        console.log(`[DEBUG BYPASS] Skipping rate limits for user ${uid}`);
     } else {
         if (isTrial) {
             // TRIAL Logic: Max 1 image EVER
@@ -701,7 +701,7 @@ exports.generateDreamImage = onCall({ secrets: [openaiApiKey] }, async (request)
                 1. Extract the key visual elements from the user's dream.
                 2. Insert them into the [INSERT CONCISE VISUAL SUMMARY OF DREAM HERE] slot.
                 3. Output ONLY the final populated prompt.` },
-                { role: "user", content: `Dream: \${dreamText}` }
+                { role: "user", content: `Dream: ${dreamText}` }
             ],
             model: "gpt-4o-mini",
             max_tokens: 300,

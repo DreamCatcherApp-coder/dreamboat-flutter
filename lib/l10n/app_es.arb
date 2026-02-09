@@ -23,7 +23,7 @@
     "statsAnalyzing": "Analizando...",
     "statsOffline": "Se requiere internet",
     "statsNoData": "Datos insuficientes",
-    "statsProcessing": "Tu Patrón de Sueños se está preparando,\npor favor espera un momento.",
+    "statsProcessing": "El Patrón de Sueño se está preparando, por favor espere un momento.",
     "moodLove": "Amor",
     "moodHappy": "Felicidad",
     "moodSad": "Tristeza",
@@ -300,7 +300,7 @@
     },
     "moonSyncMinDreams": "Se Requieren Al Menos 5 Sueños Registrados",
     "moonSyncDone": "Análisis Cósmico Mensual Completado",
-    "moonSyncProcessing": "El Análisis Cósmico se está preparando,\npor favor espera.",
+    "moonSyncProcessing": "El Análisis Cósmico se está preparando, por favor espere un momento.",
     "moonPhaseNewMoon": "Luna Nueva",
     "moonPhaseWaxingCrescent": "Luna Creciente",
     "moonPhaseFirstQuarter": "Cuarto Creciente",
@@ -539,5 +539,8 @@
     "dailyImageLimitReached": "Has usado tu visualización diaria. ¡Vuelve mañana para una nueva imagen!",
     "visualizeDreamSubtitle": "Interpretación visual de tu sueño con IA",
     "cosmicConnectionTitle": "Conexión Cósmica",
-    "unlockProConnection": "Ver Todo"
+    "unlockProConnection": "Descifrar Mensaje Cósmico",
+    "dreamMoonPhasePrefix": "(Fase Lunar de tu Sueño: {phase})",
+    "visualizeDream": "Visualizar sueño",
+    "visualizingDream": "La IA está convirtiendo tu sueño en una obra de arte única... Este proceso puede tardar entre 30 y 45 segundos."
 }

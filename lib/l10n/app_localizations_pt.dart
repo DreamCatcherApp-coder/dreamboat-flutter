@@ -81,7 +81,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get statsProcessing =>
-      'Seu Padrão de Sonhos está sendo preparado,\npor favor aguarde um momento.';
+      'O Padrão de Sonho está sendo preparado, por favor aguarde um momento.';
 
   @override
   String get guideTitle => 'Guia de Sonhos Lúcidos';
@@ -970,7 +970,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get moonSyncProcessing =>
-      'A Análise Cósmica está sendo preparada,\npor favor aguarde.';
+      'A Análise Cósmica está sendo preparada, por favor aguarde um momento.';
 
   @override
   String get moonPhaseNewMoon => 'Lua Nova';
@@ -1565,10 +1565,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Transforme seus sonhos em arte vívida. Dê vida a um sonho todos os dias.';
 
   @override
-  String get visualizeDream => 'Visualizar Sonho';
+  String get visualizeDream => 'Visualizar sonho';
 
   @override
-  String get visualizingDream => 'Visualizando...';
+  String get visualizingDream =>
+      'A IA está transformando seu sonho em uma obra de arte única... Esse processo pode levar cerca de 30 a 45 segundos.';
 
   @override
   String get imageGenLimitReached => 'Limite Diário Atingido';
@@ -1616,5 +1617,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cosmicConnectionTitle => 'Conexão Cósmica';
 
   @override
-  String get unlockProConnection => 'Ver Tudo';
+  String get unlockProConnection => 'Decifrar Mensagem Cósmica';
+
+  @override
+  String dreamMoonPhasePrefix(Object phase) {
+    return '(Fase da Lua do seu Sonho: $phase)';
+  }
 }

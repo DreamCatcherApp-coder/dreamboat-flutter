@@ -657,21 +657,21 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                   
                                   // Moon Phase Sub-header
                                     Text(
-                                    "(Rüyanızı Gördüğünüz Ay Evresi: ${getLocalizedMoonPhase()})",
-                                    style: TextStyle(
-                                      color: const Color(0xFFE0F7FA), // Moonstone Tint
-                                      fontSize: 13,
-                                      fontStyle: FontStyle.italic,
-                                      fontWeight: FontWeight.w500,
-                                      shadows: [
-                                        Shadow(
-                                           blurRadius: 12.0,
-                                           color: const Color(0xFF4DD0E1).withOpacity(0.6), // Cyan/Moonstone Glow
-                                           offset: const Offset(0, 0),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                     AppLocalizations.of(context)!.dreamMoonPhasePrefix(getLocalizedMoonPhase()),
+                                     style: TextStyle(
+                                       color: const Color(0xFFE0F7FA), // Moonstone Tint
+                                       fontSize: 13,
+                                       fontStyle: FontStyle.italic,
+                                       fontWeight: FontWeight.w500,
+                                       shadows: [
+                                         Shadow(
+                                            blurRadius: 12.0,
+                                            color: const Color(0xFF4DD0E1).withOpacity(0.6), // Cyan/Moonstone Glow
+                                            offset: const Offset(0, 0),
+                                         ),
+                                       ],
+                                     ),
+                                   ),
                                   const SizedBox(height: 16),
                                   
                                   // Content (Freemium Logic)
@@ -690,16 +690,17 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                         ),
                                       );
                                     } else {
-                                      // Free: Seamless Fade Out
-                                      return Stack(
+                                      // Free: Text fades, then button as separate block
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          // 1. Text with Fade Mask
+                                          // 1. Text with Fade Mask (4 lines + manual "…")
                                           ShaderMask(
                                             shaderCallback: (Rect bounds) {
                                               return LinearGradient(
                                                 begin: Alignment.topCenter,
                                                 end: Alignment.bottomCenter,
-                                                stops: const [0.0, 0.5, 1.0],
+                                                stops: const [0.0, 0.6, 1.0],
                                                 colors: [
                                                   Colors.white, // Fully visible
                                                   Colors.white, // Keep readable longer
@@ -709,113 +710,117 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                             },
                                             blendMode: BlendMode.dstIn,
                                             child: Text(
-                                              text.length > 500 ? text.substring(0, 500) : text,
+                                              "${text.length > 300 ? text.substring(0, 300) : text}…",
                                               style: TextStyle(
                                                 color: Colors.white.withOpacity(0.9),
                                                 fontSize: 14,
                                                 height: 1.6,
                                               ),
-                                              maxLines: 8,
+                                              maxLines: 4,
                                               overflow: TextOverflow.clip,
                                             ),
                                           ),
                                           
-                                          // 2. Gradient Overlay for the Button (Bottom Up)
-                                          // This ensures the button sits on a dark base for readability, 
-                                          // blending seamlessly with the fade above.
-                                          Positioned(
-                                            bottom: 0,
-                                            left: 0,
-                                            right: 0,
-                                            height: 100,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Colors.transparent,
-                                                    const Color(0xFF1E1B35).withOpacity(0.8),
-                                                    const Color(0xFF1E1B35), // Match Card Background ish
-                                                  ],
-                                                ),
-                                                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
-                                              ),
-                                            ),
-                                          ),
+                                          // 2. Distinct 12px Gap
+                                          const SizedBox(height: 12),
                                           
-                                          // 3. Lock Button Centered in the gradient area
-                                          Positioned(
-                                            bottom: 20,
-                                            left: 0,
-                                            right: 0,
-                                            child: Center(
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  // Trigger Paywall
-                                                   showDialog(
-                                                    context: context,
-                                                    builder: (_) => const ProUpgradeDialog()
-                                                  ).then((_) {
-                                                     setModalState((){}); // Refresh UI logic on return
-                                                  });
-                                                },
-                                                child: ConstrainedBox(
-                                                  constraints: BoxConstraints(
-                                                    maxWidth: MediaQuery.of(context).size.width - 48 // Padding
-                                                  ),
-                                                  child: ClipRRect( // Add blur specifically to the button background for glass effect
-                                                    borderRadius: BorderRadius.circular(24),
-                                                    child: BackdropFilter(
-                                                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                                      child: Container(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(24),
-                                                            gradient: const LinearGradient(
-                                                              begin: Alignment.topLeft,
-                                                              end: Alignment.bottomRight,
-                                                              colors: [
-                                                                Color(0xFFF59E0B), // Standard Gold
-                                                                Color(0xFFD97706), // Amber
-                                                                Color(0xFF4C1D95), // Deep Purple
-                                                              ],
-                                                              stops: [0.0, 0.4, 1.0], 
-                                                            ),
-                                                            border: Border.all(color: Colors.white.withOpacity(0.2)),
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                color: const Color(0xFFF59E0B).withOpacity(0.25),
-                                                                blurRadius: 20,
-                                                                spreadRadius: -4,
-                                                                offset: const Offset(0, 12),
-                                                              )
-                                                            ]
-                                                          ),
-                                                        child: Row(
-                                                          mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            // REMOVED Icon(LucideIcons.lock)
-                                                            const SizedBox(width: 4), // Reduced padding
-                                                            Flexible(
-                                                              child: Text(
-                                                                AppLocalizations.of(context)!.unlockProConnection,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 13,
-                                                                  letterSpacing: 0.5
-                                                                ),
-                                                                maxLines: 1,
-                                                                overflow: TextOverflow.ellipsis,
+                                          // 3. Button (Detached, squircle shape + PRO badge)
+                                          Center(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                // Trigger Paywall
+                                                 showDialog(
+                                                  context: context,
+                                                  builder: (_) => const ProUpgradeDialog()
+                                                ).then((_) {
+                                                   setModalState((){}); // Refresh UI logic on return
+                                                });
+                                              },
+                                              child: ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                  maxWidth: MediaQuery.of(context).size.width - 48
+                                                ),
+                                                child: Stack(
+                                                  clipBehavior: Clip.none,
+                                                  children: [
+                                                    // Button body
+                                                    ClipRRect(
+                                                      borderRadius: BorderRadius.circular(16), // Reduced radius for "squircle" look (was 24=pill)
+                                                      child: BackdropFilter(
+                                                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                                        child: Container(
+                                                          padding: const EdgeInsets.fromLTRB(24, 14, 36, 14), // Extra right padding for badge
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(16), // Match ClipRRect
+                                                              gradient: const LinearGradient(
+                                                                begin: Alignment.topLeft,
+                                                                end: Alignment.bottomRight,
+                                                                colors: [
+                                                                  Color(0xFFF59E0B), // Standard Gold
+                                                                  Color(0xFFD97706), // Amber
+                                                                  Color(0xFF4C1D95), // Deep Purple
+                                                                ],
+                                                                stops: [0.0, 0.4, 1.0], 
                                                               ),
+                                                              border: Border.all(color: Colors.white.withOpacity(0.2)),
+                                                              boxShadow: [
+                                                                BoxShadow(
+                                                                  color: const Color(0xFFF59E0B).withOpacity(0.25),
+                                                                  blurRadius: 20,
+                                                                  spreadRadius: -4,
+                                                                  offset: const Offset(0, 12),
+                                                                )
+                                                              ]
                                                             ),
-                                                            const SizedBox(width: 4), // Reduced padding
-                                                          ],
+                                                          child: Row(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              const SizedBox(width: 4),
+                                                              Flexible(
+                                                                child: Text(
+                                                                  AppLocalizations.of(context)!.unlockProConnection,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 14, // Slightly larger
+                                                                    letterSpacing: 0.5
+                                                                  ),
+                                                                  maxLines: 1,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                    
+                                                    // PRO Badge
+                                                    Positioned(
+                                                      top: 6,
+                                                      right: 8,
+                                                      child: Container(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.black.withOpacity(0.3),
+                                                          borderRadius: BorderRadius.circular(20),
+                                                          border: Border.all(
+                                                            color: Colors.white.withOpacity(0.2),
+                                                            width: 0.5,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          AppLocalizations.of(context)!.proVersion,
+                                                          style: const TextStyle(
+                                                            color: Color(0xFFFDE68A), // Champagne Gold text
+                                                            fontSize: 7,
+                                                            fontWeight: FontWeight.w800,
+                                                            letterSpacing: 0.5,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
@@ -846,6 +851,7 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                       const SizedBox(height: 12),
                                       Text(
                                         t.visualizingDream, 
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white.withOpacity(0.6), fontSize: 13, fontStyle: FontStyle.italic),
                                       )
                                     ],

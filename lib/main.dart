@@ -36,6 +36,38 @@ void main() {
     Hive.registerAdapter(DreamEntryAdapter());
     await Hive.openBox<DreamEntry>('dreams');
 
+    // One-time migration: clear stale imageUrls caused by backend template literal bug
+    final prefs = await SharedPreferences.getInstance();
+    if (!(prefs.getBool('image_url_migration_v1') ?? false)) {
+      final box = Hive.box<DreamEntry>('dreams');
+      for (final key in box.keys) {
+        final dream = box.get(key);
+        if (dream != null && dream.imageUrl != null) {
+          // copyWith(imageUrl: null) won't work due to ?? pattern, 
+          // so reconstruct without imageUrl
+          final cleared = DreamEntry(
+            id: dream.id,
+            text: dream.text,
+            date: dream.date,
+            mood: dream.mood,
+            secondaryMoods: dream.secondaryMoods,
+            moodIntensity: dream.moodIntensity,
+            vividness: dream.vividness,
+            interpretation: dream.interpretation,
+            title: dream.title,
+            isFavorite: dream.isFavorite,
+            astronomicalEvents: dream.astronomicalEvents,
+            guideStage: dream.guideStage,
+            cosmicAnalysis: dream.cosmicAnalysis,
+            // imageUrl intentionally omitted → null
+          );
+          await box.put(key, cleared);
+        }
+      }
+      await prefs.setBool('image_url_migration_v1', true);
+      debugPrint('=== Migration: Cleared all stale imageUrls ===');
+    }
+
     // Initialize Date Formatting for all locales
     await initializeDateFormatting(); // [NEW] Fix for localized dates
     
