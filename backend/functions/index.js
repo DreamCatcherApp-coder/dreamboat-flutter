@@ -2,9 +2,24 @@ const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { OpenAI } = require("openai");
+// const pluralize = require("pluralize");
 const { enforceRateLimit } = require("./rateLimiter");
 
 // dictionary import removed as we now use LLM knowledge + API for symbols
+
+
+// Language normalization map (Global)
+const LANG_NORMALIZE_MAP = {
+    'tr': 'Turkish', 'turkish': 'Turkish', 'türkçe': 'Turkish',
+    'en': 'English', 'english': 'English',
+    'es': 'Spanish', 'spanish': 'Spanish', 'español': 'Spanish',
+    'de': 'German', 'german': 'German', 'deutsch': 'German',
+    'pt': 'Portuguese', 'portuguese': 'Portuguese',
+    'nl': 'Dutch', 'dutch': 'Dutch',
+    'it': 'Italian', 'italian': 'Italian',
+    'ru': 'Russian', 'russian': 'Russian',
+    'fr': 'French', 'french': 'French'
+};
 
 // Initialize Firebase Admin (Required for Storage/Firestore access)
 admin.initializeApp();
@@ -24,71 +39,84 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
         throw new HttpsError('invalid-argument', 'Missing dreamText');
     }
 
-    // Determine target language (default to English)
-    const lang = language || 'en';
-    const langMap = {
-        'tr': 'Turkish',
-        'en': 'English',
-        'es': 'Spanish',
-        'de': 'German',
-        'pt': 'Portuguese'
-    };
-    const targetLanguage = langMap[lang] || 'English';
 
     try {
-        // --- PASS 1: KEYWORD EXTRACTION (English Universal Keys) ---
-        // Goal: Convert dream content into 1-3 English keywords for API lookup
-        // e.g. "Koca bir yılan gördüm" -> ["SNAKE"]
+        // --- PASS 1: KEYWORD EXTRACTION & LANGUAGE DETECTION (Combined) ---
+        // Goal: Normalize ANY language to English Context, Extract Symbols, and Detect Language in ONE pass.
         const extractionPrompt = `
-        Analyze the dream and extract 1-3 dominant symbols.
-        The dream may be in ANY language.
+        You are an expert dream symbol extractor and linguist.
         
-        RULES:
-        1. EXTRACT ONLY **TANGIBLE NOUNS** (Objects, Animals, Places).
-        2. DO NOT extract abstract concepts (e.g., "Fear", "Running").
-        3. DO NOT extract verbs (e.g., "Chasing").
-        4. CONVERT to **UNIVERSAL ENGLISH KEYWORDS** (Singular, Uppercase).
+        TASK:
+        1. Read the user's dream text.
+        2. DETECT the language of the dream (Output as 'detected_language').
+        3. EXTRACT 2-4 dominant symbols. ONLY extract concrete objects, beings, places, or natural elements. Do NOT extract actions (chase, cry) or emotions (fear, joy).
+        4. **CRITICAL**: ALL symbols MUST be in **ENGLISH**. Translate every symbol to its English equivalent. NEVER output symbols in the dream's original language.
+        5. **SINGLE WORD ONLY**: Each symbol must be exactly ONE word. No adjectives, no colors, no compounds.
+        
+        WRONG: "ÖĞRENCİ", "AT", "EV", "BAHÇE", "YEMEK", "ZÜRAFA", "BLACK HORSE", "BIG SNAKE"
+        CORRECT: "STUDENT", "HORSE", "HOME", "GARDEN", "FOOD", "GIRAFFE", "HORSE", "SNAKE"
         
         Examples:
-        - "I was running from a big dog" -> { "symbols": ["DOG"] } (Ignore "Running")
-        - "Merdiven çıkıyordum ama yoruldum" -> { "symbols": ["STAIRS"] } (Ignore "Climbing", "Tired")
-        - "Dişlerim dökülüyordu" -> { "symbols": ["TEETH"] }
+        Input: "Rüyamda koca bir yılanın beni kovaladığını gördüm."
+        Output: { "detected_language": "Turkish", "symbols": ["SNAKE"] }
         
-        Output ONLY a valid JSON object with a "symbols" key.
+        Input: "Rüyamda bir at bahçede duruyordu ve öğrencim eve geldi."
+        Output: { "detected_language": "Turkish", "symbols": ["HORSE", "GARDEN", "STUDENT"] }
+        
+        Input: "A baby was crying and then an angel appeared near the ocean."
+        Output: { "detected_language": "English", "symbols": ["BABY", "ANGEL", "OCEAN"] }
+        
+        OUTPUT FORMAT (JSON ONLY):
+        {
+          "detected_language": "Standard English Name (e.g., Turkish, English, Spanish)",
+          "symbols": ["SYMBOL1", "SYMBOL2"]
+        }
         `;
 
         const extractionCompletion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
                 { role: "system", content: extractionPrompt },
-                { role: "user", content: dreamText }
+                { role: "user", content: `Dream Text: ${dreamText}` }
             ],
             response_format: { type: "json_object" },
-            temperature: 0.1, // Lower temperature for precision
+            temperature: 0.1,
         });
 
         let keywords = [];
+        let detectedLanguage = "English"; // Default
+
+        // Use global LANG_NORMALIZE_MAP for normalization
+
         try {
             const raw = JSON.parse(extractionCompletion.choices[0].message.content);
-            if (Array.isArray(raw)) {
+
+            // Extract & Normalize Language
+            if (raw.detected_language) {
+                const rawLang = raw.detected_language.toLowerCase().trim();
+                // Check global map, fallback to Capitalized Raw
+                detectedLanguage = LANG_NORMALIZE_MAP[rawLang] || (rawLang.charAt(0).toUpperCase() + rawLang.slice(1));
+                console.log("Detected dream language (merged pass):", detectedLanguage);
+            }
+
+            // Extract Keywords
+            if (Array.isArray(raw.symbols)) {
+                keywords = raw.symbols;
+            } else if (Array.isArray(raw)) {
                 keywords = raw;
             } else {
-                keywords = raw.symbols || raw.keywords || [];
+                keywords = raw.keywords || [];
             }
             if (!Array.isArray(keywords)) keywords = [];
+
+            // Ensure Uppercase & Unique
+            keywords = [...new Set(keywords.map(k => k.toUpperCase()))];
+
         } catch (e) {
-            console.warn("Keyword extraction failed", e);
+            console.warn("Extraction/Detection failed", e);
         }
 
-        // --- PASS 1.5: KEYWORD INJECTION (Fail-safe) ---
-        // Ensure critical symbols are present if they appear in text (bypassing LLM variance)
-        const textLower = dreamText.toLowerCase();
-        if (textLower.includes('merdiven') || textLower.includes('ladder') || textLower.includes('stair') || textLower.includes('basamak')) {
-            if (!keywords.map(k => k.toLowerCase()).includes('ladder') && !keywords.map(k => k.toLowerCase()).includes('stairs')) {
-                keywords.push('stairs');
-                console.log("Injected 'stairs' keyword based on text match");
-            }
-        }
+        // (Keyword injection removed - prompt handles English extraction)
 
         console.log("Extracted Keywords:", keywords);
 
@@ -102,20 +130,16 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
         const fetchPromises = keywords.map(async (key) => {
             try {
                 const cleanKey = key.toLowerCase().trim();
-
-                // Content Quality Aliases (Hotfix)
-                // Maps keywords with poor/templated content to their high-quality equivalents
-                const aliases = {
-                    'ladder': 'stairs',
-                    'stair': 'stairs',
-                    'steps': 'stairs',
-                    'merdiven': 'stairs'
-                };
-                const finalKey = aliases[cleanKey] || cleanKey;
+                const finalKey = cleanKey;
 
                 const response = await fetch(`${apiBase}/${finalKey}`);
+                console.log(`API Fetch for '${finalKey}': status=${response.status}`);
                 if (!response.ok) return null;
-                return await response.json();
+
+                const data = await response.json();
+                // Return BOTH data and the finalKey used to fetch it
+                return { data, finalKey };
+
             } catch (err) {
                 console.error(`API Fetch Error for ${key}:`, err);
                 return null;
@@ -124,40 +148,31 @@ exports.interpretDream = onCall({ secrets: [openaiApiKey] }, async (request) => 
 
         const results = await Promise.all(fetchPromises);
 
-        results.forEach((data, index) => {
-            if (data) {
-                const key = keywords[index];
+        results.forEach((result) => {
+            if (result && result.data) {
+                const { data, finalKey } = result;
 
                 // Construct Jungian Reference Data Block
-                // {SEM_GIRIS}: Basic meaning
-                // {SEM_GOVDE}: Psychological + Spiritual depth
-                // {SEM_SENARYOLAR}: Scenarios
+                // API Response Fields: introduction (short), symbolism (deep), cosmicAnalysis (moon)
+                // {SEM_GIRIS}: Short encyclopedic definition (from 'introduction')
+                // {SEM_GOVDE}: Deep psychological/spiritual analysis (from 'symbolism')
 
-                let semGiris = data.meaning || data.symbolism || "Symbolic meaning unavailable.";
+                let semGiris = data.introduction || data.meaning || "Symbolic meaning unavailable.";
+                let semGovde = data.symbolism || "";
 
-                let semGovde = "";
-                if (data.interpretations) {
-                    if (data.interpretations.psychological) semGovde += `Psikolojik: ${data.interpretations.psychological}\n`;
-                    if (data.interpretations.spiritual) semGovde += `Spiritüel: ${data.interpretations.spiritual}\n`;
-                }
-                if (!semGovde && data.symbolism) semGovde = data.symbolism; // Fallback
-
-                let semSenaryolar = "";
-                if (data.scenarios && Array.isArray(data.scenarios)) {
-                    semSenaryolar = data.scenarios.map(s => `- ${s.title}: ${s.description}`).join('\n');
-                }
-
+                // Use finalKey (the actual content source) for the header
                 const refBlock = `
-SEMBOL: ${key.toUpperCase()}
+SEMBOL: ${finalKey.toUpperCase()}
 {SEM_GIRIS}: ${semGiris}
 {SEM_GOVDE}: ${semGovde}
-{SEM_SENARYOLAR}:
-${semSenaryolar}
 `;
                 contextBuffer.push(refBlock);
 
                 if (data.cosmicAnalysis) {
                     cosmicAnalysisBuffer.push(data.cosmicAnalysis);
+                    console.log(`Cosmic Analysis found for '${finalKey}': ${data.cosmicAnalysis.substring(0, 80)}...`);
+                } else {
+                    console.log(`NO Cosmic Analysis for '${finalKey}'`);
                 }
             }
         });
@@ -166,104 +181,135 @@ ${semSenaryolar}
             ? `\n### [REFERANS VERİLERİ] (Grounding Data)\n${contextBuffer.join('\n\n')}`
             : "";
 
-        // Combine Cosmic Analysis (if any)
+        // Use only the FIRST (most dominant) symbol's cosmic analysis for clarity
         let finalCosmicAnalysis = cosmicAnalysisBuffer.length > 0
-            ? cosmicAnalysisBuffer.join("\n\n")
+            ? cosmicAnalysisBuffer[0]
             : null;
 
         console.log("Dictionary Context length:", dictionaryContext.length);
+        console.log("Cosmic Analysis Buffer length:", cosmicAnalysisBuffer.length);
+        console.log("Final Cosmic Analysis:", finalCosmicAnalysis ? finalCosmicAnalysis.substring(0, 100) + '...' : 'NULL');
 
-        // --- PASS 2.5: EXPLICIT LANGUAGE DETECTION ---
-        const langDetectCompletion = await openai.chat.completions.create({
-            model: "gpt-4o-mini",
-            messages: [
-                { role: "system", content: "Detect the language of the following text. Respond with ONLY the language name in English (e.g., 'English', 'Turkish', 'Spanish', 'German', 'Portuguese', 'Dutch', etc.). Nothing else." },
-                { role: "user", content: dreamText }
-            ],
-            temperature: 0,
-            max_tokens: 20
-        });
-
-        const detectedLanguage = langDetectCompletion.choices[0].message.content.trim();
-        console.log("Detected dream language:", detectedLanguage);
+        // --- PASS 2.5: REMOVED (Merged into Pass 1) ---
+        // console.log("Detected dream language:", detectedLanguage);
 
         // --- PASS 3: INTERPRETATION (Synthesize) ---
-        const systemPrompt = `
-### ROL VE AMACIN
-Sen DreamBoat uygulamasının uzman "Jungian Rüya Analisti"sin. Görevin, kullanıcının gördüğü rüyayı analiz etmektir.
-Öncelikle sana verilen **[REFERANS VERİLERİ]**ni temel almalısın.
+        const referenceDataAvailable = contextBuffer.length > 0 ? "YES" : "NO";
 
-Referans verisi varsa, analizini o sembolün derin psikolojik anlamı üzerine kur.
-Özellikle "Merdiven" gibi "tırmanma/yükselme" temalı rüyalarda, eğer kullanıcı "çıkamıyorsa" veya "takılı kalıyorsa", bunu Jungian "Libido'nun (Yaşam Enerjisi) yerinde sayması" veya "Yanlış yere kanalize edilmiş çaba" olarak yorumla.
+        const systemPrompt = `
+### ROLE & PURPOSE
+You are an Expert Jungian Dream Analyst for the DreamBoat app. 
+Your task is to interpret the user's dream using the provided **[REFERENCE DATA]**.
+
+**REFERENCE_DATA_AVAILABLE: ${referenceDataAvailable}**
+
+### REFERENCE DATA INSTRUCTION
+- **IF REFERENCE_DATA_AVAILABLE is YES**: 
+  - Use **{SEM_GIRIS}** (the encyclopedic introduction) for the "definition" field. **TRANSLATE IT** to the target language.
+  - Use **{SEM_GOVDE}** (deep psychological/spiritual symbolism) as the foundation for your "interpretation". Synthesize it with the user's specific dream details.
+- **IF REFERENCE_DATA_AVAILABLE is NO**: Use your own Jungian knowledge base (Archetypes, Shadow, Anima/Animus). Do NOT invent reference data.
 
 ${dictionaryContext}
 
-### KULLANICI RÜYASI
-"${dreamText}"
+### INTERPRETATION RULES
+1. **Psychological Depth**: Treat symbols as messages from the "Unconscious". Frame the interpretation as an opportunity for internal transformation or confrontation.
+2. **Climbing/Falling**: If the dream involves climbing/stairs (Merdiven) and the user is stuck, interpret it as "Libido (Life Energy) Stagnation" or misdirected effort.
+3. **Tone**: Mystical, deep, yet modern and clear. Non-judgmental.
 
-### ANALİZ KURALLARI (Adım Adım Uygula)
-1. **Veri Kaynağı Kontrolü:** 
-   - EĞER **[REFERANS VERİLERİ]** varsa: Kullanıcının rüya anlatısını **{SEM_SENARYOLAR}** ile karşılaştır. Örtüşürse oradan, örtüşmezse **{SEM_GOVDE}** üzerinden ilerle. sembolün "Ansiklopedik Tanımını" (**{SEM_GIRIS}**) JSON'daki 'definition' alanına koy.
-   - EĞER **[REFERANS VERİLERİ]** YOKSA (Boşsa): Kendi Jungian bilgi tabanını kullan.
+### STRUCTURE & FORMAT (CRITICAL)
+- **definition**: A short, encyclopedic definition of the **MOST CENTRAL symbol** in the dream (1-2 sentences). If multiple symbols exist, choose the one most relevant to the dream's core theme.
+- **interpretation**: The core analysis. MUST be **EXACTLY TWO PARAGRAPHS**. Separate paragraphs with \`\\n\\n\`.
+- **Length**: Total interpretation 70-100 words.
 
-2. **Yorumlama Tarzı:**
-   - Sembolün "Bilinçdışı"ndan gelen bir mesaj olduğunu hissettir.
-   - Durumu bir "İçsel Dönüşüm" veya "Yüzleşme" fırsatı olarak çerçevele.
-   - Eğer rüyada "ilerleyememe, düşme, kaçamama" varsa; bunu dışsal bir başarısızlık değil, "içeriye/derine bakma çağrısı" olarak yorumla.
+### LANGUAGE RULES
+- **TARGET LANGUAGE**: **${detectedLanguage}**
+- **ALL OUTPUT** (Title, Definition, Interpretation, Cosmic Analysis) MUST be in **${detectedLanguage}**.
 
-3. **Uzunluk ve Yapı (KRİTİK):**
-   - **definition:** Sembolün kısa, öz, ansiklopedik tanımı. (Max 1-2 cümle).
-   - **interpretation:** Analiz metni. OKUNABİLİRLİK İÇİN MUTLAKA **İKİ PARAGRAF** OLMALIDIR. İki paragrafın arasına \`\\n\\n\` (çift satır sonu) koyarak ayır.
-   - Toplam metin uzunluğu (interpretation) **maksimum 100 kelime**.
+### COSMIC ANALYSIS
+- Translate the provided "COSMIC ANALYSIS TEXT" to **${detectedLanguage}**.
+- **Format**: Return as an **ARRAY of STRINGS**. Each Moon Phase (e.g. New Moon, Waxing Moon, Full Moon, Waning Moon) MUST be a SEPARATE string in the array.
+- **Emojis**: Preserve all emojis.
+- **ABSOLUTELY NO MARKDOWN**: Do NOT use **bold** markers (** **), *italic*, or any markdown formatting anywhere. NEVER wrap Moon Phase names in ** **. Output PLAIN TEXT only.
+- **Moon Phases**: Translate phase names naturally (e.g. "New Moon" → "Yeni Ay" in Turkish). Do NOT add any formatting markers like ** around them.
+- **If COSMIC ANALYSIS TEXT is empty or missing**, return: "cosmicAnalysis": []
 
-4. **Ton ve Üslup:**
-   - Mistik, derinlikli, ancak modern ve anlaşılır.
-   - Asla yargılayıcı olma.
-   - **Markdown formatı (kalın, italik) KULLANMA.** Sadece paragraf ayırmak için satır sonu kullan.
-   - Teknik etiketleri ({SEM_...}) kullanıcıya gösterme.
-
-5. **DİL:**
-   - Tüm çıktıyı **${detectedLanguage}** dilinde ver.
-
-6. **KOZMİK ANALİZ (ZORUNLU ÇEVİRİ):**
-   - Aşağıdaki "KOZMİK ANALİZ METNİ" bölümündeki metni **${detectedLanguage}** diline çevir.
-   - **ASLA** orijinal dilde (İngilizce) bırakma.
-   - **FORMAT:** Metni düz bir paragraf olarak YAZMA.
-   - Her bir Ay evresini veya maddeyi **AYRI BİR SATIRA** koy.
-   - Ay evreleri için **EMOJİ** kullan (🌑 Yeni Ay, 🌓 İlk Dördün, 🌕 Dolunay, 🌗 Son Dördün vb.).
-   - Okuyucunun gözünde canlanacak şık bir liste gibi durmalı.
-   - Eğer kaynak metinde ay evresi yoksa bile, metni mantıklı parçalara bölerek alt alta yaz.
-
-### ÇIKTI FORMATI (JSON)
-Yanıtını sadece ve sadece aşağıdaki JSON formatında ver:
+### OUTPUT FORMAT (JSON ONLY)
+**ALL 4 FIELDS ARE MANDATORY. Never omit any field.**
+Respond ONLY with this JSON structure:
 {
-    "title": "Kısa, ilgi çekici başlık (${detectedLanguage})",
-    "definition": "Sembolün öz tanımı (${detectedLanguage}) - {SEM_GIRIS} verisinden al",
-    "interpretation": "Analiz metni. İKİ PARAGRAF. Arada \\n\\n boşluğu ŞART. (${detectedLanguage})",
-    "cosmicAnalysis": "Kozmik analiz (Emoji ve Satır Listesi Formatında) (${detectedLanguage}) veya null"
+    "title": "Short, engaging title in ${detectedLanguage}",
+    "definition": "Symbol definition in ${detectedLanguage}",
+    "interpretation": "Analysis text. EXACTLY 2 PARAGRAPHS. Use \\n\\n separator. (${detectedLanguage})",
+    "cosmicAnalysis": ["Line 1 with Emoji", "Line 2...", "Line 3..."]
 }
 
-### KOZMİK ANALİZ METNİ (Çevrilecek ve Formatlanacak):
+### COSMIC ANALYSIS TEXT (To Translate):
 "${finalCosmicAnalysis || ''}"
 `;
-
 
         const completion = await openai.chat.completions.create({
             model: "gpt-4o-mini",
             messages: [
                 { role: "system", content: systemPrompt },
-                { role: "user", content: `Interpret this dream in ${detectedLanguage}.` }
+                // Move Dream Text to User Message for safety/stability
+                { role: "user", content: `DREAM TEXT TO ANALYZE:\n"${dreamText}"` }
             ],
             response_format: { type: "json_object" },
-            temperature: 0.7,
+            temperature: 0.5 // Lower temperature for stability
         });
 
         const responseContent = JSON.parse(completion.choices[0].message.content);
+        console.log("GPT Response keys:", Object.keys(responseContent));
+        console.log("GPT cosmicAnalysis type:", typeof responseContent.cosmicAnalysis, "isArray:", Array.isArray(responseContent.cosmicAnalysis));
+        console.log("GPT cosmicAnalysis value:", JSON.stringify(responseContent.cosmicAnalysis)?.substring(0, 200));
 
         const title = responseContent.title || "Dream Analysis";
         const definition = responseContent.definition || "";
         let interpretation = responseContent.interpretation || "Interpretation unavailable.";
-        let cosmicAnalysis = responseContent.cosmicAnalysis || "";
+
+        // Handle Cosmic Analysis
+        // GPT sometimes omits cosmicAnalysis from its output.
+        // Fallback: translate the raw API cosmic data if GPT omitted it.
+        let cosmicAnalysis = "";
+        if (responseContent.cosmicAnalysis) {
+            // GPT returned it — use the translated version
+            cosmicAnalysis = Array.isArray(responseContent.cosmicAnalysis)
+                ? responseContent.cosmicAnalysis.join('\n\n')
+                : responseContent.cosmicAnalysis;
+        } else if (finalCosmicAnalysis) {
+            // GPT omitted it — translate raw API data to target language
+            console.log("GPT omitted cosmicAnalysis, translating raw API fallback to", detectedLanguage);
+            if (detectedLanguage !== "English") {
+                try {
+                    const translationCompletion = await openai.chat.completions.create({
+                        model: "gpt-4o-mini",
+                        messages: [
+                            { role: "system", content: `Translate the following cosmic dream analysis text to ${detectedLanguage}. Preserve all emojis. ABSOLUTELY NO MARKDOWN: do NOT use ** ** bold markers or any formatting. Each Moon Phase section must be a separate string in the array. Return ONLY the translated text as a JSON object with a single key "translated" containing an array of strings, one per Moon Phase section.` },
+                            { role: "user", content: finalCosmicAnalysis }
+                        ],
+                        response_format: { type: "json_object" },
+                        temperature: 0.2,
+                    });
+                    const translatedRaw = JSON.parse(translationCompletion.choices[0].message.content);
+                    cosmicAnalysis = Array.isArray(translatedRaw.translated)
+                        ? translatedRaw.translated.join('\n\n')
+                        : translatedRaw.translated || finalCosmicAnalysis;
+                    console.log("Fallback cosmic analysis translated successfully");
+                } catch (translateErr) {
+                    console.error("Fallback cosmic translation failed, using raw English:", translateErr);
+                    cosmicAnalysis = finalCosmicAnalysis;
+                }
+            } else {
+                cosmicAnalysis = finalCosmicAnalysis;
+            }
+        }
+
+        // Post-process: strip any residual ** bold markers from cosmic analysis
+        if (cosmicAnalysis) {
+            cosmicAnalysis = cosmicAnalysis.replace(/\*\*/g, '');
+        }
+
+        console.log("FINAL RETURN cosmicAnalysis:", cosmicAnalysis ? cosmicAnalysis.substring(0, 100) : 'EMPTY/NULL');
 
         return {
             title,
