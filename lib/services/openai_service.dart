@@ -145,51 +145,41 @@ class OpenAIService {
 
   /// Analyze weekly dream patterns
   Future<String> analyzeDreams(List<String> dreams, String language) async {
-    try {
-      await _ensureFirebaseReady();
-      
-      final result = await FirebaseFunctions.instance.httpsCallable('analyzeDreams').call({
-        'dreams': dreams,
-        'language': language,
-      }).timeout(const Duration(seconds: 60));
-      
-      final data = result.data as Map<String, dynamic>;
-      
-      // Log Token Usage if present
-      if (data.containsKey('usage')) {
-        final usage = data['usage'];
-        debugPrint("GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
-      }
-
-      return data['result'] ?? '';
-    } catch (e) {
-      debugPrint('analyzeDreams Error: $e');
-      return ''; // Return empty string to indicate error - UI will show localized message
+    await _ensureFirebaseReady();
+    
+    final result = await FirebaseFunctions.instance.httpsCallable('analyzeDreams').call({
+      'dreams': dreams,
+      'language': language,
+    }).timeout(const Duration(seconds: 60));
+    
+    final data = result.data as Map<String, dynamic>;
+    
+    // Log Token Usage if present
+    if (data.containsKey('usage')) {
+      final usage = data['usage'];
+      debugPrint("GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
     }
+
+    return data['result'] ?? '';
   }
 
   /// Analyze dreams with moon phase correlation
   Future<String> analyzeMoonSync(List<Map<String, dynamic>> dreamData, String language) async {
-    try {
-      await _ensureFirebaseReady();
-      
-      final result = await FirebaseFunctions.instance.httpsCallable('analyzeMoonSync').call({
-        'dreamData': dreamData,
-        'language': language,
-      }).timeout(const Duration(seconds: 60));
-      
-      final data = result.data as Map<String, dynamic>;
-      
-      // Log Token Usage if present
-      if (data.containsKey('usage')) {
-        final usage = data['usage'];
-        debugPrint("GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
-      }
-
-      return data['result'] ?? '';
-    } catch (e) {
-      debugPrint('analyzeMoonSync Error: $e');
-      return ''; // Return empty string to indicate error - UI will show localized message
+    await _ensureFirebaseReady();
+    
+    final result = await FirebaseFunctions.instance.httpsCallable('analyzeMoonSync').call({
+      'dreamData': dreamData,
+      'language': language,
+    }).timeout(const Duration(seconds: 60));
+    
+    final data = result.data as Map<String, dynamic>;
+    
+    // Log Token Usage if present
+    if (data.containsKey('usage')) {
+      final usage = data['usage'];
+      debugPrint("GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
     }
+
+    return data['result'] ?? '';
   }
 }

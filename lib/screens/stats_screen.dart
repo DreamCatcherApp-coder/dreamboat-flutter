@@ -2,6 +2,7 @@
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 import 'package:dream_boat_mobile/theme/app_theme.dart';
 import 'package:dream_boat_mobile/widgets/background_sky.dart';
@@ -375,11 +376,23 @@ class _StatsScreenState extends State<StatsScreen> {
          // Service returned empty string (API error)
          throw Exception("Analysis service returned empty result.");
       }
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('_runAnalysis FirebaseError: code=${e.code}, message=${e.message}, details=${e.details}');
+      if (mounted) {
+        final t = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${t.errorGeneric} (${e.code})'),
+          duration: const Duration(seconds: 5),
+        ));
+      }
     } catch (e) {
       debugPrint('_runAnalysis Error: $e');
       if (mounted) {
         final t = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.errorGeneric)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${t.errorGeneric} (${e.runtimeType})'),
+          duration: const Duration(seconds: 5),
+        ));
       }
     } finally {
       if (mounted) {
@@ -450,11 +463,23 @@ class _StatsScreenState extends State<StatsScreen> {
       } else {
          throw Exception("Moon Sync service returned empty result.");
       }
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('_runMoonSyncAnalysis FirebaseError: code=${e.code}, message=${e.message}, details=${e.details}');
+      if (mounted) {
+        final t = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${t.errorGeneric} (${e.code})'),
+          duration: const Duration(seconds: 5),
+        ));
+      }
     } catch (e) {
       debugPrint('_runMoonSyncAnalysis Error: $e');
       if (mounted) {
         final t = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.errorGeneric)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${t.errorGeneric} (${e.runtimeType})'),
+          duration: const Duration(seconds: 5),
+        ));
       }
     } finally {
       if (mounted) {
