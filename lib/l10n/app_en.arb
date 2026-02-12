@@ -547,9 +547,9 @@
     "limitReachedTitle": "Limit Reached",
     "trialImageLimitReached": "You've used your free trial visualization. After the trial ends, you can create a new image daily with PRO!",
     "dailyImageLimitReached": "You've used your daily visualization. Come back tomorrow for a new image!",
-    "visualizeDreamSubtitle": "Visual interpretation of your dream with AI",
+    "visualizeDreamSubtitle": "A painting inspired by your dream, crafted with AI.",
     "cosmicConnectionTitle": "Cosmic Connection",
-    "unlockProConnection": "See Full",
+    "unlockProConnection": "Unlock",
     "dreamMoonPhasePrefix": "(Moon Phase of Your Dream: {phase})",
     "visualizeDream": "Visualize Dream",
     "visualizingDream": "AI is turning your dream into a unique piece of art... This process may take about 30-45 seconds."

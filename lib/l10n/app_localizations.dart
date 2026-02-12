@@ -2987,7 +2987,7 @@ abstract class AppLocalizations {
   /// No description provided for @visualizeDreamSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Yapay zekâ ile rüyanın görsel yorumu'**
+  /// **'Yapay zeka ile rüyandan ilham alınan bir tablo.'**
   String get visualizeDreamSubtitle;
 
   /// No description provided for @cosmicConnectionTitle.
@@ -2999,7 +2999,7 @@ abstract class AppLocalizations {
   /// No description provided for @unlockProConnection.
   ///
   /// In tr, this message translates to:
-  /// **'Tamamını Gör'**
+  /// **'Kilidi Aç'**
   String get unlockProConnection;
 
   /// No description provided for @dreamMoonPhasePrefix.

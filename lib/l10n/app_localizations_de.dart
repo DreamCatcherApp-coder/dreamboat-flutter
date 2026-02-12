@@ -1615,13 +1615,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get visualizeDreamSubtitle =>
-      'Visuelle Interpretation deines Traums mit KI';
+      'Ein von deinem Traum inspiriertes Gemälde, erstellt mit KI.';
 
   @override
   String get cosmicConnectionTitle => 'Kosmische Verbindung';
 
   @override
-  String get unlockProConnection => 'Alles Sehen';
+  String get unlockProConnection => 'Freischalten';
 
   @override
   String dreamMoonPhasePrefix(Object phase) {

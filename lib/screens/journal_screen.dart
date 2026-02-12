@@ -690,135 +690,81 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                                         ),
                                       );
                                     } else {
-                                      // Free: Text fades, then button as separate block
+                                      // Free: Full text with blur overlay + "Kilidi Aç" button
                                       return Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          // 1. Text with Fade Mask (4 lines + manual "…")
-                                          ShaderMask(
-                                            shaderCallback: (Rect bounds) {
-                                              return LinearGradient(
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                                stops: const [0.0, 0.6, 1.0],
-                                                colors: [
-                                                  Colors.white, // Fully visible
-                                                  Colors.white, // Keep readable longer
-                                                  Colors.transparent, // Fades out completely
-                                                ],
-                                              ).createShader(bounds);
-                                            },
-                                            blendMode: BlendMode.dstIn,
+                                          // 1. Diffused frosted glass (composed double-blur + decal edges)
+                                          ImageFiltered(
+                                            imageFilter: ImageFilter.compose(
+                                              outer: ImageFilter.blur(sigmaX: 4, sigmaY: 4, tileMode: TileMode.decal),
+                                              inner: ImageFilter.blur(sigmaX: 2, sigmaY: 2, tileMode: TileMode.decal),
+                                            ),
                                             child: Text(
-                                              "${text.length > 300 ? text.substring(0, 300) : text}…",
+                                              text,
                                               style: TextStyle(
-                                                color: Colors.white.withOpacity(0.9),
+                                                color: Colors.white.withOpacity(0.8),
                                                 fontSize: 14,
                                                 height: 1.6,
                                               ),
-                                              maxLines: 4,
-                                              overflow: TextOverflow.clip,
                                             ),
                                           ),
                                           
-                                          // 2. Distinct 12px Gap
-                                          const SizedBox(height: 12),
+                                          // 2. Gap
+                                          const SizedBox(height: 16),
                                           
-                                          // 3. Button (Detached, squircle shape + PRO badge)
+                                          // 3. "Kilidi Aç" Button (no PRO badge)
                                           Center(
                                             child: GestureDetector(
                                               onTap: () {
-                                                // Trigger Paywall
-                                                 showDialog(
+                                                showDialog(
                                                   context: context,
                                                   builder: (_) => const ProUpgradeDialog()
                                                 ).then((_) {
-                                                   setModalState((){}); // Refresh UI logic on return
+                                                   setModalState((){});
                                                 });
                                               },
-                                              child: ConstrainedBox(
-                                                constraints: BoxConstraints(
-                                                  maxWidth: MediaQuery.of(context).size.width - 48
+                                              child: Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  gradient: const LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Color(0xFFF59E0B),
+                                                      Color(0xFFD97706),
+                                                      Color(0xFF4C1D95),
+                                                    ],
+                                                    stops: [0.0, 0.4, 1.0],
+                                                  ),
+                                                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: const Color(0xFFF59E0B).withOpacity(0.25),
+                                                      blurRadius: 20,
+                                                      spreadRadius: -4,
+                                                      offset: const Offset(0, 12),
+                                                    )
+                                                  ],
                                                 ),
-                                                child: Stack(
-                                                  clipBehavior: Clip.none,
+                                                child: Row(
+                                                  mainAxisSize: MainAxisSize.min,
                                                   children: [
-                                                    // Button body
-                                                    ClipRRect(
-                                                      borderRadius: BorderRadius.circular(16), // Reduced radius for "squircle" look (was 24=pill)
-                                                      child: BackdropFilter(
-                                                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                                        child: Container(
-                                                          padding: const EdgeInsets.fromLTRB(24, 14, 36, 14), // Extra right padding for badge
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(16), // Match ClipRRect
-                                                              gradient: const LinearGradient(
-                                                                begin: Alignment.topLeft,
-                                                                end: Alignment.bottomRight,
-                                                                colors: [
-                                                                  Color(0xFFF59E0B), // Standard Gold
-                                                                  Color(0xFFD97706), // Amber
-                                                                  Color(0xFF4C1D95), // Deep Purple
-                                                                ],
-                                                                stops: [0.0, 0.4, 1.0], 
-                                                              ),
-                                                              border: Border.all(color: Colors.white.withOpacity(0.2)),
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: const Color(0xFFF59E0B).withOpacity(0.25),
-                                                                  blurRadius: 20,
-                                                                  spreadRadius: -4,
-                                                                  offset: const Offset(0, 12),
-                                                                )
-                                                              ]
-                                                            ),
-                                                          child: Row(
-                                                            mainAxisSize: MainAxisSize.min,
-                                                            children: [
-                                                              const SizedBox(width: 4),
-                                                              Flexible(
-                                                                child: Text(
-                                                                  AppLocalizations.of(context)!.unlockProConnection,
-                                                                  style: TextStyle(
-                                                                    color: Colors.white,
-                                                                    fontWeight: FontWeight.bold,
-                                                                    fontSize: 14, // Slightly larger
-                                                                    letterSpacing: 0.5
-                                                                  ),
-                                                                  maxLines: 1,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
+                                                    Text(
+                                                      AppLocalizations.of(context)!.unlockProConnection,
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 15,
+                                                        letterSpacing: 0.5,
                                                       ),
                                                     ),
-                                                    
-                                                    // PRO Badge
-                                                    Positioned(
-                                                      top: 6,
-                                                      right: 8,
-                                                      child: Container(
-                                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.black.withOpacity(0.3),
-                                                          borderRadius: BorderRadius.circular(20),
-                                                          border: Border.all(
-                                                            color: Colors.white.withOpacity(0.2),
-                                                            width: 0.5,
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          AppLocalizations.of(context)!.proVersion,
-                                                          style: const TextStyle(
-                                                            color: Color(0xFFFDE68A), // Champagne Gold text
-                                                            fontSize: 7,
-                                                            fontWeight: FontWeight.w800,
-                                                            letterSpacing: 0.5,
-                                                          ),
-                                                        ),
-                                                      ),
+                                                    const SizedBox(width: 8),
+                                                    const Icon(
+                                                      LucideIcons.lock,
+                                                      color: Colors.white,
+                                                      size: 16,
                                                     ),
                                                   ],
                                                 ),

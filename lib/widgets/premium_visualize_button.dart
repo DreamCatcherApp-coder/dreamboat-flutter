@@ -2,8 +2,7 @@ import 'dart:ui'; // For ImageFilter
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart'; // For HapticFeedback
-import 'dart:math' as math;
-import 'package:dream_boat_mobile/l10n/app_localizations.dart'; // [NEW]
+import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 
 class PremiumVisualizeButton extends StatefulWidget {
   final VoidCallback onTap;
@@ -229,36 +228,6 @@ class _PremiumVisualizeButtonState extends State<PremiumVisualizeButton> with Ti
                       ),
               ),
               
-              // 3. PRO Badge (Top Right, Absolute)
-              Positioned(
-                top: 12,
-                right: 12,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.proVersion,
-                        style: const TextStyle(
-                          color: Color(0xFFFDE68A), // Champagne Gold text
-                          fontSize: 9,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               
               // 4. Shine Overlay (Animating or Static)
               Positioned.fill(

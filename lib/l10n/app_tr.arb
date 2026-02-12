@@ -563,8 +563,8 @@
     "limitReachedTitle": "Limit Doldu",
     "trialImageLimitReached": "Deneme sürümündeki ücretsiz görselleştirme hakkınızı kullandınız. Trial sona erdiğinde PRO ile her gün yeni görsel oluşturabilirsiniz.",
     "dailyImageLimitReached": "Günlük görselleştirme hakkını kullandın. Yeni bir görsel için yarın tekrar gel!",
-    "visualizeDreamSubtitle": "Yapay zekâ ile rüyanın görsel yorumu",
+    "visualizeDreamSubtitle": "Yapay zeka ile rüyandan ilham alınan bir tablo.",
     "cosmicConnectionTitle": "Kozmik Bağlantı",
-    "unlockProConnection": "Tamamını Gör",
+    "unlockProConnection": "Kilidi Aç",
     "dreamMoonPhasePrefix": "(Rüyanızı Gördüğünüz Ay Evresi: {phase})"
 }

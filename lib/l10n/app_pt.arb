@@ -535,9 +535,9 @@
     "limitReachedTitle": "Limite Atingido",
     "trialImageLimitReached": "Você usou sua visualização de teste gratuita. Após o período de teste, você pode criar uma nova imagem diária com PRO!",
     "dailyImageLimitReached": "Você usou sua visualização diária. Volte amanhã para uma nova imagem!",
-    "visualizeDreamSubtitle": "Interpretação visual do seu sonho com IA",
+    "visualizeDreamSubtitle": "Um quadro inspirado no seu sonho, criado com IA.",
     "cosmicConnectionTitle": "Conexão Cósmica",
-    "unlockProConnection": "Decifrar Mensagem Cósmica",
+    "unlockProConnection": "Desbloquear",
     "dreamMoonPhasePrefix": "(Fase da Lua do seu Sonho: {phase})",
     "visualizeDream": "Visualizar sonho",
     "visualizingDream": "A IA está transformando seu sonho em uma obra de arte única... Esse processo pode levar cerca de 30 a 45 segundos."

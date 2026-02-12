@@ -1595,13 +1595,14 @@ class AppLocalizationsTr extends AppLocalizations {
       'Günlük görselleştirme hakkını kullandın. Yeni bir görsel için yarın tekrar gel!';
 
   @override
-  String get visualizeDreamSubtitle => 'Yapay zekâ ile rüyanın görsel yorumu';
+  String get visualizeDreamSubtitle =>
+      'Yapay zeka ile rüyandan ilham alınan bir tablo.';
 
   @override
   String get cosmicConnectionTitle => 'Kozmik Bağlantı';
 
   @override
-  String get unlockProConnection => 'Tamamını Gör';
+  String get unlockProConnection => 'Kilidi Aç';
 
   @override
   String dreamMoonPhasePrefix(Object phase) {

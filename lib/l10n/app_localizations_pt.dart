@@ -1611,13 +1611,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get visualizeDreamSubtitle =>
-      'Interpretação visual do seu sonho com IA';
+      'Um quadro inspirado no seu sonho, criado com IA.';
 
   @override
   String get cosmicConnectionTitle => 'Conexão Cósmica';
 
   @override
-  String get unlockProConnection => 'Decifrar Mensagem Cósmica';
+  String get unlockProConnection => 'Desbloquear';
 
   @override
   String dreamMoonPhasePrefix(Object phase) {
