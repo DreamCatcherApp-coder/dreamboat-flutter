@@ -1,19 +1,19 @@
-# 🌙 DreamBoat — AI Dream Journal
+# DreamBoat — AI Dream Journal
 
 **DreamBoat** is an AI-powered dream journal app that helps you record, interpret, and explore the hidden meanings behind your dreams.
 
-## ✨ Features
+## Features
 
-- 📝 **Dream Journaling** — Capture your dreams with rich text entries
-- 🤖 **AI Interpretation** — Get personalized dream analysis powered by GPT-4
-- 🔮 **Symbol Dictionary** — Explore 3,000+ dream symbols with Jungian insights
-- 🌕 **Moon Sync** — Discover how lunar phases influence your dream patterns
-- 🎨 **Dream Visualization** — AI-generated artwork for each dream
-- 📊 **Dream Statistics** — Track patterns, recurring themes, and emotional trends
-- 🌍 **Multilingual** — Available in English, Turkish, German, French, Spanish, Italian, and Portuguese
-- 🧘 **Breathing Exercises** — Guided relaxation for better dream recall
+- **Dream Journaling** — Capture your dreams with rich text entries
+- **AI Interpretation** — Get personalized dream analysis powered by GPT-4
+- **Symbol Dictionary** — Explore 3,000+ dream symbols with Jungian insights
+- **Moon Sync** — Discover how lunar phases influence your dream patterns
+- **Dream Visualization** — AI-generated artwork for each dream
+- **Dream Statistics** — Track patterns, recurring themes, and emotional trends
+- **Multilingual** — Available in English, Turkish, German, French, Spanish, Italian, and Portuguese
+- **Breathing Exercises** — Guided relaxation for better dream recall
 
-## 📱 Download
+## Download
 
 <p align="center">
   <a href="https://apps.apple.com/app/dreamboat-ai-dream-journal/id6740545818">
@@ -25,7 +25,7 @@
   </a>
 </p>
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** Flutter (Dart)
 - **Backend:** Firebase (Auth, Firestore, Cloud Functions)
@@ -33,11 +33,11 @@
 - **State Management:** Provider
 - **Platforms:** iOS & Android
 
-## 🌐 Links
+## Links
 
-- 🏠 [Website](https://dreamboatjournal.com)
-- 🏢 [NovaBloom Studio](https://novabloomstudio.com)
+- [Website](https://dreamboatjournal.com)
+- [NovaBloom Studio](https://novabloomstudio.com)
 
-## 📄 License
+## License
 
 Copyright © 2025 NovaBloom Studio. All rights reserved.
