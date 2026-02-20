@@ -105,38 +105,61 @@ class NotificationService {
     }
   }
 
-  Future<bool> scheduleDailyNotification(TimeOfDay time, {String? message}) async {
+  /// Default fallback messages (English) used when localized messages aren't available yet
+  static const List<String> _defaultMessages = [
+    'Don\'t forget to record your dream! 📝',
+    'What did the universe whisper to you tonight? ✨',
+    'Catch your dreams before they fade! 📓',
+    'Your subconscious left you a message... 🌙',
+    'Your dream journal awaits ✍️',
+  ];
+
+  /// Schedule 5 rotating notifications on exact future dates.
+  /// Each notification has a unique message so the OS delivers variety
+  /// without requiring the app to be re-opened.
+  Future<bool> scheduleRotatingNotifications(TimeOfDay time, {List<String>? messages}) async {
     try {
-      // Cancel existing notifications first
+      // Cancel all existing notifications first
       await _notificationsPlugin.cancelAll();
-      
-      final notificationBody = message ?? 'Don\'t forget to record your dream! 📝';
-      
-      await _notificationsPlugin.zonedSchedule(
-        0, // ID
-        'DreamBoat', // Title
-        notificationBody, // Body (localized)
-        _nextInstanceOfTime(time),
-        const fln.NotificationDetails(
-          android: fln.AndroidNotificationDetails(
-            'daily_reminder_channel',
-            'Daily Reminders',
-            channelDescription: 'Daily reminder to log your dreams',
-            importance: fln.Importance.max,
-            priority: fln.Priority.high,
+
+      final msgs = (messages != null && messages.isNotEmpty) ? messages : _defaultMessages;
+
+      for (int i = 0; i < msgs.length; i++) {
+        final scheduledDate = _nextInstanceOfTimeWithOffset(time, offsetDays: i);
+
+        await _notificationsPlugin.zonedSchedule(
+          i, // Unique ID per day slot (0–4)
+          'DreamBoat',
+          msgs[i % msgs.length],
+          scheduledDate,
+          const fln.NotificationDetails(
+            android: fln.AndroidNotificationDetails(
+              'daily_reminder_channel',
+              'Daily Reminders',
+              channelDescription: 'Daily reminder to log your dreams',
+              importance: fln.Importance.max,
+              priority: fln.Priority.high,
+            ),
+            iOS: fln.DarwinNotificationDetails(),
           ),
-          iOS: fln.DarwinNotificationDetails(),
-        ),
-        androidScheduleMode: fln.AndroidScheduleMode.inexactAllowWhileIdle,
-        uiLocalNotificationDateInterpretation: fln.UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: fln.DateTimeComponents.time,
-      );
-      debugPrint('NotificationService: Scheduled daily notification for $time');
+          androidScheduleMode: fln.AndroidScheduleMode.inexactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation: fln.UILocalNotificationDateInterpretation.absoluteTime,
+          // NO matchDateTimeComponents — each notification fires exactly once
+        );
+        debugPrint('NotificationService: Scheduled notification #$i for $scheduledDate → "${msgs[i % msgs.length]}"');
+      }
+
       return true;
     } catch (e) {
       debugPrint('NotificationService: Schedule error: $e');
       return false;
     }
+  }
+
+  /// Backward-compatible wrapper — schedules a single message repeating style.
+  /// Prefer [scheduleRotatingNotifications] for variety.
+  Future<bool> scheduleDailyNotification(TimeOfDay time, {String? message}) async {
+    return scheduleRotatingNotifications(time, messages: [message ?? _defaultMessages[0]]);
   }
 
   Future<bool> showInstantNotification() async {
@@ -173,18 +196,22 @@ class NotificationService {
     }
   }
 
-  tz.TZDateTime _nextInstanceOfTime(TimeOfDay time) {
+
+  tz.TZDateTime _nextInstanceOfTimeWithOffset(TimeOfDay time, {required int offsetDays}) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, time.hour, time.minute);
     
-    debugPrint('NotificationService: Scheduling calculation. Now: $now, Target: $time');
-
+    // If the base time is in the past today, start from tomorrow
     if (scheduledDate.isBefore(now)) {
-      debugPrint('NotificationService: Target time is in the past. Adding 1 day.');
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+
+    // Add the offset for subsequent days
+    if (offsetDays > 0) {
+      scheduledDate = scheduledDate.add(Duration(days: offsetDays));
+    }
     
-    debugPrint('NotificationService: Final scheduled time: $scheduledDate');
+    debugPrint('NotificationService: Offset=$offsetDays → $scheduledDate');
     return scheduledDate;
   }
 }

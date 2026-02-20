@@ -63,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _notifEnabled = prefs.getBool('notif_enabled') ?? true;
       _use24HourFormat = prefs.getBool('use_24h_format') ?? true;
       
-      final hour = prefs.getInt('notif_hour') ?? 9;
+      final hour = prefs.getInt('notif_hour') ?? 7;
       final minute = prefs.getInt('notif_minute') ?? 0;
       _notifTime = TimeOfDay(hour: hour, minute: minute);
       
@@ -109,7 +109,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     await prefs.setInt('notif_hour', _notifTime.hour);
     await prefs.setInt('notif_minute', _notifTime.minute);
     
-    // Pick a random motivational message from 5 variants
+    // Build all 5 localized motivational messages
     final messages = [
       t.notifReminder1,
       t.notifReminder2,
@@ -117,39 +117,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
       t.notifReminder4,
       t.notifReminder5,
     ];
-    // Save all messages so main.dart can rotate on cold start
+    // Persist for cold-start restoration in main.dart
     await prefs.setStringList('notif_messages', messages);
-    final randomIndex = DateTime.now().day % messages.length; // Deterministic daily rotation
-    final localizedMessage = messages[randomIndex];
-    await prefs.setString('notif_message', localizedMessage);
 
     if (_notifEnabled) {
       if (checkPermissions) {
-        // Check if permission already granted
         final isGranted = await NotificationService().isPermissionGranted();
         if (isGranted) {
-          // Permission already granted, just schedule
-          await NotificationService().scheduleDailyNotification(_notifTime, message: localizedMessage);
+          await NotificationService().scheduleRotatingNotifications(_notifTime, messages: messages);
         } else {
-          // Need to request permission
           final granted = await NotificationService().requestPermissions();
           if (granted == true) {
-            await NotificationService().scheduleDailyNotification(_notifTime, message: localizedMessage);
+            await NotificationService().scheduleRotatingNotifications(_notifTime, messages: messages);
           } else {
-            // Permission denied - check if permanently denied
             final isPermanentlyDenied = await NotificationService().isPermissionPermanentlyDenied();
             if (isPermanentlyDenied && mounted) {
-              // Show dialog to open settings
               _showOpenSettingsDialog();
             }
-            // Disable the toggle since permission not granted
             setState(() => _notifEnabled = false);
             await prefs.setBool('notif_enabled', false);
           }
         }
       } else {
-         // Skip permission check, just schedule (assumes permission holds since enabled is true)
-         await NotificationService().scheduleDailyNotification(_notifTime, message: localizedMessage);
+         await NotificationService().scheduleRotatingNotifications(_notifTime, messages: messages);
       }
     } else {
       await NotificationService().cancelAll();

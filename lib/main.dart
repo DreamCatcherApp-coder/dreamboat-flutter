@@ -190,20 +190,15 @@ Future<void> _initNotificationsInBackground() async {
     final prefs = await SharedPreferences.getInstance();
     final notifEnabled = prefs.getBool('notif_enabled') ?? true;
     if (notifEnabled) {
-      final hour = prefs.getInt('notif_hour') ?? 9;
+      final hour = prefs.getInt('notif_hour') ?? 7;
       final minute = prefs.getInt('notif_minute') ?? 0;
-      // Rotate notification message daily from saved localized variants
+      // Use saved localized message list for rotation; null falls back to English defaults
       final messages = prefs.getStringList('notif_messages');
-      String? message;
-      if (messages != null && messages.isNotEmpty) {
-        final index = DateTime.now().day % messages.length;
-        message = messages[index];
-        await prefs.setString('notif_message', message);
-      } else {
-        message = prefs.getString('notif_message');
-      }
-      await NotificationService().scheduleDailyNotification(TimeOfDay(hour: hour, minute: minute), message: message);
-      debugPrint('=== Background: Restored scheduled notification for $hour:$minute ===');
+      await NotificationService().scheduleRotatingNotifications(
+        TimeOfDay(hour: hour, minute: minute),
+        messages: messages,
+      );
+      debugPrint('=== Background: Scheduled rotating notifications for $hour:$minute ===');
     }
   } catch (e) {
     debugPrint('=== Background: Notification init failed: $e ===');
