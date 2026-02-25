@@ -198,8 +198,15 @@ Future<void> _initNotificationsInBackground() async {
     if (notifEnabled) {
       final hour = prefs.getInt('notif_hour') ?? 7;
       final minute = prefs.getInt('notif_minute') ?? 0;
-      // Use saved localized message list for rotation; null falls back to English defaults
-      final messages = prefs.getStringList('notif_messages');
+      // Use saved localized messages, or generate from saved locale if absent
+      var messages = prefs.getStringList('notif_messages');
+      if (messages == null || messages.isEmpty) {
+        final savedLocale = prefs.getString('app_locale') ?? 'tr';
+        messages = NotificationService.getLocalizedMessages(Locale(savedLocale));
+        // Persist so next cold-start doesn't regenerate
+        await prefs.setStringList('notif_messages', messages);
+        debugPrint('=== Background: Generated localized messages for locale: $savedLocale ===');
+      }
       await NotificationService().scheduleRotatingNotifications(
         TimeOfDay(hour: hour, minute: minute),
         messages: messages,

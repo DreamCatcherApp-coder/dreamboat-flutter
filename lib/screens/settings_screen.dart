@@ -766,9 +766,23 @@ class _LanguageModal extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
+        onTap: () async {
            MyApp.setLocale(context, Locale(code));
            Navigator.pop(context);
+           // Update saved notification messages for new locale
+           final newMessages = NotificationService.getLocalizedMessages(Locale(code));
+           final prefs = await SharedPreferences.getInstance();
+           await prefs.setStringList('notif_messages', newMessages);
+           // Reschedule if enabled
+           final notifEnabled = prefs.getBool('notif_enabled') ?? true;
+           if (notifEnabled) {
+             final hour = prefs.getInt('notif_hour') ?? 7;
+             final minute = prefs.getInt('notif_minute') ?? 0;
+             await NotificationService().scheduleRotatingNotifications(
+               TimeOfDay(hour: hour, minute: minute),
+               messages: newMessages,
+             );
+           }
         },
         borderRadius: BorderRadius.circular(16),
         splashColor: _LanguageModal._primaryPurple.withOpacity(0.15),

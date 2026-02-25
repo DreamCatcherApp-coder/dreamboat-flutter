@@ -4,6 +4,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -105,24 +106,28 @@ class NotificationService {
     }
   }
 
-  /// Default fallback messages (English) used when localized messages aren't available yet
-  static const List<String> _defaultMessages = [
-    'Don\'t forget to record your dream! 📝',
-    'What did the universe whisper to you tonight? ✨',
-    'Catch your dreams before they fade! 📓',
-    'Your subconscious left you a message... 🌙',
-    'Your dream journal awaits ✍️',
-  ];
+  /// Get localized notification messages for the given locale.
+  /// Used by main.dart cold-start restore and settings_screen.dart.
+  static List<String> getLocalizedMessages(Locale locale) {
+    final t = lookupAppLocalizations(locale);
+    return [
+      t.notifReminder1,
+      t.notifReminder2,
+      t.notifReminder3,
+      t.notifReminder4,
+      t.notifReminder5,
+    ];
+  }
 
   /// Schedule 5 rotating notifications on exact future dates.
   /// Each notification has a unique message so the OS delivers variety
   /// without requiring the app to be re-opened.
-  Future<bool> scheduleRotatingNotifications(TimeOfDay time, {List<String>? messages}) async {
+  Future<bool> scheduleRotatingNotifications(TimeOfDay time, {required List<String> messages, String? channelName, String? channelDesc}) async {
     try {
       // Cancel all existing notifications first
       await _notificationsPlugin.cancelAll();
 
-      final msgs = (messages != null && messages.isNotEmpty) ? messages : _defaultMessages;
+      final msgs = messages;
 
       for (int i = 0; i < msgs.length; i++) {
         final scheduledDate = _nextInstanceOfTimeWithOffset(time, offsetDays: i);
@@ -132,11 +137,11 @@ class NotificationService {
           'DreamBoat',
           msgs[i % msgs.length],
           scheduledDate,
-          const fln.NotificationDetails(
+          fln.NotificationDetails(
             android: fln.AndroidNotificationDetails(
               'daily_reminder_channel',
-              'Daily Reminders',
-              channelDescription: 'Daily reminder to log your dreams',
+              channelName ?? 'Daily Reminders',
+              channelDescription: channelDesc ?? 'Daily reminder to log your dreams',
               importance: fln.Importance.max,
               priority: fln.Priority.high,
             ),
@@ -158,17 +163,17 @@ class NotificationService {
 
   /// Backward-compatible wrapper — schedules a single message repeating style.
   /// Prefer [scheduleRotatingNotifications] for variety.
-  Future<bool> scheduleDailyNotification(TimeOfDay time, {String? message}) async {
-    return scheduleRotatingNotifications(time, messages: [message ?? _defaultMessages[0]]);
+  Future<bool> scheduleDailyNotification(TimeOfDay time, {required List<String> messages}) async {
+    return scheduleRotatingNotifications(time, messages: messages);
   }
 
-  Future<bool> showInstantNotification() async {
+  Future<bool> showInstantNotification({required String title, required String body}) async {
     try {
       debugPrint('NotificationService: Showing instant notification...');
       await _notificationsPlugin.show(
         999,
-        'Test Notification', // Changed from Turkish
-        'This is a test notification.', // Changed from Turkish
+        title,
+        body,
         const fln.NotificationDetails(
           android: fln.AndroidNotificationDetails(
             'daily_reminder_channel',
