@@ -773,7 +773,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                 
                 // Space for discount badge below
                 if (discountLabel != null)
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 20),
               ],
             ),
             

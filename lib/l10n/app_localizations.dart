@@ -1856,23 +1856,11 @@ abstract class AppLocalizations {
   /// **'Yeni Ay'**
   String get moonPhaseNewMoon;
 
-  /// No description provided for @moonPhaseWaxingCrescent.
+  /// No description provided for @moonPhaseWaxingMoon.
   ///
   /// In tr, this message translates to:
-  /// **'Büyüyen Hilal'**
-  String get moonPhaseWaxingCrescent;
-
-  /// No description provided for @moonPhaseFirstQuarter.
-  ///
-  /// In tr, this message translates to:
-  /// **'İlk Dördün'**
-  String get moonPhaseFirstQuarter;
-
-  /// No description provided for @moonPhaseWaxingGibbous.
-  ///
-  /// In tr, this message translates to:
-  /// **'Büyüyen Şişkin Ay'**
-  String get moonPhaseWaxingGibbous;
+  /// **'Büyüyen Ay'**
+  String get moonPhaseWaxingMoon;
 
   /// No description provided for @moonPhaseFullMoon.
   ///
@@ -1880,23 +1868,11 @@ abstract class AppLocalizations {
   /// **'Dolunay'**
   String get moonPhaseFullMoon;
 
-  /// No description provided for @moonPhaseWaningGibbous.
+  /// No description provided for @moonPhaseWaningMoon.
   ///
   /// In tr, this message translates to:
-  /// **'Küçülen Şişkin Ay'**
-  String get moonPhaseWaningGibbous;
-
-  /// No description provided for @moonPhaseThirdQuarter.
-  ///
-  /// In tr, this message translates to:
-  /// **'Son Dördün'**
-  String get moonPhaseThirdQuarter;
-
-  /// No description provided for @moonPhaseWaningCrescent.
-  ///
-  /// In tr, this message translates to:
-  /// **'Küçülen Hilal'**
-  String get moonPhaseWaningCrescent;
+  /// **'Küçülen Ay'**
+  String get moonPhaseWaningMoon;
 
   /// No description provided for @actionShareInterpretation.
   ///

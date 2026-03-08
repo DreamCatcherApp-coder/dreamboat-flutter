@@ -981,25 +981,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get moonPhaseNewMoon => 'Yeni Ay';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Büyüyen Hilal';
-
-  @override
-  String get moonPhaseFirstQuarter => 'İlk Dördün';
-
-  @override
-  String get moonPhaseWaxingGibbous => 'Büyüyen Şişkin Ay';
+  String get moonPhaseWaxingMoon => 'Büyüyen Ay';
 
   @override
   String get moonPhaseFullMoon => 'Dolunay';
 
   @override
-  String get moonPhaseWaningGibbous => 'Küçülen Şişkin Ay';
-
-  @override
-  String get moonPhaseThirdQuarter => 'Son Dördün';
-
-  @override
-  String get moonPhaseWaningCrescent => 'Küçülen Hilal';
+  String get moonPhaseWaningMoon => 'Küçülen Ay';
 
   @override
   String get actionShareInterpretation => 'Yorumu Paylaş';

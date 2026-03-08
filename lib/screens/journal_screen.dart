@@ -436,13 +436,9 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
       final phase = MoonPhaseService().getMoonPhase(date);
       switch(phase) {
         case MoonPhase.newMoon: return t.moonPhaseNewMoon;
-        case MoonPhase.waxingCrescent: return t.moonPhaseWaxingCrescent;
-        case MoonPhase.firstQuarter: return t.moonPhaseFirstQuarter;
-        case MoonPhase.waxingGibbous: return t.moonPhaseWaxingGibbous;
+        case MoonPhase.waxingMoon: return t.moonPhaseWaxingMoon;
         case MoonPhase.fullMoon: return t.moonPhaseFullMoon;
-        case MoonPhase.waningGibbous: return t.moonPhaseWaningGibbous;
-        case MoonPhase.thirdQuarter: return t.moonPhaseThirdQuarter;
-        case MoonPhase.waningCrescent: return t.moonPhaseWaningCrescent;
+        case MoonPhase.waningMoon: return t.moonPhaseWaningMoon;
       }
     }
 

@@ -996,25 +996,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get moonPhaseNewMoon => 'Neumond';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Zunehmende Sichel';
-
-  @override
-  String get moonPhaseFirstQuarter => 'Erstes Viertel';
-
-  @override
-  String get moonPhaseWaxingGibbous => 'Zunehmender Mond';
+  String get moonPhaseWaxingMoon => 'Zunehmender Mond';
 
   @override
   String get moonPhaseFullMoon => 'Vollmond';
 
   @override
-  String get moonPhaseWaningGibbous => 'Abnehmender Mond';
-
-  @override
-  String get moonPhaseThirdQuarter => 'Letztes Viertel';
-
-  @override
-  String get moonPhaseWaningCrescent => 'Abnehmende Sichel';
+  String get moonPhaseWaningMoon => 'Abnehmender Mond';
 
   @override
   String get actionShareInterpretation => 'Deutung\nteilen';

@@ -190,14 +190,16 @@ Future<void> _initNotificationsInBackground() async {
     if (notifEnabled) {
       final hour = prefs.getInt('notif_hour') ?? 7;
       final minute = prefs.getInt('notif_minute') ?? 0;
-      // Use saved localized messages, or generate from saved locale if absent
+      final savedLocale = prefs.getString('app_locale') ?? 'tr';
+      final cachedLocale = prefs.getString('notif_messages_locale');
+      // Use saved localized messages, or regenerate if absent or locale changed
       var messages = prefs.getStringList('notif_messages');
-      if (messages == null || messages.isEmpty) {
-        final savedLocale = prefs.getString('app_locale') ?? 'tr';
+      if (messages == null || messages.isEmpty || cachedLocale != savedLocale) {
         messages = NotificationService.getLocalizedMessages(Locale(savedLocale));
-        // Persist so next cold-start doesn't regenerate
+        // Persist so next cold-start doesn't regenerate (unless locale changes again)
         await prefs.setStringList('notif_messages', messages);
-        debugPrint('=== Background: Generated localized messages for locale: $savedLocale ===');
+        await prefs.setString('notif_messages_locale', savedLocale);
+        debugPrint('=== Background: Generated localized messages for locale: $savedLocale (was: $cachedLocale) ===');
       }
       await NotificationService().scheduleRotatingNotifications(
         TimeOfDay(hour: hour, minute: minute),

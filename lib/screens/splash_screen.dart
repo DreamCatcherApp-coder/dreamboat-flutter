@@ -154,32 +154,57 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
+                          // Soft glow behind logo
+                          Container(
                             width: 120, height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF7C3AED).withOpacity(0.25),
+                                  blurRadius: 40,
+                                  spreadRadius: 8,
+                                ),
+                                BoxShadow(
+                                  color: const Color(0xFF818CF8).withOpacity(0.15),
+                                  blurRadius: 60,
+                                  spreadRadius: 15,
+                                ),
+                              ],
+                            ),
                             child: Center(
                               child: Image.asset(
                                 'assets/images/db_logo_icon.png',
                                 width: 160,
                                 height: 160,
                                 fit: BoxFit.contain,
-                                color: Colors.white,
-
+                                color: const Color(0xFFF0E6FF),
                               ),
                             ),
                           ),
                           const SizedBox(height: 0),
-                          // Phase 4: Text
+                          // Phase 4: Text with soft glow
                           Opacity(
                             opacity: _textOpacity.value,
                             child: Column(
                               children: [
-                                  Text(
+                                Text(
                                   "DreamBoat",
                                   style: GoogleFonts.quicksand(
                                     fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 1.2
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFFF0E6FF),
+                                    letterSpacing: 1.2,
+                                    shadows: [
+                                      Shadow(
+                                        color: const Color(0xFF7C3AED).withOpacity(0.5),
+                                        blurRadius: 20,
+                                      ),
+                                      Shadow(
+                                        color: const Color(0xFF818CF8).withOpacity(0.3),
+                                        blurRadius: 40,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

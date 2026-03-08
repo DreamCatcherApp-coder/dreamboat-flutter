@@ -119,6 +119,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
     // Persist for cold-start restoration in main.dart
     await prefs.setStringList('notif_messages', messages);
+    final currentLocale = Localizations.localeOf(context).languageCode;
+    await prefs.setString('notif_messages_locale', currentLocale);
 
     if (_notifEnabled) {
       if (checkPermissions) {
@@ -773,6 +775,7 @@ class _LanguageModal extends StatelessWidget {
            final newMessages = NotificationService.getLocalizedMessages(Locale(code));
            final prefs = await SharedPreferences.getInstance();
            await prefs.setStringList('notif_messages', newMessages);
+           await prefs.setString('notif_messages_locale', code);
            // Reschedule if enabled
            final notifEnabled = prefs.getBool('notif_enabled') ?? true;
            if (notifEnabled) {

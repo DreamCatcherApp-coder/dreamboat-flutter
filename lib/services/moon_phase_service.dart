@@ -1,17 +1,13 @@
 import 'dart:math' as math;
 
 /// Moon Phase calculation service using synodic month algorithm
-/// No external API calls - pure mathematical calculation
+/// Simplified to 4 main phases for consistency with cosmic connection data
 
 enum MoonPhase {
   newMoon,
-  waxingCrescent,
-  firstQuarter,
-  waxingGibbous,
+  waxingMoon,
   fullMoon,
-  waningGibbous,
-  thirdQuarter,
-  waningCrescent,
+  waningMoon,
 }
 
 class MoonPhaseService {
@@ -27,17 +23,12 @@ class MoonPhaseService {
     final lunarCycles = daysSinceReference / _synodicMonth;
     final currentCycleProgress = lunarCycles - lunarCycles.floor();
     
-    // Convert progress (0-1) to phase
-    // 0.0 = New Moon, 0.25 = First Quarter, 0.5 = Full Moon, 0.75 = Third Quarter
-    if (currentCycleProgress < 0.0625) return MoonPhase.newMoon;
-    if (currentCycleProgress < 0.1875) return MoonPhase.waxingCrescent;
-    if (currentCycleProgress < 0.3125) return MoonPhase.firstQuarter;
-    if (currentCycleProgress < 0.4375) return MoonPhase.waxingGibbous;
-    if (currentCycleProgress < 0.5625) return MoonPhase.fullMoon;
-    if (currentCycleProgress < 0.6875) return MoonPhase.waningGibbous;
-    if (currentCycleProgress < 0.8125) return MoonPhase.thirdQuarter;
-    if (currentCycleProgress < 0.9375) return MoonPhase.waningCrescent;
-    return MoonPhase.newMoon;
+    // Convert progress (0-1) to 4 phases
+    // 0.0 = New Moon, 0.25 = First Quarter (Waxing), 0.5 = Full Moon, 0.75 = Third Quarter (Waning)
+    if (currentCycleProgress < 0.125) return MoonPhase.newMoon;
+    if (currentCycleProgress < 0.5) return MoonPhase.waxingMoon;
+    if (currentCycleProgress < 0.625) return MoonPhase.fullMoon;
+    return MoonPhase.waningMoon;
   }
 
   /// Get moon illumination percentage (0.0 to 1.0)
@@ -63,13 +54,9 @@ class MoonPhaseService {
   String getPhaseKey(MoonPhase phase) {
     switch (phase) {
       case MoonPhase.newMoon: return 'moonPhaseNewMoon';
-      case MoonPhase.waxingCrescent: return 'moonPhaseWaxingCrescent';
-      case MoonPhase.firstQuarter: return 'moonPhaseFirstQuarter';
-      case MoonPhase.waxingGibbous: return 'moonPhaseWaxingGibbous';
+      case MoonPhase.waxingMoon: return 'moonPhaseWaxingMoon';
       case MoonPhase.fullMoon: return 'moonPhaseFullMoon';
-      case MoonPhase.waningGibbous: return 'moonPhaseWaningGibbous';
-      case MoonPhase.thirdQuarter: return 'moonPhaseThirdQuarter';
-      case MoonPhase.waningCrescent: return 'moonPhaseWaningCrescent';
+      case MoonPhase.waningMoon: return 'moonPhaseWaningMoon';
     }
   }
 
@@ -77,13 +64,9 @@ class MoonPhaseService {
   String getPhaseNameEn(MoonPhase phase) {
     switch (phase) {
       case MoonPhase.newMoon: return 'New Moon';
-      case MoonPhase.waxingCrescent: return 'Waxing Crescent';
-      case MoonPhase.firstQuarter: return 'First Quarter';
-      case MoonPhase.waxingGibbous: return 'Waxing Gibbous';
+      case MoonPhase.waxingMoon: return 'Waxing Moon';
       case MoonPhase.fullMoon: return 'Full Moon';
-      case MoonPhase.waningGibbous: return 'Waning Gibbous';
-      case MoonPhase.thirdQuarter: return 'Third Quarter';
-      case MoonPhase.waningCrescent: return 'Waning Crescent';
+      case MoonPhase.waningMoon: return 'Waning Moon';
     }
   }
 }

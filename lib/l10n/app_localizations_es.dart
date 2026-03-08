@@ -989,25 +989,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get moonPhaseNewMoon => 'Luna Nueva';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Luna Creciente';
-
-  @override
-  String get moonPhaseFirstQuarter => 'Cuarto Creciente';
-
-  @override
-  String get moonPhaseWaxingGibbous => 'Gibosa Creciente';
+  String get moonPhaseWaxingMoon => 'Luna Creciente';
 
   @override
   String get moonPhaseFullMoon => 'Luna Llena';
 
   @override
-  String get moonPhaseWaningGibbous => 'Gibosa Menguante';
-
-  @override
-  String get moonPhaseThirdQuarter => 'Cuarto Menguante';
-
-  @override
-  String get moonPhaseWaningCrescent => 'Luna Menguante';
+  String get moonPhaseWaningMoon => 'Luna Menguante';
 
   @override
   String get actionShareInterpretation => 'Compartir\nInterpretación';
