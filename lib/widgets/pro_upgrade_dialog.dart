@@ -186,12 +186,15 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
         (!provider.isConfigured && !provider.offeringsLoadFailed);
     final bool pricesLoadFailed = provider.offeringsLoadFailed;
     
-    // Get prices and trial info from RevenueCat offerings with smart fallback
+    // Get prices from RevenueCat offerings, with cached fallback for instant display
     String monthlyPrice;
     String yearlyPrice;
     
     if (provider.monthlyPackage != null) {
       monthlyPrice = provider.monthlyPackage!.storeProduct.priceString;
+    } else if (provider.cachedMonthlyPrice != null) {
+      // Show cached price instantly while RevenueCat loads in background
+      monthlyPrice = provider.cachedMonthlyPrice!;
     } else if (isLoadingPrices) {
       monthlyPrice = t.priceLoading;
     } else if (pricesLoadFailed) {
@@ -202,6 +205,9 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     
     if (provider.yearlyPackage != null) {
       yearlyPrice = provider.yearlyPackage!.storeProduct.priceString;
+    } else if (provider.cachedYearlyPrice != null) {
+      // Show cached price instantly while RevenueCat loads in background
+      yearlyPrice = provider.cachedYearlyPrice!;
     } else if (isLoadingPrices) {
       yearlyPrice = t.priceLoading;
     } else if (pricesLoadFailed) {
