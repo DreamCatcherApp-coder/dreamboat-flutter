@@ -15,12 +15,6 @@ class SubscriptionProvider extends ChangeNotifier {
   CustomerInfo? _customerInfo;
   Offerings? _offerings;
 
-  // Cached price strings for instant display
-  String? _cachedMonthlyPrice;
-  String? _cachedYearlyPrice;
-  static const String _monthlyPriceKey = 'cached_monthly_price';
-  static const String _yearlyPriceKey = 'cached_yearly_price';
-
   // RevenueCat API Keys
   static const String _androidApiKey = 'goog_LBAhypBGyaAupCMVbaViawqANGq';
   static const String _iosApiKey = 'appl_oCqKOUZwiohWXshjKvRApPGYzLK';
@@ -43,8 +37,6 @@ class SubscriptionProvider extends ChangeNotifier {
 
   Offerings? get offerings => _offerings;
   CustomerInfo? get customerInfo => _customerInfo;
-  String? get cachedMonthlyPrice => _cachedMonthlyPrice;
-  String? get cachedYearlyPrice => _cachedYearlyPrice;
 
   SubscriptionProvider() {
     _initialize();
@@ -57,9 +49,7 @@ class SubscriptionProvider extends ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       _isPro = prefs.getBool('is_pro_version') ?? false;
-      _cachedMonthlyPrice = prefs.getString(_monthlyPriceKey);
-      _cachedYearlyPrice = prefs.getString(_yearlyPriceKey);
-      debugPrint('Loaded cached isPro: $_isPro, prices: $_cachedMonthlyPrice / $_cachedYearlyPrice');
+      debugPrint('Loaded cached isPro: $_isPro');
     } catch (e) {
       debugPrint('SharedPreferences error: $e');
     }
@@ -119,10 +109,6 @@ class SubscriptionProvider extends ChangeNotifier {
             .timeout(const Duration(seconds: 5));
         _offeringsLoadFailed = false;
         debugPrint('Offerings loaded: ${_offerings?.current?.identifier ?? "none"}');
-        
-        // Cache price strings for instant display on next launch
-        _cachePrices();
-        
         notifyListeners();
       } catch (e) {
         debugPrint('Offerings error: $e');
@@ -162,29 +148,6 @@ class SubscriptionProvider extends ChangeNotifier {
       }
       
       notifyListeners();
-    }
-  }
-
-  /// Cache price strings locally for instant display on next app launch
-  void _cachePrices() async {
-    try {
-      final monthly = monthlyPackage?.storeProduct.priceString;
-      final yearly = yearlyPackage?.storeProduct.priceString;
-      
-      if (monthly != null || yearly != null) {
-        final prefs = await SharedPreferences.getInstance();
-        if (monthly != null) {
-          await prefs.setString(_monthlyPriceKey, monthly);
-          _cachedMonthlyPrice = monthly;
-        }
-        if (yearly != null) {
-          await prefs.setString(_yearlyPriceKey, yearly);
-          _cachedYearlyPrice = yearly;
-        }
-        debugPrint('Cached prices: $monthly / $yearly');
-      }
-    } catch (e) {
-      debugPrint('Price cache error: $e');
     }
   }
 
