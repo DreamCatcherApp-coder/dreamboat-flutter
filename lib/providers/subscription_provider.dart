@@ -57,11 +57,9 @@ class SubscriptionProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
 
-    // 2. Configure RevenueCat in isolate/background after delay
-    // Using compute or delayed initialization to avoid blocking
-    Future.delayed(const Duration(seconds: 1), () {
-      _configureRevenueCat();
-    });
+    // 2. Configure RevenueCat immediately (no delay needed — survey provides
+    //    enough time for offerings to load before the Pro dialog appears)
+    _configureRevenueCat();
   }
 
   Future<void> _configureRevenueCat() async {
