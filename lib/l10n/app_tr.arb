@@ -573,5 +573,6 @@
     "notifOff": "Kapalı",
     "notifChannelName": "Günlük Hatırlatmalar",
     "notifChannelDesc": "Rüyalarınızı kaydetmeniz için günlük hatırlatma",
-    "subscriptionNotAvailable": "Abonelik paketleri şu anda kullanılamıyor"
+    "subscriptionNotAvailable": "Abonelik paketleri şu anda kullanılamıyor",
+    "surveyAnalyzing": "Analiz ediliyor..."
 }

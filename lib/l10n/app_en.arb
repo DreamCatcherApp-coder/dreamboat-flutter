@@ -561,5 +561,6 @@
     "notifOff": "Off",
     "notifChannelName": "Daily Reminders",
     "notifChannelDesc": "Daily reminder to log your dreams",
-    "subscriptionNotAvailable": "Subscription packages not available"
+    "subscriptionNotAvailable": "Subscription packages not available",
+    "surveyAnalyzing": "Analyzing..."
 }

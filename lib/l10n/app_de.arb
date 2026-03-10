@@ -550,5 +550,6 @@
     "notifOff": "Aus",
     "notifChannelName": "Tägliche Erinnerungen",
     "notifChannelDesc": "Tägliche Erinnerung, deine Träume aufzuzeichnen",
-    "subscriptionNotAvailable": "Abonnement-Pakete sind derzeit nicht verfügbar"
+    "subscriptionNotAvailable": "Abonnement-Pakete sind derzeit nicht verfügbar",
+    "surveyAnalyzing": "Wird analysiert..."
 }

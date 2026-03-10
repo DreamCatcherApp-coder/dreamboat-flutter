@@ -1642,4 +1642,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionNotAvailable => 'Subscription packages not available';
+
+  @override
+  String get surveyAnalyzing => 'Analyzing...';
 }

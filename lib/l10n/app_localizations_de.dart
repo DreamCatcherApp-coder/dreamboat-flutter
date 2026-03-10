@@ -1660,4 +1660,7 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get subscriptionNotAvailable =>
       'Abonnement-Pakete sind derzeit nicht verfügbar';
+
+  @override
+  String get surveyAnalyzing => 'Wird analysiert...';
 }

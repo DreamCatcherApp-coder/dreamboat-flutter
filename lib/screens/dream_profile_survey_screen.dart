@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:dream_boat_mobile/screens/home_screen.dart';
 import 'package:dream_boat_mobile/widgets/custom_button.dart';
 import 'package:dream_boat_mobile/widgets/mystic_orb.dart';
+import 'package:dream_boat_mobile/widgets/language_selector_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart';
 import 'dart:math';
@@ -204,69 +205,101 @@ class _DreamProfileSurveyScreenState extends State<DreamProfileSurveyScreen> {
   }
 
   Widget _buildWelcomeCard() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.welcomeHeader,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.outfit(
-                fontSize: 32, // Main Header
-                fontWeight: FontWeight.bold,
-                color: Colors.purpleAccent.shade100,
-                shadows: [
-                   BoxShadow(color: Colors.purple.withOpacity(0.3), blurRadius: 15)
-                ]
+    return Stack(
+      children: [
+        // Language selector button (top-right)
+        Positioned(
+          top: 16,
+          right: 16,
+          child: GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                builder: (context) => const LanguageSelectorModal(),
+              );
+            },
+            child: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white.withOpacity(0.12)),
+              ),
+              child: const Center(
+                child: Text('🌐', style: TextStyle(fontSize: 22)),
               ),
             ),
-            const SizedBox(height: 48), // Increased from 24 to 48 for better separation
-            Text(
-              AppLocalizations.of(context)!.onboardingWelcomeTitle,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.outfit(
-                fontSize: 22, 
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context)!.onboardingWelcomeSubtitle,
-              textAlign: TextAlign.center,
-              style: GoogleFonts.quicksand(
-                fontSize: 18,
-                color: Colors.white70,
-                height: 1.5
-              ),
-            ),
-            const SizedBox(height: 60), // Space
-            
-            // Start Button
-            SizedBox(
-              width: double.infinity,
-              child: CustomButton(
-                text: AppLocalizations.of(context)!.upgradeStart, // "Start"
-                onPressed: () {
-                  _pageController.nextPage(
-                    duration: const Duration(milliseconds: 500), 
-                    curve: Curves.easeInOut
-                  );
-                },
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFF8B5CF6), 
-                    Color(0xFFD946EF)
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 80), // Push content slightly up for optical balance
-          ],
+          ),
         ),
-      ),
+        // Original welcome content
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.welcomeHeader,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.outfit(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purpleAccent.shade100,
+                    shadows: [
+                       BoxShadow(color: Colors.purple.withOpacity(0.3), blurRadius: 15)
+                    ]
+                  ),
+                ),
+                const SizedBox(height: 48),
+                Text(
+                  AppLocalizations.of(context)!.onboardingWelcomeTitle,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.outfit(
+                    fontSize: 22, 
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  AppLocalizations.of(context)!.onboardingWelcomeSubtitle,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.quicksand(
+                    fontSize: 18,
+                    color: Colors.white70,
+                    height: 1.5
+                  ),
+                ),
+                const SizedBox(height: 60),
+                
+                // Start Button
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomButton(
+                    text: AppLocalizations.of(context)!.upgradeStart,
+                    onPressed: () {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 500), 
+                        curve: Curves.easeInOut
+                      );
+                    },
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF8B5CF6), 
+                        Color(0xFFD946EF)
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 80),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -392,7 +425,7 @@ class _DreamProfileSurveyScreenState extends State<DreamProfileSurveyScreen> {
               const MysticOrb(), // Replaced CircularProgressIndicator
               const SizedBox(height: 48), // Increased spacing
               Text(
-                "Analiz ediliyor...", 
+                l10n.surveyAnalyzing, 
                 style: GoogleFonts.quicksand(color: Colors.white70, fontSize: 18),
               ),
             ],

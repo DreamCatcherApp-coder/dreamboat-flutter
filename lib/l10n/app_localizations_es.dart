@@ -1654,4 +1654,7 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get subscriptionNotAvailable =>
       'Los paquetes de suscripción no están disponibles';
+
+  @override
+  String get surveyAnalyzing => 'Analizando...';
 }

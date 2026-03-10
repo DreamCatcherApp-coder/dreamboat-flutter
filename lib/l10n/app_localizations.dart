@@ -3055,6 +3055,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Abonelik paketleri şu anda kullanılamıyor'**
   String get subscriptionNotAvailable;
+
+  /// No description provided for @surveyAnalyzing.
+  ///
+  /// In tr, this message translates to:
+  /// **'Analiz ediliyor...'**
+  String get surveyAnalyzing;
 }
 
 class _AppLocalizationsDelegate

@@ -1640,4 +1640,7 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get subscriptionNotAvailable =>
       'Abonelik paketleri şu anda kullanılamıyor';
+
+  @override
+  String get surveyAnalyzing => 'Analiz ediliyor...';
 }

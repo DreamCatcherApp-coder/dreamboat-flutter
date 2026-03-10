@@ -551,5 +551,6 @@
     "notifOff": "Desactivado",
     "notifChannelName": "Recordatorios Diarios",
     "notifChannelDesc": "Recordatorio diario para registrar tus sueños",
-    "subscriptionNotAvailable": "Los paquetes de suscripción no están disponibles"
+    "subscriptionNotAvailable": "Los paquetes de suscripción no están disponibles",
+    "surveyAnalyzing": "Analizando..."
 }
