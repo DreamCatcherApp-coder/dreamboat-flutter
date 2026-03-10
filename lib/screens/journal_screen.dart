@@ -97,6 +97,11 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
     }
     
     if (state == AppLifecycleState.resumed) {
+      // Close any open dream detail modal first so content is hidden
+      // behind the journal screen's blur overlay
+      if (_isSensitiveContentHidden) {
+        Navigator.of(context).popUntil((route) => route.isFirst || route.settings.name == 'journal');
+      }
       _checkBiometricOnResume();
     }
   }
@@ -1300,23 +1305,7 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                   child: Container(
-                    color: Colors.black.withOpacity(0.7),
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(LucideIcons.lock, size: 48, color: Colors.white.withOpacity(0.6)),
-                        const SizedBox(height: 16),
-                        Text(
-                          t.biometricLockSettingsTitle,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.8),
-                            fontSize: 14,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ],
-                    ),
+                    color: Colors.black.withOpacity(0.85),
                   ),
                 ),
               ),
@@ -1738,10 +1727,11 @@ class _CollapsibleInterpretation extends StatelessWidget {
                
                const SizedBox(height: 8),
                
-               // Preview text (2 lines) — selectable
-               SelectableText(
+               // Preview text (2 lines)
+               Text(
                  text,
                  maxLines: 2,
+                 overflow: TextOverflow.ellipsis,
                  style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 13, height: 1.5),
                ),
                
@@ -1844,16 +1834,16 @@ class _ExpandableDreamTextState extends State<_ExpandableDreamText> {
     final isLongText = widget.text.length > 200;
 
     if (!isLongText) {
-      return SelectableText(widget.text, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 15, height: 1.5));
+      return Text(widget.text, style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 15, height: 1.5));
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AnimatedCrossFade(
-          firstChild: SelectableText(widget.text, maxLines: 5,
+          firstChild: Text(widget.text, maxLines: 5, overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 15, height: 1.5)),
-          secondChild: SelectableText(widget.text,
+          secondChild: Text(widget.text,
             style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 15, height: 1.5)),
           crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 300),
