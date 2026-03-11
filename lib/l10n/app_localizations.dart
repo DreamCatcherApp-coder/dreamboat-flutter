@@ -2816,6 +2816,12 @@ abstract class AppLocalizations {
   /// **'Doğrulama başarısız'**
   String get biometricAuthFailed;
 
+  /// No description provided for @biometricGoHome.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ana Ekrana Dön'**
+  String get biometricGoHome;
+
   /// No description provided for @offlineSaveTitle.
   ///
   /// In tr, this message translates to:

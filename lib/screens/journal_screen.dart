@@ -38,7 +38,7 @@ class JournalScreen extends StatefulWidget {
   State<JournalScreen> createState() => _JournalScreenState();
 }
 
-class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserver {
+class _JournalScreenState extends State<JournalScreen> {
   // 0: All, 1: Favorites
   int _selectedIndex = 0; 
   late PageController _pageController;
@@ -53,100 +53,16 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = "";
   
-  // Prevent Face ID loop during authentication
-  bool _isAuthenticating = false;
-  
-  // Privacy: Hide content in background/multitasking/auth
-  bool _isSensitiveContentHidden = false;
+
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     _pageController = PageController(initialPage: 0);
-    // Defer Ad loading to check PRO status
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-       // Pro check logic removed/simplified if needed
-       // Check initial lock state (in case we started on this screen somehow, though unlikely)
-       _checkJournalLockStatus(); 
-    });
     _loadDreams();
   }
   
-  Future<void> _checkJournalLockStatus() async {
-    if (await BiometricService.isJournalLockEnabled()) {
-        // If we opened this screen and lock is on, ensure it's hidden until auth
-        // But usually auth happens before navigation. 
-        // This is mostly for state syncing.
-    }
-  }
-  
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-  
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // Hide content immediately when leaving app (multitasking view, home screen, etc.)
-    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
-      setState(() {
-        _isSensitiveContentHidden = true;
-      });
-    }
-    
-    if (state == AppLifecycleState.resumed) {
-      // Close any open dream detail modal first so content is hidden
-      // behind the journal screen's blur overlay
-      if (_isSensitiveContentHidden) {
-        Navigator.of(context).popUntil((route) => route.isFirst || route.settings.name == 'journal');
-      }
-      _checkBiometricOnResume();
-    }
-  }
-  
-  Future<void> _checkBiometricOnResume() async {
-    // Prevent repeated auth calls during biometric prompt or immediately after success
-    if (_isAuthenticating || BiometricService.recentlyAuthenticated) {
-       // If we just authenticated, make sure content is visible
-       if (BiometricService.recentlyAuthenticated && mounted) {
-          setState(() {
-             _isSensitiveContentHidden = false;
-          });
-       }
-       return;
-    }
-    
-    // Check if lock is enabled
-    if (await BiometricService.isJournalLockEnabled()) {
-      // Ensure hidden while checking
-      if (mounted) setState(() => _isSensitiveContentHidden = true);
-      
-      _isAuthenticating = true;
-      final t = AppLocalizations.of(context)!;
-      final authenticated = await BiometricService.authenticate(t.biometricLockReason);
-      _isAuthenticating = false;
-      
-      if (mounted) {
-        if (authenticated) {
-          setState(() {
-            _isSensitiveContentHidden = false;
-          });
-        } else {
-          // Authentication failed, pop back to home
-          Navigator.of(context).pop();
-        }
-      }
-    } else {
-      // No lock enabled, reveal content
-      if (mounted) {
-        setState(() {
-          _isSensitiveContentHidden = false;
-        });
-      }
-    }
-  }
+
   
 
 
@@ -1298,18 +1214,7 @@ class _JournalScreenState extends State<JournalScreen> with WidgetsBindingObserv
             ),
           ),
           
-          // Privacy Blur Layer — FULL SCREEN (covers AppBar + body)
-          if (_isSensitiveContentHidden)
-            Positioned.fill(
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                  child: Container(
-                    color: Colors.black.withOpacity(0.85),
-                  ),
-                ),
-              ),
-            ),
+
         ],
       ),
     );

@@ -497,6 +497,7 @@
     "biometricLockSettingsSubtitle": "Proteger con huella digital / Face ID",
     "biometricNotAvailable": "Función biométrica no encontrada en tu dispositivo. Puedes agregar datos biométricos en Ajustes > Seguridad.",
     "biometricAuthFailed": "Autenticación fallida",
+    "biometricGoHome": "Ir a la pantalla principal",
     "offlineSaveTitle": "Sin Conexión a Internet",
     "offlineSaveContent": "Puedes guardar tu sueño en el diario, pero no se puede interpretar sin internet.",
     "offlineSaveConfirm": "Guardar Sin Interpretación",

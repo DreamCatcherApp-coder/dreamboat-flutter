@@ -83,6 +83,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  /// Opens the Stats screen with biometric authentication check
+  Future<void> _openStats(BuildContext context, AppLocalizations t) async {
+    if (await BiometricService.isJournalLockEnabled()) {
+      if (!BiometricService.recentlyAuthenticated) {
+        final authenticated = await BiometricService.authenticate(t.biometricLockReason);
+        if (!authenticated) return;
+      }
+    }
+    if (context.mounted) {
+      Navigator.push(context, FastSlidePageRoute(child: const StatsScreen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context)!;
@@ -306,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: t.homeStats,
                             background: const StatsPreview(),
                             content: null,
-                            onTap: () => Navigator.push(context, FastSlidePageRoute(child: const StatsScreen())),
+                            onTap: () => _openStats(context, t),
                           ),
                         ),
                       ],

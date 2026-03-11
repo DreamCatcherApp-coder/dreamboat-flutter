@@ -513,6 +513,7 @@
     "biometricLockSettingsSubtitle": "Parmak izi / Face ID ile koru",
     "biometricNotAvailable": "Cihazınızda biyometrik özellik bulunamadı. Ayarlar > Güvenlik kısmından biyometrik verinizi ekleyebilirsiniz.",
     "biometricAuthFailed": "Doğrulama başarısız",
+    "biometricGoHome": "Ana Ekrana Dön",
     "offlineSaveTitle": "İnternet Bağlantısı Yok",
     "offlineSaveContent": "Rüyanızı günlüğe kaydedebilirsiniz fakat şu an internet olmadığı için yorumlanamaz.",
     "offlineSaveConfirm": "Yorumsuz Kaydet",

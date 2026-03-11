@@ -367,9 +367,7 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                       popularLabel: t.mostPopular,
                                       // iOS: Only show intro label if RC has introductory discount
                                       // Android: Standard PRO screen (no special offer)
-                                      discountLabel: Platform.isIOS
-                                          ? (yearlyIntro != null ? t.welcomeOfferFirstTime : t.discountPercent)
-                                          : t.discountPercent,
+                                      discountLabel: t.discountPercent,
                                       isSelected: _isYearlySelected,
                                       onTap: () => setState(() => _isYearlySelected = true),
                                       onSubscribe: () => _handlePurchase(true),

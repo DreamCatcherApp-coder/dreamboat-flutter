@@ -1501,6 +1501,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get biometricAuthFailed => 'Doğrulama başarısız';
 
   @override
+  String get biometricGoHome => 'Ana Ekrana Dön';
+
+  @override
   String get offlineSaveTitle => 'İnternet Bağlantısı Yok';
 
   @override

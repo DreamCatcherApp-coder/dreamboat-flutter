@@ -15,7 +15,7 @@ class BiometricService {
   /// Check if authentication happened very recently (prevents loops)
   static bool get recentlyAuthenticated => 
       _lastAuthTime != null && 
-      DateTime.now().difference(_lastAuthTime!) < const Duration(seconds: 3);
+      DateTime.now().difference(_lastAuthTime!) < const Duration(seconds: 30);
 
   /// Check if device has biometric capability
   static Future<bool> isBiometricAvailable() async {

@@ -1520,6 +1520,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get biometricAuthFailed => 'Authentifizierung fehlgeschlagen';
 
   @override
+  String get biometricGoHome => 'Zum Startbildschirm';
+
+  @override
   String get offlineSaveTitle => 'Keine Internetverbindung';
 
   @override

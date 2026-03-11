@@ -21,6 +21,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:dream_boat_mobile/services/firebase_ready_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:dream_boat_mobile/models/dream_entry.dart';
+import 'package:dream_boat_mobile/services/biometric_service.dart';
 
 import 'package:intl/date_symbol_data_local.dart'; // [NEW] For date formatting
 
@@ -238,13 +239,71 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   late Locale _locale;
+
+  // Biometric overlay state
+  bool _showSecureOverlay = false;
+  bool _isAuthenticating = false;
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
     super.initState();
     _locale = widget.initialLocale;
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive || state == AppLifecycleState.paused) {
+      // Show overlay immediately when app goes to background
+      _checkAndShowOverlay();
+    }
+    if (state == AppLifecycleState.resumed) {
+      if (_showSecureOverlay) {
+        _authenticateOnResume();
+      }
+    }
+  }
+
+  Future<void> _checkAndShowOverlay() async {
+    final lockEnabled = await BiometricService.isJournalLockEnabled();
+    if (lockEnabled && mounted) {
+      setState(() {
+        _showSecureOverlay = true;
+      });
+    }
+  }
+
+  Future<void> _authenticateOnResume() async {
+    if (_isAuthenticating || BiometricService.recentlyAuthenticated) {
+      if (BiometricService.recentlyAuthenticated && mounted) {
+        setState(() {
+          _showSecureOverlay = false;
+        });
+      }
+      return;
+    }
+
+    _isAuthenticating = true;
+    final authenticated = await BiometricService.authenticate('Verify to access Dream Journal');
+    _isAuthenticating = false;
+
+    if (mounted) {
+      if (authenticated) {
+        setState(() {
+          _showSecureOverlay = false;
+        });
+      }
+      // If auth fails, overlay stays — user can re-background and retry
+    }
   }
 
   void setLocale(Locale locale) async {
@@ -258,6 +317,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'DreamBoat',
       theme: AppTheme.theme,
@@ -270,6 +330,27 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: _locale,
       home: const SplashScreen(),
+      builder: (context, child) {
+        return Stack(
+          children: [
+            child!,
+            // Full-screen secure overlay — renders on top of EVERYTHING
+            if (_showSecureOverlay)
+              Positioned.fill(
+                child: Container(
+                  color: const Color(0xFF0A0A1A),
+                  child: Center(
+                    child: Icon(
+                      Icons.lock_outline_rounded,
+                      color: Colors.white.withOpacity(0.15),
+                      size: 48,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

@@ -498,6 +498,7 @@
     "biometricLockSettingsSubtitle": "Protect with fingerprint / Face ID",
     "biometricNotAvailable": "Biometric feature not found on your device. You can add biometric data in Settings > Security.",
     "biometricAuthFailed": "Authentication failed",
+    "biometricGoHome": "Go to Home Screen",
     "offlineSaveTitle": "No Internet Connection",
     "offlineSaveContent": "You can save your dream to the journal, but it cannot be interpreted without internet.",
     "offlineSaveConfirm": "Save Without Interpretation",

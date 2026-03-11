@@ -1505,6 +1505,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get biometricAuthFailed => 'Authentication failed';
 
   @override
+  String get biometricGoHome => 'Go to Home Screen';
+
+  @override
   String get offlineSaveTitle => 'No Internet Connection';
 
   @override

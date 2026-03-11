@@ -18,6 +18,7 @@ import 'package:dream_boat_mobile/services/dream_service.dart';
 import 'package:dream_boat_mobile/services/astronomy_service.dart'; // [NEW]
 import 'package:dream_boat_mobile/models/dream_entry.dart';
 import 'package:dream_boat_mobile/screens/journal_screen.dart';
+import 'package:dream_boat_mobile/services/biometric_service.dart';
 import 'package:dream_boat_mobile/widgets/gradient_text.dart';
 import 'package:dream_boat_mobile/utils/custom_page_route.dart'; 
 
@@ -297,11 +298,26 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
             );
          }
 
-         // Navigate to Journal
-         Navigator.pushReplacement(
-           context, 
-           FastSlidePageRoute(child: const JournalScreen())
-         );
+         // Navigate to Journal (with biometric gate if lock enabled)
+         if (mounted) {
+           if (await BiometricService.isJournalLockEnabled()) {
+             if (!BiometricService.recentlyAuthenticated) {
+               final t2 = AppLocalizations.of(context)!;
+               final authenticated = await BiometricService.authenticate(t2.biometricLockReason);
+               if (!authenticated) {
+                 // Auth failed — go to home instead of journal
+                 if (mounted) Navigator.pop(context);
+                 return;
+               }
+             }
+           }
+           if (mounted) {
+             Navigator.pushReplacement(
+               context, 
+               FastSlidePageRoute(child: const JournalScreen())
+             );
+           }
+         }
       }
     } catch (e) {
        print("MyDream error: $e");
