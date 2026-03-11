@@ -14,6 +14,7 @@ import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart'; // [NEW]
 import 'package:cloud_functions/cloud_functions.dart'; // [NEW]
 import 'dart:io'; // [NEW]
 import 'package:dream_boat_mobile/widgets/premium_visualize_button.dart'; // [NEW]
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
 import 'package:dream_boat_mobile/models/dream_entry.dart';
@@ -371,13 +372,18 @@ class _JournalScreenState extends State<JournalScreen> {
       backgroundColor: Colors.transparent,
       routeSettings: const RouteSettings(name: '/dream_detail'),
       builder: (context) {
-        // Initialize mutable state with the dream passed to the function
-        var currentDream = dream;
         bool isGeneratingImage = false; // [NEW] Local state for loading
         
         return StatefulBuilder(
           builder: (context, setModalState) {
-            return DraggableScrollableSheet(
+            return ValueListenableBuilder<Box<DreamEntry>>(
+              valueListenable: Hive.box<DreamEntry>('dreams').listenable(keys: [dream.id]),
+              builder: (context, box, child) {
+                // Read the freshest dream data from the box.
+                // Fallback to the initially passed `dream` if it was somehow deleted while open.
+                var currentDream = box.get(dream.id) ?? dream;
+
+                return DraggableScrollableSheet(
               initialChildSize: 0.85,
               minChildSize: 0.5,
               maxChildSize: 0.95,
@@ -1020,6 +1026,8 @@ class _JournalScreenState extends State<JournalScreen> {
                   ],
                 ),
               ),
+            );
+            },
             );
           }
         );
