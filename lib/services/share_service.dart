@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:gal/gal.dart';
 import 'package:dream_boat_mobile/widgets/dream_share_card.dart';
 import 'package:dream_boat_mobile/widgets/dream_image_share_card.dart'; // [NEW]
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
@@ -139,56 +138,6 @@ class ShareService {
 
      } catch (e) {
        debugPrint('ShareService: Error sharing image: $e');
-     }
-  }
-
-  /// Saves the generated dream image with a watermark footer directly to the gallery.
-  /// Returns true if successful, false otherwise.
-  static Future<bool> saveDreamImageToGallery(
-    BuildContext context,
-    String imageUrl,
-    String watermarkText,
-  ) async {
-     try {
-      debugPrint('ShareService: Starting image save process...');
-      
-      // Create the branding card
-      final card = DreamImageShareCard(
-        imageUrl: imageUrl, 
-        watermarkText: watermarkText
-      );
-      
-      // Capture
-      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
-        card,
-        delay: const Duration(milliseconds: 500), // Give network image time to load/render
-        pixelRatio: 2.0,
-        context: context,
-      );
-
-       if (imageBytes == null || imageBytes.isEmpty) {
-        debugPrint('ShareService: Failed to capture image widget for saving');
-        return false;
-      }
-
-      // Check for permission and request if needed
-      final hasAccess = await Gal.hasAccess();
-      if (!hasAccess) {
-        final requestGranted = await Gal.requestAccess();
-        if (!requestGranted) {
-           debugPrint('ShareService: Gallery access denied');
-           return false;
-        }
-      }
-
-      // Save to gallery
-      await Gal.putImageBytes(imageBytes);
-      debugPrint('ShareService: Image saved successfully');
-      return true;
-
-     } catch (e) {
-       debugPrint('ShareService: Error saving image to gallery: $e');
-       return false;
      }
   }
 }
