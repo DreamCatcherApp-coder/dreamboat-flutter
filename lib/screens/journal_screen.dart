@@ -926,8 +926,11 @@ class _JournalScreenState extends State<JournalScreen> {
                           const SizedBox(height: 32),
                           
                           // Action Buttons (inside scroll, not fixed)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // Action Buttons (inside scroll, not fixed)
+                          Wrap(
+                            alignment: WrapAlignment.spaceEvenly,
+                            spacing: 8.0,
+                            runSpacing: 16.0,
                             children: [
                               // Favori
                               _ActionButton(
@@ -976,7 +979,7 @@ class _JournalScreenState extends State<JournalScreen> {
                               // Görseli Paylaş (only visible when imageUrl exists)
                               if (currentDream.imageUrl != null)
                                 _ActionButton(
-                                  icon: LucideIcons.share,
+                                  icon: LucideIcons.image,
                                   label: t.shareImage,
                                   iconColor: const Color(0xFFFBBF24), // Gold PRO color
                                   onTap: () async {
