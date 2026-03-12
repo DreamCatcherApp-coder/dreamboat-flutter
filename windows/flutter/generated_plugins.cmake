@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_auth
   firebase_core
   flutter_timezone
+  gal
   local_auth_windows
   permission_handler_windows
   share_plus
