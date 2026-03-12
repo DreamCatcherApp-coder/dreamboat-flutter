@@ -77,6 +77,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true, // [NEW] Safe area for notch devices
       backgroundColor: Colors.transparent,
       builder: (context) => MoodSelectionSheet(
         onSave: (mood, secondaryMoods, intensity, vividness) {

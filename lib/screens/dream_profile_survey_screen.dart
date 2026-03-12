@@ -207,6 +207,7 @@ class _DreamProfileSurveyScreenState extends State<DreamProfileSurveyScreen> {
                 context: context,
                 backgroundColor: Colors.transparent,
                 isScrollControlled: true,
+                useSafeArea: true, // [NEW] Safe area for notch devices
                 builder: (context) => const LanguageSelectorModal(),
               );
             },

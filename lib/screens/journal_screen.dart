@@ -369,6 +369,7 @@ class _JournalScreenState extends State<JournalScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true, // [NEW] Prevents overlap with Dynamic Island / Notch
       backgroundColor: Colors.transparent,
       routeSettings: const RouteSettings(name: '/dream_detail'),
       builder: (context) {
@@ -577,6 +578,8 @@ class _JournalScreenState extends State<JournalScreen> {
                                           letterSpacing: 0.5,
                                         ),
                                       ),
+                                      const Spacer(),
+                                      const ProBadge(),
                                     ],
                                   ),
                                   const SizedBox(height: 12),
@@ -655,8 +658,8 @@ class _JournalScreenState extends State<JournalScreen> {
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(16),
                                                   gradient: const LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
                                                     colors: [
                                                       Color(0xFFF59E0B),
                                                       Color(0xFFD97706),

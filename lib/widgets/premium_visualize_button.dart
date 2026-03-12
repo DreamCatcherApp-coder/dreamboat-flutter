@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart'; // For HapticFeedback
 import 'package:dream_boat_mobile/l10n/app_localizations.dart';
+import 'package:dream_boat_mobile/widgets/pro_badge.dart';
 
 class PremiumVisualizeButton extends StatefulWidget {
   final VoidCallback onTap;
@@ -102,12 +103,12 @@ class _PremiumVisualizeButtonState extends State<PremiumVisualizeButton> with Ti
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24), // Soft Squircle
             gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
               colors: [
                 Color(0xFFF59E0B), // Standard Gold
-                Color(0xFFD97706), // Amber
-                Color(0xFF4C1D95), // Deep Purple (Mystic Door effect)
+                Color(0xFFD97706), // Vivid Orange
+                Color(0xFF4C1D95), // Deep Purple
               ],
               stops: [0.0, 0.4, 1.0], 
             ),
@@ -180,22 +181,30 @@ class _PremiumVisualizeButtonState extends State<PremiumVisualizeButton> with Ti
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Main Title
-                              Text(
-                                AppLocalizations.of(context)!.visualizeDream,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 0.5,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 2),
-                                    )
-                                  ],
-                                ),
+                              // Main Title with PRO badge
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.visualizeDream,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.5,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const ProBadge(),
+                                ],
                               ),
                               const SizedBox(height: 2),
                               // Subtitle

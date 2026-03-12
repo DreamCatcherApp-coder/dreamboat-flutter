@@ -133,30 +133,39 @@ class _LanguageSelectorModalState extends State<LanguageSelectorModal>
 
               const SizedBox(height: 20),
 
-              // Language options with staggered animation
-              ...languages.asMap().entries.map((entry) {
-                final index = entry.key;
-                final lang = entry.value;
-                final isSelected = currentLocale.languageCode == lang['code'];
+              // Language options with staggered animation (scrollable for small screens)
+              Flexible(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ...languages.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final lang = entry.value;
+                        final isSelected = currentLocale.languageCode == lang['code'];
 
-                return TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: Duration(milliseconds: 300 + (index * 60)),
-                  curve: Curves.easeOutCubic,
-                  builder: (context, value, child) {
-                    return Transform.translate(
-                      offset: Offset(0, 20 * (1 - value)),
-                      child: Opacity(
-                        opacity: value,
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: _buildLanguageOption(lang, isSelected),
-                );
-              }),
-
-              const SizedBox(height: 28),
+                        return TweenAnimationBuilder<double>(
+                          tween: Tween(begin: 0.0, end: 1.0),
+                          duration: Duration(milliseconds: 300 + (index * 60)),
+                          curve: Curves.easeOutCubic,
+                          builder: (context, value, child) {
+                            return Transform.translate(
+                              offset: Offset(0, 20 * (1 - value)),
+                              child: Opacity(
+                                opacity: value,
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: _buildLanguageOption(lang, isSelected),
+                        );
+                      }),
+                      const SizedBox(height: 28),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

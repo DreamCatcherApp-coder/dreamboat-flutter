@@ -263,6 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 showModalBottomSheet(
                                   context: context,
                                   backgroundColor: Colors.transparent,
+                                  useSafeArea: true, // [NEW] Safe area for notch devices
                                   builder: (ctx) => const LanguageSelectorModal(),
                                 );
                               },
