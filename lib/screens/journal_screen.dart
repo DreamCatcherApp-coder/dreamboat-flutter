@@ -992,30 +992,6 @@ class _JournalScreenState extends State<JournalScreen> {
                                   },
                                 ),
                               
-                              // [NEW] Görseli Galeriye Kaydet
-                              if (currentDream.imageUrl != null)
-                                _ActionButton(
-                                  icon: LucideIcons.download,
-                                  label: "Kaydet", // TODO: Add proper translation via l10n if needed later, using hardcoded for now or we could add it to l10n.
-                                  iconColor: Colors.white,
-                                  onTap: () async {
-                                    HapticFeedback.lightImpact();
-                                    final success = await ShareService.saveDreamImageToGallery(
-                                      context,
-                                      currentDream.imageUrl!,
-                                      t.shareVisualizedBy,
-                                    );
-                                    if (context.mounted) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
-                                          content: Text(success ? "Galeriye kaydedildi" : "Kaydedilemedi"),
-                                          backgroundColor: success ? Colors.green.withOpacity(0.8) : Colors.red.withOpacity(0.8),
-                                        )
-                                      );
-                                    }
-                                  },
-                                ),
-                              
                               // Sil
                               _ActionButton(
                                 icon: LucideIcons.trash2,
