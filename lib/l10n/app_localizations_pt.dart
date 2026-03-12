@@ -684,7 +684,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get privacySection3Content =>
-      'O DreamBoat oferece opções adicionais de segurança para proteger a privacidade:\n\nO diário de sonhos pode ser bloqueado com Face ID ou impressão digital\n\nOs sonhos são completamente privados por padrão\n\nO recurso de compartilhamento é opcional e funciona apenas quando o usuário escolhe explicitamente compartilhar\n\nOs sonhos nunca são compartilhados automaticamente ou com terceiros';
+      'O DreamBoat oferece opções adicionais de segurança para proteger a privacidade:\n\nO diário de sonhos pode ser bloqueado com o bloqueio biométrico do dispositivo\n\nOs sonhos são completamente privados por padrão\n\nO recurso de compartilhamento é opcional e funciona apenas quando o usuário escolhe explicitamente compartilhar\n\nOs sonhos nunca são compartilhados automaticamente ou com terceiros';
 
   @override
   String get privacySection4Title =>
@@ -1492,7 +1492,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get biometricLockMessage =>
-      'Seus sonhos podem ser muito pessoais.\nVocê pode proteger seu Diário de Sonhos com impressão digital / Face ID.';
+      'Seus sonhos podem ser muito pessoais.\nVocê pode proteger seu Diário de Sonhos com o bloqueio biométrico do seu dispositivo.';
 
   @override
   String get biometricLockYes => 'Sim, Proteger';
@@ -1509,7 +1509,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get biometricLockSettingsSubtitle =>
-      'Proteger com impressão digital / Face ID';
+      'Proteger com bloqueio biométrico';
 
   @override
   String get biometricNotAvailable =>

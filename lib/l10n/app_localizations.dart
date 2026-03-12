@@ -1313,7 +1313,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacySection3Content.
   ///
   /// In tr, this message translates to:
-  /// **'DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü Face ID veya parmak izi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz'**
+  /// **'DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü cihazının biyometrik kilidi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz'**
   String get privacySection3Content;
 
   /// No description provided for @privacySection4Title.
@@ -2777,7 +2777,7 @@ abstract class AppLocalizations {
   /// No description provided for @biometricLockMessage.
   ///
   /// In tr, this message translates to:
-  /// **'Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü\'nü parmak izi / Face ID ile koruyabilirsin.'**
+  /// **'Rüyaların çok kişisel olabilir.\nİstersen rüya günlüğünü cihazının biyometrik kilidi ile koruyabilirsin.'**
   String get biometricLockMessage;
 
   /// No description provided for @biometricLockYes.
@@ -2807,7 +2807,7 @@ abstract class AppLocalizations {
   /// No description provided for @biometricLockSettingsSubtitle.
   ///
   /// In tr, this message translates to:
-  /// **'Parmak izi / Face ID ile koru'**
+  /// **'Cihazının biyometrik kilidi ile koru'**
   String get biometricLockSettingsSubtitle;
 
   /// No description provided for @biometricNotAvailable.

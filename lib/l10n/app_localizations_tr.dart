@@ -679,7 +679,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get privacySection3Content =>
-      'DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü Face ID veya parmak izi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz';
+      'DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü cihazının biyometrik kilidi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz';
 
   @override
   String get privacySection4Title => '4. Sağlık ve Tıbbi Feragat (ÖNEMLİ)';
@@ -1479,7 +1479,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get biometricLockMessage =>
-      'Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü\'nü parmak izi / Face ID ile koruyabilirsin.';
+      'Rüyaların çok kişisel olabilir.\nİstersen rüya günlüğünü cihazının biyometrik kilidi ile koruyabilirsin.';
 
   @override
   String get biometricLockYes => 'Evet, Koru';
@@ -1494,7 +1494,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get biometricLockSettingsTitle => 'Rüya Günlüğü Kilidi';
 
   @override
-  String get biometricLockSettingsSubtitle => 'Parmak izi / Face ID ile koru';
+  String get biometricLockSettingsSubtitle =>
+      'Cihazının biyometrik kilidi ile koru';
 
   @override
   String get biometricNotAvailable =>

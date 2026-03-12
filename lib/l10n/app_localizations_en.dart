@@ -680,7 +680,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacySection3Content =>
-      'DreamBoat offers additional security options to protect privacy:\n\nDream journal can be locked with Face ID or fingerprint\n\nDreams are completely private by default\n\nSharing feature is optional and only works when the user explicitly chooses to share\n\nDreams are never shared automatically or with third parties';
+      'DreamBoat offers additional security options to protect privacy:\n\nDream journal can be locked with the device\'s biometric lock\n\nDreams are completely private by default\n\nSharing feature is optional and only works when the user explicitly chooses to share\n\nDreams are never shared automatically or with third parties';
 
   @override
   String get privacySection4Title =>
@@ -1482,7 +1482,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get biometricLockMessage =>
-      'Your dreams can be very personal.\nYou can protect your Dream Journal with fingerprint / Face ID.';
+      'Your dreams can be very personal.\nYou can protect your Dream Journal with your device\'s biometric lock.';
 
   @override
   String get biometricLockYes => 'Yes, Protect';
@@ -1497,8 +1497,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get biometricLockSettingsTitle => 'Dream Journal Lock';
 
   @override
-  String get biometricLockSettingsSubtitle =>
-      'Protect with fingerprint / Face ID';
+  String get biometricLockSettingsSubtitle => 'Protect with biometric lock';
 
   @override
   String get biometricNotAvailable =>

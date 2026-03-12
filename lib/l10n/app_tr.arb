@@ -215,7 +215,7 @@
     "privacySection2Title": "2. Hesap ve Kullanım",
     "privacySection2Content": "DreamBoat, hesap oluşturma zorunluluğu olmadan çalışır.\n\nUygulama anonim olarak kullanılabilir\n\nRüyalarınız ve ayarlarınız yalnızca cihazınızda veya uygulamaya ait güvenli alanlarda saklanır\n\nKişisel kimlik bilgileri (isim, e-posta vb.) zorunlu olarak toplanmaz",
     "privacySection3Title": "3. Gizlilik ve Kilitleme Özellikleri",
-    "privacySection3Content": "DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü Face ID veya parmak izi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz",
+    "privacySection3Content": "DreamBoat, gizliliği korumak için ek güvenlik seçenekleri sunar:\n\nRüya günlüğü cihazının biyometrik kilidi ile kilitlenebilir\n\nRüyalar varsayılan olarak tamamen özeldir\n\nPaylaşım özelliği isteğe bağlıdır ve yalnızca kullanıcı açıkça paylaşmayı seçtiğinde çalışır\n\nRüyalar hiçbir zaman otomatik olarak veya üçüncü taraflarla paylaşılmaz",
     "privacySection4Title": "4. Sağlık ve Tıbbi Feragat (ÖNEMLİ)",
     "privacySection4Content": "DreamBoat bir sağlık veya tıbbi uygulama değildir.\n\nSunulan rüya yorumları ve analizler eğlence ve kişisel farkındalık amaçlıdır\n\nTıbbi, psikolojik veya profesyonel tavsiye niteliği taşımaz\n\nUygulama biyometrik veya sağlık verisi toplamaz ve işlemez\n\n5. İletişim\n\nDetaylı gizlilik politikamıza web sitemiz üzerinden de ulaşabilirsiniz:\nhttps://www.novabloomstudio.com/tr/privacy",
     
@@ -506,12 +506,12 @@
     "emailLabelLanguage": "Dil",
     
     "biometricLockTitle": "Rüya Günlüğünü Kilitlemek İster misin?",
-    "biometricLockMessage": "Rüyaların çok kişisel olabilir.\nİstersen Rüya Günlüğü'nü parmak izi / Face ID ile koruyabilirsin.",
+    "biometricLockMessage": "Rüyaların çok kişisel olabilir.\nİstersen rüya günlüğünü cihazının biyometrik kilidi ile koruyabilirsin.",
     "biometricLockYes": "Evet, Koru",
     "biometricLockNo": "Şimdilik Hayır",
     "biometricLockReason": "Rüya Günlüğü'ne erişmek için doğrula",
     "biometricLockSettingsTitle": "Rüya Günlüğü Kilidi",
-    "biometricLockSettingsSubtitle": "Parmak izi / Face ID ile koru",
+    "biometricLockSettingsSubtitle": "Cihazının biyometrik kilidi ile koru",
     "biometricNotAvailable": "Cihazınızda biyometrik özellik bulunamadı. Ayarlar > Güvenlik kısmından biyometrik verinizi ekleyebilirsiniz.",
     "biometricAuthFailed": "Doğrulama başarısız",
     "biometricGoHome": "Ana Ekrana Dön",

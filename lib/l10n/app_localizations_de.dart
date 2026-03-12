@@ -684,7 +684,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get privacySection3Content =>
-      'DreamBoat bietet zusätzliche Sicherheitsoptionen zum Schutz der Privatsphäre:\n\nDas Traumtagebuch kann mit Face ID oder Fingerabdruck gesperrt werden\n\nTräume sind standardmäßig vollkommen privat\n\nDie Teilen-Funktion ist optional und funktioniert nur, wenn der Benutzer ausdrücklich entscheidet zu teilen\n\nTräume werden niemals automatisch oder mit Dritten geteilt';
+      'DreamBoat bietet zusätzliche Sicherheitsoptionen zum Schutz der Privatsphäre:\n\nDas Traumtagebuch kann mit der biometrischen Sperre des Geräts gesperrt werden\n\nTräume sind standardmäßig vollkommen privat\n\nDie Teilen-Funktion ist optional und funktioniert nur, wenn der Benutzer ausdrücklich entscheidet zu teilen\n\nTräume werden niemals automatisch oder mit Dritten geteilt';
 
   @override
   String get privacySection4Title =>
@@ -1496,7 +1496,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get biometricLockMessage =>
-      'Deine Träume können sehr persönlich sein.\nDu kannst dein Traumtagebuch mit Fingerabdruck / Face ID schützen.';
+      'Deine Träume können sehr persönlich sein.\nDu kannst dein Traumtagebuch mit der biometrischen Sperre deines Geräts schützen.';
 
   @override
   String get biometricLockYes => 'Ja, Schützen';
@@ -1513,7 +1513,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get biometricLockSettingsSubtitle =>
-      'Mit Fingerabdruck / Face ID schützen';
+      'Mit biometrischer Sperre schützen';
 
   @override
   String get biometricNotAvailable =>
