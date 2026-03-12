@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -21,6 +22,35 @@ import 'package:provider/provider.dart';
 import 'package:dream_boat_mobile/providers/subscription_provider.dart';
 import 'package:dream_boat_mobile/widgets/pro_upgrade_dialog.dart';
 import 'package:dream_boat_mobile/services/moon_phase_service.dart';
+
+// Offline dream tips — shown when no internet or API error (3 per language)
+const Map<String, List<String>> _offlineTips = {
+  'tr': [
+    'Uyumadan önce birkaç dakika gözlerini kapat ve bugün seni en çok etkileyen anı hatırla. Bu küçük ritüel, rüyalarının derinliğini artırabilir.',
+    'Sabah uyandığında ilk birkaç saniye gözlerini açmadan kal. Rüyandan kalan izleri yakalarsan, bilinçaltının sana ne fısıldadığını fark edebilirsin.',
+    'Bugün bir anlığına durup gökyüzüne bak. Rüyalarında gördüğün renklerle gerçek dünyadaki tonları karşılaştırmak, farkındalığını güçlendirebilir.',
+  ],
+  'en': [
+    'Before sleep, close your eyes for a few moments and recall the moment that touched you most today. This small ritual can deepen the quality of your dreams.',
+    'When you wake up, keep your eyes closed for a few seconds. If you catch the traces of your dream, you might notice what your subconscious is whispering.',
+    'Take a moment today to look up at the sky. Comparing the colors in your dreams with those in the real world can strengthen your awareness.',
+  ],
+  'es': [
+    'Antes de dormir, cierra los ojos unos momentos y recuerda el instante que más te impactó hoy. Este pequeño ritual puede profundizar la calidad de tus sueños.',
+    'Al despertar, mantén los ojos cerrados unos segundos. Si capturas los rastros de tu sueño, podrías notar lo que tu subconsciente te susurra.',
+    'Tómate un momento hoy para mirar al cielo. Comparar los colores de tus sueños con los del mundo real puede fortalecer tu percepción.',
+  ],
+  'de': [
+    'Schließe vor dem Einschlafen für einen Moment die Augen und erinnere dich an den Augenblick, der dich heute am meisten berührt hat. Dieses kleine Ritual kann die Tiefe deiner Träume bereichern.',
+    'Wenn du aufwachst, halte deine Augen ein paar Sekunden geschlossen. Wenn du die Spuren deines Traums einfängst, bemerkst du vielleicht, was dein Unterbewusstsein dir zuflüstert.',
+    'Nimm dir heute einen Moment Zeit und schau in den Himmel. Die Farben deiner Träume mit denen der realen Welt zu vergleichen, kann deine Wahrnehmung stärken.',
+  ],
+  'pt': [
+    'Antes de dormir, feche os olhos por alguns momentos e lembre-se do instante que mais te tocou hoje. Esse pequeno ritual pode aprofundar a qualidade dos seus sonhos.',
+    'Ao acordar, mantenha os olhos fechados por alguns segundos. Se capturar os vestígios do seu sonho, poderá perceber o que o seu subconsciente está sussurrando.',
+    'Reserve um momento hoje para olhar para o céu. Comparar as cores dos seus sonhos com as do mundo real pode fortalecer a sua percepção.',
+  ],
+};
 
 class _MoodStat {
   int count = 0;
@@ -60,6 +90,12 @@ class _StatsScreenState extends State<StatsScreen> {
 
   bool _isTipLoading = false;
   String _dailyTip = "";
+
+  /// Get a random offline tip for the current locale
+  String _getOfflineTip(String locale) {
+    final tips = _offlineTips[locale] ?? _offlineTips['en']!;
+    return tips[Random().nextInt(tips.length)];
+  }
 
   // Moon Sync State
   String? _moonSyncResult;
@@ -138,7 +174,7 @@ class _StatsScreenState extends State<StatsScreen> {
         // Cache miss — generate after first frame (needs locale context)
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final locale = Localizations.localeOf(context).languageCode;
-          _generateNewTip(prefs, todayStr, locale, 'tip_date_$locale', 'tip_content_$locale');
+          _generateNewTip(prefs, todayStr, locale);
         });
       }
       
@@ -209,63 +245,38 @@ class _StatsScreenState extends State<StatsScreen> {
     }
   }
 
-  // ... (rest of simple methods skipped logic same) ...
-
-  Future<void> _loadDailyTip(SharedPreferences prefs, String locale) async {
-    // ... (unchanged)
-    final todayStr = DateTime.now().toString().split(' ')[0];
+  Future<void> _generateNewTip(SharedPreferences prefs, String todayStr, String locale) async {
+    if (!mounted) return;
+    
     final dateKey = 'tip_date_$locale';
     final contentKey = 'tip_content_$locale';
-
-    final lastDate = prefs.getString(dateKey);
-    final cachedContent = prefs.getString(contentKey);
-
-    if (lastDate == todayStr && cachedContent != null && cachedContent.length > 50) {
-       if (mounted) setState(() => _dailyTip = cachedContent);
-    } else {
-       await _generateNewTip(prefs, todayStr, locale, dateKey, contentKey);
+    
+    // Check connectivity first — if offline, show offline tip immediately (no spinner)
+    final isConnected = await ConnectivityService.isConnected;
+    if (!isConnected) {
+      if (mounted) setState(() => _dailyTip = _getOfflineTip(locale));
+      return;
     }
-  }
-
-  Future<void> _generateNewTip(SharedPreferences prefs, String todayStr, String locale, String dateKey, String contentKey) async {
-    if (!mounted) return;
+    
     setState(() => _isTipLoading = true);
     
     try {
-      final allDreams = await _dreamService.getDreams();
-      final recentDreams = allDreams.take(5).map((d) => d.text).toList();
+      final tip = await _openAIService.generateDailyTip(locale);
       
-      final tip = await _openAIService.generateDailyTip(recentDreams, locale);
-      
-      // Guard: reject suspiciously short/truncated responses
-      if (tip.length < 50) {
-        debugPrint('Daily tip too short (${tip.length} chars), using fallback');
-        if (mounted) {
-          final t = AppLocalizations.of(context)!;
-          final fallback = t.statsTipContent;
-          // Cache the fallback so we don't keep re-calling the API
-          await prefs.setString(dateKey, todayStr);
-          await prefs.setString(contentKey, fallback);
-          setState(() => _dailyTip = fallback);
-        }
-        return;
-      }
-      
-      await prefs.setString(dateKey, todayStr);
-      await prefs.setString(contentKey, tip);
-      
-      if (mounted) {
-        setState(() => _dailyTip = tip);
+      // Only cache successful, substantial responses
+      if (tip.length >= 50) {
+        await prefs.setString(dateKey, todayStr);
+        await prefs.setString(contentKey, tip);
+        if (mounted) setState(() => _dailyTip = tip);
+      } else {
+        // Short/empty response — show offline tip, DON'T cache
+        debugPrint('Daily tip too short (${tip.length} chars), showing offline tip');
+        if (mounted) setState(() => _dailyTip = _getOfflineTip(locale));
       }
     } catch (e) {
-       // Fallback — also cache it to prevent repeated calls
-       if (mounted) {
-          final t = AppLocalizations.of(context)!;
-          final fallback = t.statsTipContent;
-          await prefs.setString(dateKey, todayStr);
-          await prefs.setString(contentKey, fallback);
-          setState(() => _dailyTip = fallback);
-       }
+      // Error — show offline tip, DON'T cache (will retry next app open)
+      debugPrint('_generateNewTip Error: $e');
+      if (mounted) setState(() => _dailyTip = _getOfflineTip(locale));
     } finally {
       if (mounted) setState(() => _isTipLoading = false);
     }

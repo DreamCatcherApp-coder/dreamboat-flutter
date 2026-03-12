@@ -5,8 +5,6 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart';
 
 class OpenAIService {
-  static const String _mockTip = "Bugün, içsel yolculuğunu derinleştirmek için bir anı defteri tutmayı deneyebilirsin. Rüyalarında gördüğün çocukluk hâlinle bağ kurarak, o saf sevgiyi yeniden keşfetmek için birkaç dakikanı ayır ve hislerini kaleme al.";
-  
   static bool _firebaseInitialized = false;
   static bool _appCheckActivated = false;
   
@@ -217,7 +215,7 @@ class OpenAIService {
   }
 
   /// Generate daily dream tip
-  Future<String> generateDailyTip(List<String> dreams, String language) async {
+  Future<String> generateDailyTip(String language) async {
     try {
       final data = await _callFunction('generateDailyTip', {
         'language': language,
@@ -229,10 +227,10 @@ class OpenAIService {
         debugPrint("GPT Usage (generateDailyTip): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
       }
       
-      return data['result'] ?? _mockTip;
+      return data['result'] ?? '';
     } catch (e) {
       debugPrint('generateDailyTip Error: $e');
-      return _mockTip;
+      return '';
     }
   }
 
