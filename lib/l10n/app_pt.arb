@@ -98,7 +98,7 @@
     "proVersion": "PRO",
     "standardVersion": "Padrão",
     "upgradeTitle": "Atualizar para DreamBoat PRO",
-    "upgradeBtn": "Desbloquear DreamBoat PRO (88,99 ₺)",
+
     "upgradeCancel": "Talvez depois",
     "privacyPolicyLink": "Política de Privacidade",
     "termsOfUseLink": "Termos de Uso",
@@ -191,7 +191,7 @@
     "guideIntroGain2": "Explorar Subconsciente",
     "guideIntroGain3": "Dominar o Sono",
     "guideIntroGain4": "Lidar com Estresse",
-    "guideBuyButton": "Desbloquear Guia Completo",
+
     "guideDebugResetTitle": "Reiniciar Guia?",
     "guideDebugResetContent": "Isso bloqueará todas as fases exceto a primeira. (Debug)",
     "journalDeleteTitle": "Excluir Sonho?",
@@ -268,7 +268,7 @@
     "offlineInterpretation": "O sonho não pôde ser interpretado devido à falta de internet.",
     "offlinePurchase": "Conexão à internet necessária para realizar compras.",
     "offlineAnalysis": "Conexão à internet necessária para análise.",
-    "proUpgradeSubtitle": "Sem assinatura. Compra única, acesso vitalício.",
+
     "proFeatureAdsTitle": "Experiência Sem Anúncios",
     "proFeatureAdsSubtitle": "Sem anúncios nas interpretações de sonhos.\nConcentre-se apenas nos seus sonhos e no que eles querem lhe dizer.",
     "proFeatureCosmicTitle": "Desbloqueie Conexões Cósmicas",
@@ -328,7 +328,7 @@
     },
     "shareCardHeader": "MINHA INTERPRETAÇÃO DE SONHOS DIÁRIA",
     "shareCardWatermark": "Interpretado com DreamBoat App",
-    "subscriptionComingSoon": "O sistema de assinatura chegará em breve!",
+
     "subscribeMonthly": "Assinar Mensal",
     "subscribeYearly": "Assinar Anual",
     
@@ -395,7 +395,7 @@
     "timeAwarenessInstruction": "Responda em voz alta antes de dormir",
     "timeAwarenessQ1": "Qual é a data de hoje?",
     "timeAwarenessQ2": "Que dia da semana é hoje?",
-    "timeAwarenessQ3": "REMOVED",
+
     "timeAwarenessQ4": "Que horas são exatamente?",
     "timeAwarenessQ5": "Olhe ao redor e nomeie 3 objetos.",
     "timeAwarenessQ6": "Qual a cor da sua roupa?",
@@ -508,16 +508,7 @@
     "watchAdForInterpretation": "Torne-se PRO ou assista a um anúncio para a interpretação de IA.",
     "interpretationSkipped": "Anúncio não assistido, sonho salvo sem interpretação.",
     "weeklyLimitLeft": "Restam {count} interpretações gratuitas esta semana",
-    "specialOffer": "🔥 OFERTA ESPECIAL",
-    "welcomeOfferFirstTime": "Oferta para novos assinantes",
-    "welcomeOfferExpires": "Oferta expira em: {time}",
-    "@welcomeOfferExpires": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
+
     "streakDays": "{count} dias seguidos",
     "@streakDays": {
         "placeholders": {

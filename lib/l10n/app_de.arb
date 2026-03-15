@@ -99,7 +99,7 @@
     "proVersion": "PRO",
     "standardVersion": "Standard",
     "upgradeTitle": "Auf DreamBoat PRO upgraden",
-    "upgradeBtn": "DreamBoat PRO freischalten (88,99 ₺)",
+
     "upgradeCancel": "Vielleicht später",
     "privacyPolicyLink": "Datenschutzrichtlinie",
     "termsOfUseLink": "Nutzungsbedingungen",
@@ -192,7 +192,7 @@
     "guideIntroGain2": "Unterbewusstsein erkunden",
     "guideIntroGain3": "Schlaf meistern",
     "guideIntroGain4": "Stress bewältigen",
-    "guideBuyButton": "Vollständigen Leitfaden freischalten",
+
     "guideDebugResetTitle": "Leitfaden zurücksetzen?",
     "guideDebugResetContent": "Dies sperrt alle Stufen außer der ersten. (Debug)",
     "journalDeleteTitle": "Traum löschen?",
@@ -269,7 +269,7 @@
     "offlineInterpretation": "Traum konnte mangels Internetverbindung nicht gedeutet werden.",
     "offlinePurchase": "Für den Kauf ist eine Internetverbindung erforderlich.",
     "offlineAnalysis": "Für die Analyse ist eine Internetverbindung erforderlich.",
-    "proUpgradeSubtitle": "Kein Abo. Einmalkauf, lebenslanger Zugriff.",
+
     "proFeatureAdsTitle": "Werbefreie Erfahrung",
     "proFeatureAdsSubtitle": "Keine Werbung bei Traumdeutungen.\nKonzentriere dich nur auf deine Träume und was sie dir sagen wollen.",
     "proFeatureCosmicTitle": "Kosmische Verbindungen Freischalten",
@@ -329,7 +329,7 @@
     },
     "shareCardHeader": "MEINE TÄGLICHE TRAUMDEUTUNG",
     "shareCardWatermark": "Interpretiert mit DreamBoat App",
-    "subscriptionComingSoon": "Das Abonnement-System kommt sehr bald!",
+
     "subscribeMonthly": "Monatlich abonnieren",
     "subscribeYearly": "Jährlich abonnieren",
     
@@ -396,7 +396,7 @@
     "timeAwarenessInstruction": "Antworte laut vor dem Schlafen",
     "timeAwarenessQ1": "Welches Datum ist heute?",
     "timeAwarenessQ2": "Welcher Wochentag ist heute?",
-    "timeAwarenessQ3": "REMOVED",
+
     "timeAwarenessQ4": "Wie spät ist es genau?",
     "timeAwarenessQ5": "Schau dich um und nenne 3 Gegenstände.",
     "timeAwarenessQ6": "Welche Farbe hat deine Kleidung?",
@@ -509,16 +509,7 @@
     "watchAdForInterpretation": "Werde PRO oder sieh dir Werbung an für die AI-Deutung.",
     "interpretationSkipped": "Werbung nicht angesehen, Traum ohne Deutung gespeichert.",
     "weeklyLimitLeft": "Noch {count} kostenlose Traumdeutungen diese Woche",
-    "specialOffer": "🔥 SONDERANGEBOT",
-    "welcomeOfferFirstTime": "Erstabonnenten-Angebot",
-    "welcomeOfferExpires": "Angebot endet in: {time}",
-    "@welcomeOfferExpires": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
+
     "streakDays": "{count} Tage am Stück",
     "@streakDays": {
         "placeholders": {

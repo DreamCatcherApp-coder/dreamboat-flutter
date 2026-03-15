@@ -534,9 +534,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get guideIntroGain4 => 'Rüyalarının yönetmeni olursun';
 
   @override
-  String get guideBuyButton => 'Rehberi Satın Al (179.00 TL)';
-
-  @override
   String get guideNo => 'Hayır';
 
   @override
@@ -583,9 +580,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get upgradeBenefits =>
       'Reklamsız Deneyim\nTam Rüya Analizi\nLimitsiz Rüya Yorumu\nÖzel Rehber Erişimi';
-
-  @override
-  String get upgradeBtn => 'DreamBoat PRO\'yu Aç (88,99 ₺)';
 
   @override
   String get upgradeCancel => 'Belki daha sonra';
@@ -883,10 +877,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get offlineAnalysis => 'Analiz için internet bağlantısı gerekiyor.';
 
   @override
-  String get proUpgradeSubtitle =>
-      'Abonelik yok. Tek sefer satın alır, ömür boyu erişim sağlarsın.';
-
-  @override
   String get proFeatureAdsTitle => 'Reklamsız Deneyim';
 
   @override
@@ -1032,10 +1022,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'DreamBoat App ile yorumlandı';
-
-  @override
-  String get subscriptionComingSoon =>
-      'Abonelik sistemi çok yakında aktif olacak!';
 
   @override
   String get subscribeMonthly => 'Aylık Abone Ol';
@@ -1242,9 +1228,6 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get timeAwarenessQ2 => 'Haftanın hangi günündeyiz?';
-
-  @override
-  String get timeAwarenessQ3 => 'REMOVED';
 
   @override
   String get timeAwarenessQ4 => 'Saat tam olarak kaç?';
@@ -1543,17 +1526,6 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String weeklyLimitLeft(int count) {
     return 'Bu hafta $count ücretsiz rüya yorumu hakkın kaldı';
-  }
-
-  @override
-  String get specialOffer => '🔥 ÖZEL TEKLİF';
-
-  @override
-  String get welcomeOfferFirstTime => 'İlk abone özel teklifi';
-
-  @override
-  String welcomeOfferExpires(String time) {
-    return 'Teklifin bitmesine: $time';
   }
 
   @override

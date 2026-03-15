@@ -169,7 +169,7 @@
     "guideIntroGain2": "Bilincin rüyaya yön vermeye başlar",
     "guideIntroGain3": "Mekânlar ve kişiler sana göre şekil alır",
     "guideIntroGain4": "Rüyalarının yönetmeni olursun",
-    "guideBuyButton": "Rehberi Satın Al (179.00 TL)",
+
     "guideNo": "Hayır",
     "guideYes": "Evet",
     "guideDebugResetTitle": "Rehberi Sıfırla?",
@@ -185,7 +185,7 @@
     "standardVersion": "Standart",
     "upgradeTitle": "DreamBoat PRO'ya Yükselt",
     "upgradeBenefits": "Reklamsız Deneyim\nTam Rüya Analizi\nLimitsiz Rüya Yorumu\nÖzel Rehber Erişimi",
-    "upgradeBtn": "DreamBoat PRO'yu Aç (88,99 ₺)",
+
     "upgradeCancel": "Belki daha sonra",
     "privacyPolicyLink": "Gizlilik Politikası",
     "termsOfUseLink": "Kullanım Şartları",
@@ -284,7 +284,7 @@
     "offlineInterpretation": "İnternet bağlantısı olmadığı için rüya yorumlanamadı.",
     "offlinePurchase": "Satın alma işlemi için internet bağlantısı gerekiyor.",
     "offlineAnalysis": "Analiz için internet bağlantısı gerekiyor.",
-    "proUpgradeSubtitle": "Abonelik yok. Tek sefer satın alır, ömür boyu erişim sağlarsın.",
+
     "proFeatureAdsTitle": "Reklamsız Deneyim",
     "proFeatureAdsSubtitle": "Rüya yorumlamalarında reklam yok.\nSadece rüyalarına ve sana anlatmak istediklerine odaklan.",
     "proFeatureCosmicTitle": "Kozmik Bağlantıların Kilidini Aç",
@@ -344,7 +344,7 @@
     },
     "shareCardHeader": "GÜNLÜK RÜYA YORUMUM",
     "shareCardWatermark": "DreamBoat App ile yorumlandı",
-    "subscriptionComingSoon": "Abonelik sistemi çok yakında aktif olacak!",
+
     "subscribeMonthly": "Aylık Abone Ol",
     "subscribeYearly": "Yıllık Abone Ol",
     
@@ -413,7 +413,7 @@
     "timeAwarenessInstruction": "Uyumadan önce sesli cevapla",
     "timeAwarenessQ1": "Bugünün tarihi ne?",
     "timeAwarenessQ2": "Haftanın hangi günündeyiz?",
-    "timeAwarenessQ3": "REMOVED",
+
     "timeAwarenessQ4": "Saat tam olarak kaç?",
     "timeAwarenessQ5": "Etrafına bak ve 3 farklı nesne say.",
     "timeAwarenessQ6": "Üzerinde ne renk kıyafet var?",
@@ -533,16 +533,7 @@
             }
         }
     },
-    "specialOffer": "🔥 ÖZEL TEKLİF",
-    "welcomeOfferFirstTime": "İlk abone özel teklifi",
-    "welcomeOfferExpires": "Teklifin bitmesine: {time}",
-    "@welcomeOfferExpires": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
+
     "streakDays": "{count} gün üst üste",
     "@streakDays": {
         "placeholders": {

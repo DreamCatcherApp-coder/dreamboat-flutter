@@ -539,9 +539,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guideIntroGain4 => 'Lidar com Estresse';
 
   @override
-  String get guideBuyButton => 'Desbloquear Guia Completo';
-
-  @override
   String get guideNo => 'Não';
 
   @override
@@ -588,9 +585,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get upgradeBenefits =>
       'Experiência Sem Anúncios\nAnálise Completa de Sonhos\nInterpretação Ilimitada de Sonhos\nAcesso Exclusivo ao Guia';
-
-  @override
-  String get upgradeBtn => 'Desbloquear DreamBoat PRO (88,99 ₺)';
 
   @override
   String get upgradeCancel => 'Talvez depois';
@@ -889,10 +883,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get offlineAnalysis => 'Conexão à internet necessária para análise.';
 
   @override
-  String get proUpgradeSubtitle =>
-      'Sem assinatura. Compra única, acesso vitalício.';
-
-  @override
   String get proFeatureAdsTitle => 'Experiência Sem Anúncios';
 
   @override
@@ -1040,10 +1030,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'Interpretado com DreamBoat App';
-
-  @override
-  String get subscriptionComingSoon =>
-      'O sistema de assinatura chegará em breve!';
 
   @override
   String get subscribeMonthly => 'Assinar Mensal';
@@ -1251,9 +1237,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get timeAwarenessQ2 => 'Que dia da semana é hoje?';
-
-  @override
-  String get timeAwarenessQ3 => 'REMOVED';
 
   @override
   String get timeAwarenessQ4 => 'Que horas são exatamente?';
@@ -1558,17 +1541,6 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String weeklyLimitLeft(int count) {
     return 'Restam $count interpretações gratuitas esta semana';
-  }
-
-  @override
-  String get specialOffer => '🔥 OFERTA ESPECIAL';
-
-  @override
-  String get welcomeOfferFirstTime => 'Oferta para novos assinantes';
-
-  @override
-  String welcomeOfferExpires(String time) {
-    return 'Oferta expira em: $time';
   }
 
   @override

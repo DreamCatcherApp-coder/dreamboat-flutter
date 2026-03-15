@@ -539,9 +539,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get guideIntroGain4 => 'Stress bewältigen';
 
   @override
-  String get guideBuyButton => 'Vollständigen Leitfaden freischalten';
-
-  @override
   String get guideNo => 'Nein';
 
   @override
@@ -588,9 +585,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get upgradeBenefits =>
       'Werbefreie Erfahrung\nVollständige Traumanalyse\nUnbegrenzte Traumdeutung\nExklusiver Zugang zum Leitfaden';
-
-  @override
-  String get upgradeBtn => 'DreamBoat PRO freischalten (88,99 ₺)';
 
   @override
   String get upgradeCancel => 'Vielleicht später';
@@ -892,10 +886,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Für die Analyse ist eine Internetverbindung erforderlich.';
 
   @override
-  String get proUpgradeSubtitle =>
-      'Kein Abo. Einmalkauf, lebenslanger Zugriff.';
-
-  @override
   String get proFeatureAdsTitle => 'Werbefreie Erfahrung';
 
   @override
@@ -1047,9 +1037,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'Interpretiert mit DreamBoat App';
-
-  @override
-  String get subscriptionComingSoon => 'Das Abonnement-System kommt sehr bald!';
 
   @override
   String get subscribeMonthly => 'Monatlich abonnieren';
@@ -1257,9 +1244,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timeAwarenessQ2 => 'Welcher Wochentag ist heute?';
-
-  @override
-  String get timeAwarenessQ3 => 'REMOVED';
 
   @override
   String get timeAwarenessQ4 => 'Wie spät ist es genau?';
@@ -1562,17 +1546,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String weeklyLimitLeft(int count) {
     return 'Noch $count kostenlose Traumdeutungen diese Woche';
-  }
-
-  @override
-  String get specialOffer => '🔥 SONDERANGEBOT';
-
-  @override
-  String get welcomeOfferFirstTime => 'Erstabonnenten-Angebot';
-
-  @override
-  String welcomeOfferExpires(String time) {
-    return 'Angebot endet in: $time';
   }
 
   @override

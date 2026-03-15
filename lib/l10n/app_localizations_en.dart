@@ -536,9 +536,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guideIntroGain4 => 'Handle Stress';
 
   @override
-  String get guideBuyButton => 'Unlock Full Guide';
-
-  @override
   String get guideNo => 'No';
 
   @override
@@ -585,9 +582,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get upgradeBenefits =>
       'Ad-Free Experience\nFull Dream Analysis\nUnlimited Dream Interpretation\nExclusive Guide Access';
-
-  @override
-  String get upgradeBtn => 'Unlock DreamBoat PRO (88.99 ₺)';
 
   @override
   String get upgradeCancel => 'Maybe later';
@@ -885,10 +879,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get offlineAnalysis => 'Internet connection is required for analysis.';
 
   @override
-  String get proUpgradeSubtitle =>
-      'No subscription. One-time purchase, lifetime access.';
-
-  @override
   String get proFeatureAdsTitle => 'Ad-Free Experience';
 
   @override
@@ -1035,9 +1025,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareCardWatermark => 'Interpreted with DreamBoat App';
-
-  @override
-  String get subscriptionComingSoon => 'Subscription system coming very soon!';
 
   @override
   String get subscribeMonthly => 'Subscribe Monthly';
@@ -1244,9 +1231,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeAwarenessQ2 => 'What day of the week is it?';
-
-  @override
-  String get timeAwarenessQ3 => 'REMOVED';
 
   @override
   String get timeAwarenessQ4 => 'What time is it exactly?';
@@ -1545,17 +1529,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String weeklyLimitLeft(int count) {
     return '$count free interpretations left this week';
-  }
-
-  @override
-  String get specialOffer => '🔥 SPECIAL OFFER';
-
-  @override
-  String get welcomeOfferFirstTime => 'First-time subscriber offer';
-
-  @override
-  String welcomeOfferExpires(String time) {
-    return 'Offer expires in: $time';
   }
 
   @override

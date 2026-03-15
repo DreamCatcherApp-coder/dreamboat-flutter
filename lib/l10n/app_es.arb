@@ -168,7 +168,7 @@
     "guideIntroGain2": "Explorar Subconsciente",
     "guideIntroGain3": "Dominar el Sueño",
     "guideIntroGain4": "Manejar el Estrés",
-    "guideBuyButton": "Desbloquear Guía Completa",
+
     "guideNo": "No",
     "guideYes": "Sí",
     "guideDebugResetTitle": "¿Reiniciar Guía?",
@@ -184,7 +184,7 @@
     "standardVersion": "Estándar",
     "upgradeTitle": "Actualizar a DreamBoat PRO",
     "upgradeBenefits": "Experiencia Sin Anuncios\nAnálisis Completo de Sueños\nInterpretación Ilimitada de Sueños\nAcceso Exclusivo a la Guía",
-    "upgradeBtn": "Desbloquear DreamBoat PRO (88,99 ₺)",
+
     "upgradeCancel": "Quizás después",
     "privacyPolicyLink": "Política de Privacidad",
     "termsOfUseLink": "Términos de Uso",
@@ -269,7 +269,7 @@
     "offlineInterpretation": "El sueño no pudo ser interpretado debido a falta de internet.",
     "offlinePurchase": "Se requiere conexión a internet para realizar la compra.",
     "offlineAnalysis": "Se requiere conexión a internet para el análisis.",
-    "proUpgradeSubtitle": "Sin suscripción. Compra única, acceso de por vida.",
+
     "proFeatureAdsTitle": "Experiencia Sin Anuncios",
     "proFeatureAdsSubtitle": "Sin anuncios al interpretar sueños.\nEnfócate solo en tus sueños y lo que quieren contarte.",
     "proFeatureCosmicTitle": "Desbloquea Conexiones Cósmicas",
@@ -329,7 +329,7 @@
     },
     "shareCardHeader": "MI INTERPRETACIÓN DE SUEÑOS DIARIA",
     "shareCardWatermark": "Interpretado con DreamBoat App",
-    "subscriptionComingSoon": "¡El sistema de suscripción llegará muy pronto!",
+
     "subscribeMonthly": "Suscribirse Mensual",
     "subscribeYearly": "Suscribirse Anual",
     
@@ -397,7 +397,7 @@
     "timeAwarenessInstruction": "Responde en voz alta antes de dormir",
     "timeAwarenessQ1": "¿Cuál es la fecha de hoy?",
     "timeAwarenessQ2": "¿Qué día de la semana es?",
-    "timeAwarenessQ3": "REMOVED",
+
     "timeAwarenessQ4": "¿Qué hora es exactamente?",
     "timeAwarenessQ5": "Mira a tu alrededor y nombra 3 objetos.",
     "timeAwarenessQ6": "¿De qué color es tu ropa?",
@@ -510,16 +510,7 @@
     "watchAdForInterpretation": "Mejora a PRO o mira un anuncio para la interpretación de IA.",
     "interpretationSkipped": "El anuncio no fue visto, sueño guardado sin interpretación.",
     "weeklyLimitLeft": "Te quedan {count} interpretaciones gratuitas esta semana",
-    "specialOffer": "🔥 OFERTA ESPECIAL",
-    "welcomeOfferFirstTime": "Oferta para nuevos suscriptores",
-    "welcomeOfferExpires": "Oferta expira en: {time}",
-    "@welcomeOfferExpires": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
+
     "streakDays": "{count} días seguidos",
     "@streakDays": {
         "placeholders": {

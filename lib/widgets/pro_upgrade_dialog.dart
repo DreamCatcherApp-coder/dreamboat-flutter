@@ -210,13 +210,19 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
       yearlyPrice = t.priceLoading; // Fallback
     }
     
-    // Check for free trial (introductory offer)
+    // Check for free trial (introductory offer) — gated by eligibility
     final yearlyIntro = provider.yearlyPackage?.storeProduct.introductoryPrice;
     final monthlyIntro = provider.monthlyPackage?.storeProduct.introductoryPrice;
     
     // Helper to robustly calculate days from period unit
-    int calculateDays(IntroductoryPrice? discount) {
+    // Returns 0 if user is NOT eligible for trial (already used it)
+    int calculateDays(IntroductoryPrice? discount, String? productId) {
       if (discount == null || discount.price != 0) return 0;
+      
+      // Check eligibility — if user already used trial, don't show it
+      if (productId != null && !provider.isTrialEligibleFor(productId)) {
+        return 0;
+      }
       
       final units = discount.periodNumberOfUnits;
       // Convert to string and upper case to handle Enums or Strings (Week, WEEK, PeriodUnit.week)
@@ -231,8 +237,8 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
       return units * daysPerUnit;
     }
 
-    final yearlyTrialDays = calculateDays(yearlyIntro);
-    final monthlyTrialDays = calculateDays(monthlyIntro);
+    final yearlyTrialDays = calculateDays(yearlyIntro, provider.yearlyPackage?.storeProduct.identifier);
+    final monthlyTrialDays = calculateDays(monthlyIntro, provider.monthlyPackage?.storeProduct.identifier);
 
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
@@ -426,8 +432,8 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
                                 ),
                               ),
                             )
-                          else
-                            // Free Trial Badge - subtle, smaller than main badges
+                          else if (yearlyTrialDays > 0 || monthlyTrialDays > 0)
+                            // Free Trial Badge - only shown when trial is available AND user is eligible
                             Center(
                               child: Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
@@ -862,15 +868,14 @@ class _ProUpgradeDialogState extends State<ProUpgradeDialog> with SingleTickerPr
     // Check if price is an error state
     final bool isPriceError = price == t.priceLoadError || price == t.priceLoading;
     
-    // Android-specific: Always show trial format when price is valid
-    // Use 7 days default if no trial info from RevenueCat
-    if (Platform.isAndroid && !isPriceError) {
-      final displayTrialDays = trialDays > 0 ? trialDays : 7;
+    // Android-specific: Show trial format ONLY when RevenueCat confirms a trial exists
+    // AND user is eligible (hasn't used trial before)
+    if (Platform.isAndroid && !isPriceError && trialDays > 0) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '$displayTrialDays ${t.freeTrialDays}',
+            '$trialDays ${t.freeTrialDays}',
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,

@@ -14,6 +14,7 @@ class SubscriptionProvider extends ChangeNotifier {
   bool _offeringsLoadFailed = false; // Track if offerings failed to load
   CustomerInfo? _customerInfo;
   Offerings? _offerings;
+  Map<String, IntroEligibility> _trialEligibility = {}; // Trial eligibility per product
 
   // RevenueCat API Keys
   static const String _androidApiKey = 'goog_LBAhypBGyaAupCMVbaViawqANGq';
@@ -28,6 +29,7 @@ class SubscriptionProvider extends ChangeNotifier {
   bool get isConfigured => _isConfigured; // Exposed for UI to check
   bool get isConfiguring => _isConfiguring; // Exposed for UI to show loading
   bool get offeringsLoadFailed => _offeringsLoadFailed; // Exposed for UI to show error
+  Map<String, IntroEligibility> get trialEligibility => _trialEligibility;
   
   /// Check if the user is currently in a Free Trial period
   bool get isTrial {
@@ -121,6 +123,9 @@ class SubscriptionProvider extends ChangeNotifier {
       ]);
       notifyListeners();
       
+      // Check trial eligibility after offerings are loaded
+      await _checkTrialEligibility();
+      
       // Listen for customer info updates
       Purchases.addCustomerInfoUpdateListener((customerInfo) {
         _customerInfo = customerInfo;
@@ -154,6 +159,42 @@ class SubscriptionProvider extends ChangeNotifier {
       
       notifyListeners();
     }
+  }
+
+  /// Check trial/intro eligibility for all products in current offering.
+  /// This tells us whether the user has already used their trial.
+  Future<void> _checkTrialEligibility() async {
+    try {
+      final offering = _offerings?.current;
+      if (offering == null) return;
+
+      // Collect all product identifiers from the offering
+      final productIds = <String>[];
+      for (final package in offering.availablePackages) {
+        productIds.add(package.storeProduct.identifier);
+      }
+
+      if (productIds.isEmpty) return;
+
+      _trialEligibility = await Purchases.checkTrialOrIntroDiscountEligibility(productIds);
+      
+      for (final entry in _trialEligibility.entries) {
+        debugPrint('Trial eligibility: ${entry.key} → ${entry.value.status}');
+      }
+      
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Trial eligibility check error: $e');
+      // On error, leave empty — UI will fall back to showing trial info from store
+    }
+  }
+
+  /// Check if a specific product is eligible for intro/trial offer.
+  /// Returns true if eligible or if eligibility is unknown (fail-open for display).
+  bool isTrialEligibleFor(String productIdentifier) {
+    final eligibility = _trialEligibility[productIdentifier];
+    if (eligibility == null) return true; // Unknown → show trial (fail-open)
+    return eligibility.status == IntroEligibilityStatus.introEligibilityStatusEligible;
   }
 
   /// User-triggered restore purchases functionality (required for App Store)

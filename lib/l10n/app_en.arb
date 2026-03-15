@@ -168,7 +168,7 @@
     "guideIntroGain2": "Explore Subconscious",
     "guideIntroGain3": "Master Sleep",
     "guideIntroGain4": "Handle Stress",
-    "guideBuyButton": "Unlock Full Guide",
+
     "guideNo": "No",
     "guideYes": "Yes",
     "guideDebugResetTitle": "Reset Guide?",
@@ -184,7 +184,7 @@
     "standardVersion": "Standard",
     "upgradeTitle": "Upgrade to DreamBoat PRO",
     "upgradeBenefits": "Ad-Free Experience\nFull Dream Analysis\nUnlimited Dream Interpretation\nExclusive Guide Access",
-    "upgradeBtn": "Unlock DreamBoat PRO (88.99 ₺)",
+
     "upgradeCancel": "Maybe later",
     "privacyPolicyLink": "Privacy Policy",
     "termsOfUseLink": "Terms of Use",
@@ -269,7 +269,7 @@
     "offlineInterpretation": "Dream could not be interpreted due to no internet connection.",
     "offlinePurchase": "Internet connection is required to make a purchase.",
     "offlineAnalysis": "Internet connection is required for analysis.",
-    "proUpgradeSubtitle": "No subscription. One-time purchase, lifetime access.",
+
     "proFeatureAdsTitle": "Ad-Free Experience",
     "proFeatureAdsSubtitle": "No ads during dream interpretations.\nFocus only on your dreams and what they want to tell you.",
     "proFeatureCosmicTitle": "Unlock Cosmic Connections",
@@ -329,7 +329,7 @@
     },
     "shareCardHeader": "MY DAILY DREAM INTERPRETATION",
     "shareCardWatermark": "Interpreted with DreamBoat App",
-    "subscriptionComingSoon": "Subscription system coming very soon!",
+
     "subscribeMonthly": "Subscribe Monthly",
     "subscribeYearly": "Subscribe Yearly",
     
@@ -398,7 +398,7 @@
     "timeAwarenessInstruction": "Answer aloud before sleeping",
     "timeAwarenessQ1": "What is today's date?",
     "timeAwarenessQ2": "What day of the week is it?",
-    "timeAwarenessQ3": "REMOVED",
+
     "timeAwarenessQ4": "What time is it exactly?",
     "timeAwarenessQ5": "Look around and name 3 different objects.",
     "timeAwarenessQ6": "What color are your clothes?",
@@ -519,16 +519,7 @@
             }
         }
     },
-    "specialOffer": "🔥 SPECIAL OFFER",
-    "welcomeOfferFirstTime": "First-time subscriber offer",
-    "welcomeOfferExpires": "Offer expires in: {time}",
-    "@welcomeOfferExpires": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
+
     "streakDays": "{count} days in a row",
     "@streakDays": {
         "placeholders": {

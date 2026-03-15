@@ -1046,12 +1046,6 @@ abstract class AppLocalizations {
   /// **'Rüyalarının yönetmeni olursun'**
   String get guideIntroGain4;
 
-  /// No description provided for @guideBuyButton.
-  ///
-  /// In tr, this message translates to:
-  /// **'Rehberi Satın Al (179.00 TL)'**
-  String get guideBuyButton;
-
   /// No description provided for @guideNo.
   ///
   /// In tr, this message translates to:
@@ -1135,12 +1129,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Reklamsız Deneyim\nTam Rüya Analizi\nLimitsiz Rüya Yorumu\nÖzel Rehber Erişimi'**
   String get upgradeBenefits;
-
-  /// No description provided for @upgradeBtn.
-  ///
-  /// In tr, this message translates to:
-  /// **'DreamBoat PRO\'yu Aç (88,99 ₺)'**
-  String get upgradeBtn;
 
   /// No description provided for @upgradeCancel.
   ///
@@ -1682,12 +1670,6 @@ abstract class AppLocalizations {
   /// **'Analiz için internet bağlantısı gerekiyor.'**
   String get offlineAnalysis;
 
-  /// No description provided for @proUpgradeSubtitle.
-  ///
-  /// In tr, this message translates to:
-  /// **'Abonelik yok. Tek sefer satın alır, ömür boyu erişim sağlarsın.'**
-  String get proUpgradeSubtitle;
-
   /// No description provided for @proFeatureAdsTitle.
   ///
   /// In tr, this message translates to:
@@ -1951,12 +1933,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'DreamBoat App ile yorumlandı'**
   String get shareCardWatermark;
-
-  /// No description provided for @subscriptionComingSoon.
-  ///
-  /// In tr, this message translates to:
-  /// **'Abonelik sistemi çok yakında aktif olacak!'**
-  String get subscriptionComingSoon;
 
   /// No description provided for @subscribeMonthly.
   ///
@@ -2341,12 +2317,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Haftanın hangi günündeyiz?'**
   String get timeAwarenessQ2;
-
-  /// No description provided for @timeAwarenessQ3.
-  ///
-  /// In tr, this message translates to:
-  /// **'REMOVED'**
-  String get timeAwarenessQ3;
 
   /// No description provided for @timeAwarenessQ4.
   ///
@@ -2893,24 +2863,6 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu hafta {count} ücretsiz rüya yorumu hakkın kaldı'**
   String weeklyLimitLeft(int count);
-
-  /// No description provided for @specialOffer.
-  ///
-  /// In tr, this message translates to:
-  /// **'🔥 ÖZEL TEKLİF'**
-  String get specialOffer;
-
-  /// No description provided for @welcomeOfferFirstTime.
-  ///
-  /// In tr, this message translates to:
-  /// **'İlk abone özel teklifi'**
-  String get welcomeOfferFirstTime;
-
-  /// No description provided for @welcomeOfferExpires.
-  ///
-  /// In tr, this message translates to:
-  /// **'Teklifin bitmesine: {time}'**
-  String welcomeOfferExpires(String time);
 
   /// No description provided for @streakDays.
   ///
