@@ -664,7 +664,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get privacySection1Content =>
-      'Ihre Traumaufzeichnungen und In-App-Daten werden sicher gespeichert.\nIhre Träume werden nur verarbeitet, um die von der Anwendung angebotenen Funktionen auszuführen.\n\nTrauminhalte werden niemals mit Dritten geteilt\n\nDaten werden nicht für Werbung, Marketing oder Benutzerprofilierung verwendet\n\nKI-gestützte Analysen werden ausschließlich zur Verbesserung der Benutzererfahrung durchgeführt\n\nTraumtexte werden nicht zum Trainieren von KI-Modellen verwendet\n\nAlle Vorgänge werden in Übereinstimmung mit KVKK- und DSGVO-Standards durchgeführt';
+      'Ihre Traumaufzeichnungen und In-App-Daten werden sicher gespeichert.\nIhre Träume werden nur verarbeitet, um die von der Anwendung angebotenen Funktionen auszuführen.\n\nTraumtexte werden sicher von KI-Diensten Dritter ausschließlich zur Erstellung von Deutungen verarbeitet und werden nicht gespeichert, verkauft oder für Werbung, Profilerstellung oder KI-Modelltraining verwendet\n\nDaten werden nicht für Werbung, Marketing oder Benutzerprofilierung verwendet\n\nKI-gestützte Analysen werden ausschließlich zur Verbesserung der Benutzererfahrung durchgeführt\n\nTraumtexte werden nicht zum Trainieren von KI-Modellen verwendet\n\nAlle Vorgänge werden in Übereinstimmung mit KVKK- und DSGVO-Standards durchgeführt';
 
   @override
   String get privacySection2Title => '2. Konto und Nutzung';
@@ -1016,7 +1016,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get sharePrivacyHint =>
-      'Hinweis: Der Button Deutung teilen teilt nur die Traumdeutung. Ihre Träume gehören Ihnen und werden niemals mit Dritten geteilt.';
+      'Hinweis: Der Button Deutung teilen teilt nur die Traumdeutung. Ihre Träume gehören Ihnen. Der Teilen-Button teilt nur den von Ihnen gewählten Deutungstext.';
 
   @override
   String get moonPhaseLabel => 'Mondphase:';
@@ -1327,6 +1327,10 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get onboardingWelcomeSubtitle =>
       'Lass uns in der Zwischenzeit dein allgemeines Traumprofil entdecken.';
+
+  @override
+  String get onboardingAIDisclosure =>
+      'Ihre Traumtexte werden von KI-Diensten verarbeitet, um Deutungen zu erstellen. Es werden keine persönlichen Daten erhoben.';
 
   @override
   String get surveyQ1 =>

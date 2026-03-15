@@ -1277,7 +1277,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacySection1Content.
   ///
   /// In tr, this message translates to:
-  /// **'Rüya kayıtlarınız ve uygulama içi verileriniz güvenli bir şekilde saklanır.\nRüyalarınız yalnızca uygulamanın sunduğu özellikleri çalıştırmak için işlenir.\n\nRüya içerikleri üçüncü kişilerle asla paylaşılmaz\n\nVeriler reklam, pazarlama veya kullanıcı profilleme amacıyla kullanılmaz\n\nYapay zekâ destekli analizler yalnızca kullanıcı deneyimini geliştirmek için yapılır\n\nRüya metinleri AI modellerinin eğitimi için kullanılmaz\n\nTüm işlemler KVKK ve GDPR standartlarına uygun şekilde yürütülür'**
+  /// **'Rüya kayıtlarınız ve uygulama içi verileriniz güvenli bir şekilde saklanır.\nRüyalarınız yalnızca uygulamanın sunduğu özellikleri çalıştırmak için işlenir.\n\nRüya metinleri, yalnızca yorumlar oluşturmak amacıyla üçüncü parti yapay zekâ hizmetleri tarafından güvenli şekilde işlenir; saklanmaz, satılmaz, reklam, profilleme veya yapay zekâ model eğitimi için kullanılmaz\n\nVeriler reklam, pazarlama veya kullanıcı profilleme amacıyla kullanılmaz\n\nYapay zekâ destekli analizler yalnızca kullanıcı deneyimini geliştirmek için yapılır\n\nRüya metinleri AI modellerinin eğitimi için kullanılmaz\n\nTüm işlemler KVKK ve GDPR standartlarına uygun şekilde yürütülür'**
   String get privacySection1Content;
 
   /// No description provided for @privacySection2Title.
@@ -1895,7 +1895,7 @@ abstract class AppLocalizations {
   /// No description provided for @sharePrivacyHint.
   ///
   /// In tr, this message translates to:
-  /// **'Not: Yorumu paylaş butonu yalnızca rüya yorumunuzu paylaşır. Rüyalarınız size aittir ve herhangi bir şekilde üçüncü şahıslara gösterilmez.'**
+  /// **'Not: Yorumu paylaş butonu yalnızca rüya yorumunuzu paylaşır. Rüyalarınız size aittir. Paylaş butonu yalnızca sizin seçtiğiniz yorum metnini paylaşır.'**
   String get sharePrivacyHint;
 
   /// No description provided for @moonPhaseLabel.
@@ -2467,6 +2467,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Bu sırada senin genel rüya profilini çıkaralım.'**
   String get onboardingWelcomeSubtitle;
+
+  /// No description provided for @onboardingAIDisclosure.
+  ///
+  /// In tr, this message translates to:
+  /// **'Rüya metinleriniz, yorumlar oluşturmak için yapay zekâ hizmetleri tarafından işlenir. Kişisel veri toplanmaz.'**
+  String get onboardingAIDisclosure;
 
   /// No description provided for @surveyQ1.
   ///

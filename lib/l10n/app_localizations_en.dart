@@ -660,7 +660,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacySection1Content =>
-      'Your dream records and in-app data are stored securely.\nYour dreams are processed only to operate the features offered by the application.\n\nDream contents are never shared with third parties\n\nData is not used for advertising, marketing or user profiling purposes\n\nAI-powered analyses are performed solely to enhance the user experience\n\nDream texts are not used for training AI models\n\nAll operations are carried out in accordance with KVKK and GDPR standards';
+      'Your dream records and in-app data are stored securely.\nYour dreams are processed only to operate the features offered by the application.\n\nDream texts are securely processed by third-party AI services solely to generate interpretations and are not stored, sold, or used for advertising, profiling, or AI model training\n\nData is not used for advertising, marketing or user profiling purposes\n\nAI-powered analyses are performed solely to enhance the user experience\n\nDream texts are not used for training AI models\n\nAll operations are carried out in accordance with KVKK and GDPR standards';
 
   @override
   String get privacySection2Title => '2. Account and Usage';
@@ -1004,7 +1004,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sharePrivacyHint =>
-      'Note: The Share Interpretation button only shares the dream interpretation. Your dreams belong to you and are never shared with third parties.';
+      'Note: The Share Interpretation button only shares the dream interpretation. Your dreams belong to you. The Share button only shares the interpretation text you choose to share.';
 
   @override
   String get moonPhaseLabel => 'Moon Phase:';
@@ -1314,6 +1314,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingWelcomeSubtitle =>
       'Let\'s discover your general dream profile in the meantime.';
+
+  @override
+  String get onboardingAIDisclosure =>
+      'Your dream texts are processed by AI services to provide interpretations. No personal data is collected.';
 
   @override
   String get surveyQ1 => 'How often do you usually remember your dreams?';

@@ -176,7 +176,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
       if (productIds.isEmpty) return;
 
-      _trialEligibility = await Purchases.checkTrialOrIntroDiscountEligibility(productIds);
+      _trialEligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(productIds);
       
       for (final entry in _trialEligibility.entries) {
         debugPrint('Trial eligibility: ${entry.key} → ${entry.value.status}');

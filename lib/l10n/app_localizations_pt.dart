@@ -664,7 +664,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get privacySection1Content =>
-      'Seus registros de sonhos e dados no aplicativo são armazenados com segurança.\nSeus sonhos são processados apenas para operar os recursos oferecidos pelo aplicativo.\n\nConteúdos de sonhos nunca são compartilhados com terceiros\n\nDados não são usados para fins de publicidade, marketing ou perfil de usuário\n\nAnálises impulsionadas por IA são realizadas exclusivamente para melhorar a experiência do usuário\n\nTextos de sonhos não são usados para treinar modelos de IA\n\nTodas as operações são realizadas de acordo com os padrões KVKK e GDPR';
+      'Seus registros de sonhos e dados no aplicativo são armazenados com segurança.\nSeus sonhos são processados apenas para operar os recursos oferecidos pelo aplicativo.\n\nTextos de sonhos são processados com segurança por serviços de IA de terceiros exclusivamente para gerar interpretações e não são armazenados, vendidos ou usados para publicidade, criação de perfis ou treinamento de modelos de IA\n\nDados não são usados para fins de publicidade, marketing ou perfil de usuário\n\nAnálises impulsionadas por IA são realizadas exclusivamente para melhorar a experiência do usuário\n\nTextos de sonhos não são usados para treinar modelos de IA\n\nTodas as operações são realizadas de acordo com os padrões KVKK e GDPR';
 
   @override
   String get privacySection2Title => '2. Conta e Uso';
@@ -1009,7 +1009,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get sharePrivacyHint =>
-      'Nota: O botão Compartilhar Interpretação apenas compartilha a interpretação. Seus sonhos pertencem a você e nunca são compartilhados com terceiros.';
+      'Nota: O botão Compartilhar Interpretação apenas compartilha a interpretação. Seus sonhos pertencem a você. O botão de compartilhar apenas compartilha o texto da interpretação que você escolher compartilhar.';
 
   @override
   String get moonPhaseLabel => 'Fase Lunar:';
@@ -1322,6 +1322,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get onboardingWelcomeSubtitle =>
       'Enquanto isso, vamos descobrir seu perfil geral de sonhos.';
+
+  @override
+  String get onboardingAIDisclosure =>
+      'Seus textos de sonhos são processados por serviços de IA para fornecer interpretações. Nenhum dado pessoal é coletado.';
 
   @override
   String get surveyQ1 =>

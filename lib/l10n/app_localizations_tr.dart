@@ -659,7 +659,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get privacySection1Content =>
-      'Rüya kayıtlarınız ve uygulama içi verileriniz güvenli bir şekilde saklanır.\nRüyalarınız yalnızca uygulamanın sunduğu özellikleri çalıştırmak için işlenir.\n\nRüya içerikleri üçüncü kişilerle asla paylaşılmaz\n\nVeriler reklam, pazarlama veya kullanıcı profilleme amacıyla kullanılmaz\n\nYapay zekâ destekli analizler yalnızca kullanıcı deneyimini geliştirmek için yapılır\n\nRüya metinleri AI modellerinin eğitimi için kullanılmaz\n\nTüm işlemler KVKK ve GDPR standartlarına uygun şekilde yürütülür';
+      'Rüya kayıtlarınız ve uygulama içi verileriniz güvenli bir şekilde saklanır.\nRüyalarınız yalnızca uygulamanın sunduğu özellikleri çalıştırmak için işlenir.\n\nRüya metinleri, yalnızca yorumlar oluşturmak amacıyla üçüncü parti yapay zekâ hizmetleri tarafından güvenli şekilde işlenir; saklanmaz, satılmaz, reklam, profilleme veya yapay zekâ model eğitimi için kullanılmaz\n\nVeriler reklam, pazarlama veya kullanıcı profilleme amacıyla kullanılmaz\n\nYapay zekâ destekli analizler yalnızca kullanıcı deneyimini geliştirmek için yapılır\n\nRüya metinleri AI modellerinin eğitimi için kullanılmaz\n\nTüm işlemler KVKK ve GDPR standartlarına uygun şekilde yürütülür';
 
   @override
   String get privacySection2Title => '2. Hesap ve Kullanım';
@@ -1001,7 +1001,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get sharePrivacyHint =>
-      'Not: Yorumu paylaş butonu yalnızca rüya yorumunuzu paylaşır. Rüyalarınız size aittir ve herhangi bir şekilde üçüncü şahıslara gösterilmez.';
+      'Not: Yorumu paylaş butonu yalnızca rüya yorumunuzu paylaşır. Rüyalarınız size aittir. Paylaş butonu yalnızca sizin seçtiğiniz yorum metnini paylaşır.';
 
   @override
   String get moonPhaseLabel => 'Ay Evresi:';
@@ -1310,6 +1310,10 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get onboardingWelcomeSubtitle =>
       'Bu sırada senin genel rüya profilini çıkaralım.';
+
+  @override
+  String get onboardingAIDisclosure =>
+      'Rüya metinleriniz, yorumlar oluşturmak için yapay zekâ hizmetleri tarafından işlenir. Kişisel veri toplanmaz.';
 
   @override
   String get surveyQ1 => 'Genelde rüyalarını ne sıklıkla hatırlarsın?';

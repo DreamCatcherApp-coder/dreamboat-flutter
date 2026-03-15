@@ -523,6 +523,15 @@ class _DreamProfileSurveyScreenState extends State<DreamProfileSurveyScreen> {
                       color: Colors.white38,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    l10n.onboardingAIDisclosure,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.quicksand(
+                      fontSize: 12,
+                      color: Colors.white38,
+                    ),
+                  ),
                   const SizedBox(height: 20),
                 ],
               ),
