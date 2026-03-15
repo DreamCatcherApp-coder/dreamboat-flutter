@@ -258,6 +258,7 @@
     "dreamInterpretationReadMore": "Leer Más",
     "dreamTooShort": "El sueño fue demasiado corto para interpretar.",
     "dreamGibberish": "Tu sueño no pudo ser interpretado porque no contenía suficiente contenido significativo.",
+    "dreamInappropriate": "Este contenido no pudo ser interpretado. DreamBoat ofrece únicamente análisis simbólico de sueños.",
     "titleNotInterpreted": "No Interpretado",
     "dailyLimitReached": "Has alcanzado el límite diario de interpretación de sueños (100/100).",
     "settingsRestorePurchases": "Restaurar Compras",

@@ -205,6 +205,10 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
           // Dream text was detected as meaningless gibberish
           interpretation = t.dreamGibberish;
           title = null;
+        } else if (result['error'] == 'inappropriate_content') {
+          // Dream content was blocked by safety filter
+          interpretation = t.dreamInappropriate;
+          title = null;
         } else if (result.containsKey('error') || result['interpretation'] == null) {
           // Log the actual error for debugging
           debugPrint('Interpret Error: ${result['error']}');
@@ -257,6 +261,7 @@ class _NewDreamScreenState extends State<NewDreamScreen> {
                                      interpretation != t.offlineInterpretation && 
                                      interpretation != t.dreamTooShort &&
                                      interpretation != t.dreamGibberish &&
+                                     interpretation != t.dreamInappropriate &&
                                      !interpretation.contains('anlam');
                                      
       // Weekly usage limit is no longer enforced.

@@ -1604,6 +1604,12 @@ abstract class AppLocalizations {
   /// **'Rüyanız yeterli anlam içermediği için yorumlanamadı.'**
   String get dreamGibberish;
 
+  /// No description provided for @dreamInappropriate.
+  ///
+  /// In tr, this message translates to:
+  /// **'Bu içerik yorumlanamadı. DreamBoat yalnızca sembolik rüya analizi sunar.'**
+  String get dreamInappropriate;
+
   /// No description provided for @titleNotInterpreted.
   ///
   /// In tr, this message translates to:

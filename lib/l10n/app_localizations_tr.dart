@@ -839,6 +839,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Rüyanız yeterli anlam içermediği için yorumlanamadı.';
 
   @override
+  String get dreamInappropriate =>
+      'Bu içerik yorumlanamadı. DreamBoat yalnızca sembolik rüya analizi sunar.';
+
+  @override
   String get titleNotInterpreted => 'Yorumlanamadı';
 
   @override

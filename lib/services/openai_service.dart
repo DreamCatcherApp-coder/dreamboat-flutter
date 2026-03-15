@@ -157,7 +157,9 @@ class OpenAIService {
         return {
           'title': null,
           'interpretation': null,
-          'error': 'gibberish',
+          'error': data['rejectionReason'] == 'inappropriate_content' 
+              ? 'inappropriate_content' 
+              : 'gibberish',
         };
       }
 

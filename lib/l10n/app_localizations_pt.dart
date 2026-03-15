@@ -845,6 +845,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Seu sonho não pôde ser interpretado porque não continha conteúdo significativo suficiente.';
 
   @override
+  String get dreamInappropriate =>
+      'Este conteúdo não pôde ser interpretado. O DreamBoat oferece apenas análise simbólica de sonhos.';
+
+  @override
   String get titleNotInterpreted => 'Não Interpretado';
 
   @override

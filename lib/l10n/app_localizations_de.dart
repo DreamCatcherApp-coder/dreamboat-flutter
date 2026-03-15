@@ -847,6 +847,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ihr Traum konnte nicht gedeutet werden, da er nicht genügend aussagekräftigen Inhalt enthielt.';
 
   @override
+  String get dreamInappropriate =>
+      'Dieser Inhalt konnte nicht interpretiert werden. DreamBoat bietet ausschließlich symbolische Traumanalyse.';
+
+  @override
   String get titleNotInterpreted => 'Nicht Gedeutet';
 
   @override

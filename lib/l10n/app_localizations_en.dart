@@ -842,6 +842,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your dream could not be interpreted as it did not contain enough meaningful content.';
 
   @override
+  String get dreamInappropriate =>
+      'This content could not be interpreted. DreamBoat provides symbolic dream analysis only.';
+
+  @override
   String get titleNotInterpreted => 'Not Interpreted';
 
   @override
