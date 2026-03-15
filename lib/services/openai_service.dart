@@ -3,11 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:io';
 
 class OpenAIService {
   static bool _firebaseInitialized = false;
   static bool _appCheckActivated = false;
-  
+
   /// Ensure Firebase is initialized and user is authenticated before making calls.
   /// Unlike the old version, this ALWAYS validates auth state — never caches a
   /// "ready" flag that could mask a failed sign-in.
@@ -20,7 +21,7 @@ class OpenAIService {
         _firebaseInitialized = true;
         debugPrint('=== OpenAIService: Firebase initialized ===');
       } catch (e) {
-        if (e.toString().contains('already been initialized') || 
+        if (e.toString().contains('already been initialized') ||
             e.toString().contains('[core/duplicate-app]')) {
           _firebaseInitialized = true;
           debugPrint('=== OpenAIService: Firebase was already initialized ===');
@@ -30,27 +31,28 @@ class OpenAIService {
         }
       }
     }
-    
+
     // 2. ALWAYS ensure we have a valid authenticated user.
     //    Check on every call — don't cache _authReady.
     await _ensureAuthenticated();
-    
+
     // 3. Activate App Check if not done
     if (!_appCheckActivated) {
       try {
         debugPrint('=== OpenAIService: Activating App Check... ===');
         await FirebaseAppCheck.instance.activate(
-          androidProvider: kDebugMode 
-              ? AndroidProvider.debug 
+          androidProvider: kDebugMode
+              ? AndroidProvider.debug
               : AndroidProvider.playIntegrity,
-          appleProvider: kDebugMode 
-              ? AppleProvider.debug 
-              : AppleProvider.appAttest,
+          appleProvider:
+              kDebugMode ? AppleProvider.debug : AppleProvider.appAttest,
         );
         _appCheckActivated = true;
-        debugPrint('=== OpenAIService: App Check activated (${kDebugMode ? "DEBUG" : "PLAY_INTEGRITY"}) ===');
+        debugPrint(
+            '=== OpenAIService: App Check activated (${kDebugMode ? "DEBUG" : "PLAY_INTEGRITY"}) ===');
       } catch (e) {
-        debugPrint('=== OpenAIService: App Check error (continuing anyway): $e ===');
+        debugPrint(
+            '=== OpenAIService: App Check error (continuing anyway): $e ===');
         _appCheckActivated = true;
       }
     }
@@ -60,19 +62,21 @@ class OpenAIService {
   /// Retries anonymous sign-in up to 3 times if no user exists.
   Future<void> _ensureAuthenticated() async {
     final currentUser = FirebaseAuth.instance.currentUser;
-    
+
     if (currentUser != null) {
       // User exists — force-refresh the ID token to ensure it's valid
       try {
         await currentUser.getIdToken(true);
-        debugPrint('=== OpenAIService: Token refreshed (uid: ${currentUser.uid}) ===');
+        debugPrint(
+            '=== OpenAIService: Token refreshed (uid: ${currentUser.uid}) ===');
         return;
       } catch (e) {
-        debugPrint('=== OpenAIService: Token refresh failed, re-authenticating: $e ===');
+        debugPrint(
+            '=== OpenAIService: Token refresh failed, re-authenticating: $e ===');
         // Fall through to sign-in below
       }
     }
-    
+
     // No user or token refresh failed — sign in with retry
     await _signInWithRetry();
   }
@@ -81,12 +85,15 @@ class OpenAIService {
   Future<void> _signInWithRetry() async {
     for (int attempt = 1; attempt <= 3; attempt++) {
       try {
-        debugPrint('=== OpenAIService: Anonymous sign-in attempt $attempt/3... ===');
+        debugPrint(
+            '=== OpenAIService: Anonymous sign-in attempt $attempt/3... ===');
         await FirebaseAuth.instance.signInAnonymously();
-        debugPrint('=== OpenAIService: Signed in anonymously (uid: ${FirebaseAuth.instance.currentUser?.uid}) ===');
+        debugPrint(
+            '=== OpenAIService: Signed in anonymously (uid: ${FirebaseAuth.instance.currentUser?.uid}) ===');
         return; // Success
       } catch (e) {
-        debugPrint('=== OpenAIService: Sign-in attempt $attempt/3 failed: $e ===');
+        debugPrint(
+            '=== OpenAIService: Sign-in attempt $attempt/3 failed: $e ===');
         if (attempt < 3) {
           await Future.delayed(Duration(seconds: attempt)); // 1s, 2s backoff
         }
@@ -118,7 +125,7 @@ class OpenAIService {
     Duration timeout = const Duration(seconds: 90),
   }) async {
     await _ensureFirebaseReady();
-    
+
     try {
       final result = await FirebaseFunctions.instance
           .httpsCallable(name)
@@ -128,9 +135,10 @@ class OpenAIService {
     } on FirebaseFunctionsException catch (e) {
       // Auto-recover from auth errors
       if (e.code == 'unauthenticated' || e.code == 'UNAUTHENTICATED') {
-        debugPrint('=== _callFunction($name): Unauthenticated! Attempting re-auth... ===');
+        debugPrint(
+            '=== _callFunction($name): Unauthenticated! Attempting re-auth... ===');
         await _forceReAuth();
-        
+
         // Retry once after re-auth
         final result = await FirebaseFunctions.instance
             .httpsCallable(name)
@@ -143,22 +151,27 @@ class OpenAIService {
   }
 
   /// Interpret a dream - Returns title + interpretation
-  Future<Map<String, String?>> interpretDream(String dreamText, String mood, String language) async {
+  Future<Map<String, String?>> interpretDream(
+      String dreamText, String mood, String language) async {
     try {
-      final data = await _callFunction('interpretDream', {
-        'dreamText': dreamText,
-        'mood': mood,
-        'language': language,
-      }, timeout: const Duration(seconds: 45));
-      
+      final data = await _callFunction(
+          'interpretDream',
+          {
+            'dreamText': dreamText,
+            'mood': mood,
+            'language': language,
+            'locale': Platform.localeName,
+          },
+          timeout: const Duration(seconds: 45));
+
       // --- GIBBERISH REJECTION CHECK ---
       if (data['rejected'] == true) {
         debugPrint('Dream rejected: ${data['rejectionReason']}');
         return {
           'title': null,
           'interpretation': null,
-          'error': data['rejectionReason'] == 'inappropriate_content' 
-              ? 'inappropriate_content' 
+          'error': data['rejectionReason'] == 'inappropriate_content'
+              ? 'inappropriate_content'
               : 'gibberish',
         };
       }
@@ -166,7 +179,8 @@ class OpenAIService {
       // Log Token Usage if present
       if (data.containsKey('usage')) {
         final usage = data['usage'];
-        debugPrint("GPT Usage (interpretDream): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+        debugPrint(
+            "GPT Usage (interpretDream): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
       }
 
       return {
@@ -181,7 +195,7 @@ class OpenAIService {
       debugPrint('Details: ${e.details}');
       debugPrint('Plugin: ${e.plugin}');
       debugPrint('StackTrace: ${e.stackTrace}');
-      
+
       // Check for rate limit error
       if (e.code == 'resource-exhausted') {
         int resetMinutes = 5;
@@ -195,7 +209,7 @@ class OpenAIService {
           'resetMinutes': resetMinutes.toString(),
         };
       }
-      
+
       return {
         'title': null,
         'interpretation': null,
@@ -219,16 +233,20 @@ class OpenAIService {
   /// Generate daily dream tip
   Future<String> generateDailyTip(String language) async {
     try {
-      final data = await _callFunction('generateDailyTip', {
-        'language': language,
-      }, timeout: const Duration(seconds: 20));
-      
+      final data = await _callFunction(
+          'generateDailyTip',
+          {
+            'language': language,
+          },
+          timeout: const Duration(seconds: 20));
+
       // Log Token Usage if present
       if (data.containsKey('usage')) {
         final usage = data['usage'];
-        debugPrint("GPT Usage (generateDailyTip): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+        debugPrint(
+            "GPT Usage (generateDailyTip): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
       }
-      
+
       return data['result'] ?? '';
     } catch (e) {
       debugPrint('generateDailyTip Error: $e');
@@ -242,27 +260,30 @@ class OpenAIService {
       'dreams': dreams,
       'language': language,
     });
-    
+
     // Log Token Usage if present
     if (data.containsKey('usage')) {
       final usage = data['usage'];
-      debugPrint("GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+      debugPrint(
+          "GPT Usage (analyzeDreams): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
     }
 
     return data['result'] ?? '';
   }
 
   /// Analyze dreams with moon phase correlation
-  Future<String> analyzeMoonSync(List<Map<String, dynamic>> dreamData, String language) async {
+  Future<String> analyzeMoonSync(
+      List<Map<String, dynamic>> dreamData, String language) async {
     final data = await _callFunction('analyzeMoonSync', {
       'dreamData': dreamData,
       'language': language,
     });
-    
+
     // Log Token Usage if present
     if (data.containsKey('usage')) {
       final usage = data['usage'];
-      debugPrint("GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
+      debugPrint(
+          "GPT Usage (analyzeMoonSync): Input: ${usage['prompt_tokens']}, Output: ${usage['completion_tokens']}, Total: ${usage['total_tokens']}");
     }
 
     return data['result'] ?? '';

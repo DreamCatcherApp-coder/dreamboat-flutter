@@ -340,8 +340,11 @@ class _JournalScreenState extends State<JournalScreen> {
       return "${text.substring(0, 40)}...";
     }
     
-    // Detect if interpretation was skipped (contains known skip messages)
-    final isInterpretationSkipped = dream.interpretation.contains('yorumsuz') || 
+    // Detect if interpretation was skipped (contains known skip messages or hidden blocked flag \u200B)
+    // Also check for hidden sensitive flag \u200C to hide visualization button for sensitive dreams
+    final isInterpretationSkipped = dream.interpretation.startsWith('\u200B') ||
+                                     dream.interpretation.startsWith('\u200C') ||
+                                     dream.interpretation.contains('yorumsuz') || 
                                      dream.interpretation.contains('anlam') ||
                                      dream.interpretation.contains('without interpretation') ||
                                      dream.interpretation.contains('sin interpretación') ||
@@ -351,8 +354,10 @@ class _JournalScreenState extends State<JournalScreen> {
                                      dream.interpretation == t.offlineInterpretation ||
                                      dream.interpretation == t.dreamGibberish ||
                                      dream.interpretation == t.dreamTooShort;
-    
+
     // If interpretation was skipped, use the localized fallback title "Yorumlanamadı"
+    // For blocked dreams (starts with \u200B), the AI backend already sets a localized title, so use dream.title if present.
+    // For sensitive dreams (starts with \u200C), they still get generated titles natively, so use dream.title if present.
     final title = dream.title ?? (isInterpretationSkipped ? t.titleNotInterpreted : generateFallbackTitle(dream.text));
 
     // Helper to get localized phase name
